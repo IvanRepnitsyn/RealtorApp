@@ -1,0 +1,650 @@
+Index: app/src/main/res/layout/navigation_header.xml
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- app/src/main/res/layout/navigation_header.xml	(revision )
++++ app/src/main/res/layout/navigation_header.xml	(revision )
+@@ -0,0 +1,9 @@
++<?xml version="1.0" encoding="utf-8"?>
++<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
++    android:orientation="vertical"
++    android:layout_width="match_parent"
++    android:layout_height="192dp"
++    android:background="@color/colorPrimaryDark">
++
++
++</LinearLayout>
+\ No newline at end of file
+Index: app/src/main/res/values/dimens.xml
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- app/src/main/res/values/dimens.xml	(revision )
++++ app/src/main/res/values/dimens.xml	(revision )
+@@ -0,0 +1,6 @@
++<resources>
++    <!-- Default screen margins, per the Android Design guidelines. -->
++    <dimen name="activity_horizontal_margin">16dp</dimen>
++    <dimen name="activity_vertical_margin">16dp</dimen>
++    <dimen name="fab_margin">16dp</dimen>
++</resources>
+Index: app/src/main/java/ru/kvartira_omsk/realtorapp/adapter/TabsFragmentAdapter.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- app/src/main/java/ru/kvartira_omsk/realtorapp/adapter/TabsFragmentAdapter.java	(revision )
++++ app/src/main/java/ru/kvartira_omsk/realtorapp/adapter/TabsFragmentAdapter.java	(revision )
+@@ -0,0 +1,53 @@
++package ru.kvartira_omsk.realtorapp.adapter;
++
++import android.content.Context;
++import android.support.v4.app.Fragment;
++import android.support.v4.app.FragmentManager;
++import android.support.v4.app.FragmentPagerAdapter;
++
++import java.util.HashMap;
++import java.util.Map;
++
++import ru.kvartira_omsk.realtorapp.fragment.AbstractTabFragment;
++import ru.kvartira_omsk.realtorapp.fragment.ContactsFragment;
++import ru.kvartira_omsk.realtorapp.fragment.ItemsFragment;
++import ru.kvartira_omsk.realtorapp.fragment.ObjectsFragment;
++
++/**
++ * Created by Иван on 31.01.2016.
++ */
++public class TabsFragmentAdapter extends FragmentPagerAdapter {
++
++    private Map<Integer, AbstractTabFragment> tabs;
++    private Context context;
++
++    public TabsFragmentAdapter(Context context, FragmentManager fm) {
++        super(fm);
++        this.context=context;
++        initTabMap(context);
++    }
++
++    @Override
++    public CharSequence getPageTitle(int position) {
++
++        return tabs.get(position).getTitle();
++    }
++
++    @Override
++    public Fragment getItem(int position) {
++
++        return tabs.get(position);
++    }
++
++    @Override
++    public int getCount() {
++        return tabs.size();
++    }
++
++    private void initTabMap(Context context) {
++        tabs = new HashMap<>();
++        tabs.put(0, ObjectsFragment.getInstance(context));
++        tabs.put(1, ItemsFragment.getInstance(context));
++        tabs.put(2, ContactsFragment.getInstance(context));
++    }
++}
+Index: app/src/main/res/layout/activity_main.xml
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- app/src/main/res/layout/activity_main.xml	(revision )
++++ app/src/main/res/layout/activity_main.xml	(revision )
+@@ -0,0 +1,61 @@
++<?xml version="1.0" encoding="utf-8"?>
++<android.support.v4.widget.DrawerLayout xmlns:android="http://schemas.android.com/apk/res/android"
++    xmlns:app="http://schemas.android.com/apk/res-auto"
++    android:id="@+id/drawer_layout"
++    android:layout_width="match_parent"
++    android:layout_height="match_parent"
++    android:background="@color/mainBackground"
++    android:fitsSystemWindows="true">
++
++    <android.support.design.widget.CoordinatorLayout
++        android:layout_width="match_parent"
++        android:layout_height="match_parent">
++
++        <android.support.design.widget.AppBarLayout
++            android:layout_width="match_parent"
++            android:layout_height="wrap_content">
++
++            <android.support.v7.widget.Toolbar
++                android:id="@+id/toolbar"
++                android:layout_width="match_parent"
++                android:layout_height="?attr/actionBarSize"
++                android:theme="@style/ThemeOverlay.AppCompat.Dark"
++                android:background="?attr/colorPrimary" />
++
++            <android.support.design.widget.TabLayout
++                android:id="@+id/tabLayout"
++                android:layout_width="match_parent"
++                android:layout_height="wrap_content"
++                app:tabIndicatorColor="@android:color/white"
++                app:tabIndicatorHeight="6dp"
++                app:tabSelectedTextColor="@android:color/white"
++                app:tabTextColor="@android:color/white" />
++
++        </android.support.design.widget.AppBarLayout>
++
++        <android.support.v4.view.ViewPager
++            android:id="@+id/viewPager"
++            android:layout_width="match_parent"
++            android:layout_height="match_parent"
++            app:layout_behavior="@string/appbar_scrolling_view_behavior" />
++
++        <android.support.design.widget.FloatingActionButton
++            android:id="@+id/fab"
++            android:layout_height="wrap_content"
++            android:layout_width="wrap_content"
++            android:src="@mipmap/ic_plus"
++            android:layout_gravity="end|bottom"
++            android:layout_marginBottom="@dimen/fab_margin"
++            android:layout_marginRight="@dimen/fab_margin" />
++
++    </android.support.design.widget.CoordinatorLayout>
++
++    <android.support.design.widget.NavigationView
++        android:id="@+id/navigation"
++        android:layout_width="wrap_content"
++        android:layout_height="match_parent"
++        android:layout_gravity="start"
++        app:menu="@menu/menu_navigation"
++        app:headerLayout="@layout/navigation_header"/>
++
++</android.support.v4.widget.DrawerLayout>
+Index: app/src/main/AndroidManifest.xml
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- app/src/main/AndroidManifest.xml	(revision )
++++ app/src/main/AndroidManifest.xml	(revision )
+@@ -0,0 +1,22 @@
++<?xml version="1.0" encoding="utf-8"?>
++<manifest xmlns:android="http://schemas.android.com/apk/res/android"
++    package="ru.kvartira_omsk.realtorapp">
++
++    <application
++        android:allowBackup="true"
++        android:icon="@mipmap/ic_launcher"
++        android:label="@string/app_name"
++        android:supportsRtl="true"
++        android:theme="@style/AppTheme">
++        <activity
++            android:name=".MainActivity"
++            android:label="@string/app_name">
++            <intent-filter>
++                <action android:name="android.intent.action.MAIN" />
++
++                <category android:name="android.intent.category.LAUNCHER" />
++            </intent-filter>
++        </activity>
++    </application>
++
++</manifest>
+Index: app/src/main/java/ru/kvartira_omsk/realtorapp/fragment/ContactsFragment.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- app/src/main/java/ru/kvartira_omsk/realtorapp/fragment/ContactsFragment.java	(revision )
++++ app/src/main/java/ru/kvartira_omsk/realtorapp/fragment/ContactsFragment.java	(revision )
+@@ -0,0 +1,42 @@
++package ru.kvartira_omsk.realtorapp.fragment;
++
++import android.content.Context;
++import android.os.Bundle;
++import android.support.annotation.Nullable;
++import android.support.v4.app.Fragment;
++import android.view.LayoutInflater;
++import android.view.View;
++import android.view.ViewGroup;
++
++import ru.kvartira_omsk.realtorapp.R;
++
++/**
++ * Created by Иван on 31.01.2016.
++ */
++public class ContactsFragment extends AbstractTabFragment {
++
++    private static final int LAYOUT = R.layout.fragment_example;
++
++    public static ContactsFragment getInstance(Context context) {
++        Bundle args = new Bundle();
++        ContactsFragment fragment = new ContactsFragment();
++        fragment.setArguments(args);
++        fragment.setContext(context);
++        fragment.setTitle(context.getString(R.string.tab_item_contacts));
++
++        return fragment;
++    }
++
++    @Nullable
++    @Override
++    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
++        view = inflater.inflate(LAYOUT, container, false);
++
++
++        return view;
++    }
++
++    public void setContext(Context context) {
++        this.context = context;
++    }
++}
+Index: app/src/test/java/ru/kvartira_omsk/realtorapp/ExampleUnitTest.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- app/src/test/java/ru/kvartira_omsk/realtorapp/ExampleUnitTest.java	(revision )
++++ app/src/test/java/ru/kvartira_omsk/realtorapp/ExampleUnitTest.java	(revision )
+@@ -0,0 +1,15 @@
++package ru.kvartira_omsk.realtorapp;
++
++import org.junit.Test;
++
++import static org.junit.Assert.*;
++
++/**
++ * To work on unit tests, switch the Test Artifact in the Build Variants view.
++ */
++public class ExampleUnitTest {
++    @Test
++    public void addition_isCorrect() throws Exception {
++        assertEquals(4, 2 + 2);
++    }
++}
+\ No newline at end of file
+Index: app/src/main/res/values/styles.xml
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- app/src/main/res/values/styles.xml	(revision )
++++ app/src/main/res/values/styles.xml	(revision )
+@@ -0,0 +1,13 @@
++<?xml version="1.0" encoding="utf-8"?>
++<resources>
++
++    <style name="AppTheme" parent="Theme.AppCompat.Light.NoActionBar" />
++
++    <style name="AppDefault" parent="AppTheme">
++        <item name="colorPrimary">@color/colorPrimary</item>
++        <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
++        <item name="colorControlNormal">@color/colorWhite</item>
++
++    </style>
++
++</resources>
+Index: app/src/androidTest/java/ru/kvartira_omsk/realtorapp/ApplicationTest.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- app/src/androidTest/java/ru/kvartira_omsk/realtorapp/ApplicationTest.java	(revision )
++++ app/src/androidTest/java/ru/kvartira_omsk/realtorapp/ApplicationTest.java	(revision )
+@@ -0,0 +1,13 @@
++package ru.kvartira_omsk.realtorapp;
++
++import android.app.Application;
++import android.test.ApplicationTestCase;
++
++/**
++ * <a href="http://d.android.com/tools/testing/testing_android.html">Testing Fundamentals</a>
++ */
++public class ApplicationTest extends ApplicationTestCase<Application> {
++    public ApplicationTest() {
++        super(Application.class);
++    }
++}
+\ No newline at end of file
+Index: app/src/main/res/values-v21/styles.xml
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- app/src/main/res/values-v21/styles.xml	(revision )
++++ app/src/main/res/values-v21/styles.xml	(revision )
+@@ -0,0 +1,11 @@
++<?xml version="1.0" encoding="utf-8"?>
++<resources>
++
++    <style name="AppDefault" parent="AppTheme">
++        <item name="colorPrimary">@color/colorPrimary</item>
++        <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
++        <item name="colorControlNormal">@color/colorWhite</item>
++
++        <item name="android:statusBarColor">@android:color/transparent</item>
++    </style>
++</resources>
+\ No newline at end of file
+Index: app/src/main/res/values/colors.xml
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- app/src/main/res/values/colors.xml	(revision )
++++ app/src/main/res/values/colors.xml	(revision )
+@@ -0,0 +1,7 @@
++<?xml version="1.0" encoding="utf-8"?>
++<resources>
++    <color name="colorPrimary">#00acc1</color>
++    <color name="colorPrimaryDark">#008a9a</color>
++    <color name="mainBackground">#e2e2e2</color>
++    <color name="colorWhite">#e2e2e2</color>
++</resources>
+\ No newline at end of file
+Index: app/src/main/java/ru/kvartira_omsk/realtorapp/fragment/AbstractTabFragment.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- app/src/main/java/ru/kvartira_omsk/realtorapp/fragment/AbstractTabFragment.java	(revision )
++++ app/src/main/java/ru/kvartira_omsk/realtorapp/fragment/AbstractTabFragment.java	(revision )
+@@ -0,0 +1,23 @@
++package ru.kvartira_omsk.realtorapp.fragment;
++
++import android.content.Context;
++import android.support.v4.app.Fragment;
++import android.view.View;
++
++/**
++ * Created by Иван on 03.02.2016.
++ */
++public class AbstractTabFragment extends Fragment {
++
++    private String title;
++    protected Context context;
++    protected View view;
++
++    public String getTitle() {
++        return title;
++    }
++
++    public void setTitle(String title) {
++        this.title = title;
++    }
++}
+Index: app/src/main/java/ru/kvartira_omsk/realtorapp/MainActivity.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- app/src/main/java/ru/kvartira_omsk/realtorapp/MainActivity.java	(revision )
++++ app/src/main/java/ru/kvartira_omsk/realtorapp/MainActivity.java	(revision )
+@@ -0,0 +1,67 @@
++package ru.kvartira_omsk.realtorapp;
++
++import android.os.Bundle;
++import android.support.design.widget.TabLayout;
++import android.support.v4.view.ViewPager;
++import android.support.v4.widget.DrawerLayout;
++import android.support.v7.app.ActionBarDrawerToggle;
++import android.support.v7.app.AppCompatActivity;
++import android.support.v7.widget.Toolbar;
++import android.view.MenuItem;
++
++import ru.kvartira_omsk.realtorapp.adapter.TabsFragmentAdapter;
++
++
++public class MainActivity extends AppCompatActivity {
++
++    private static final int LAYOUT = R.layout.activity_main;
++
++    private Toolbar toolbar;
++    private DrawerLayout drawerLayout;
++    private ViewPager viewPager;
++    //private TabLayout tabLayout;
++
++    @Override
++    protected void onCreate(Bundle savedInstanceState) {
++        setTheme(R.style.AppDefault);
++        super.onCreate(savedInstanceState);
++        setContentView(LAYOUT);
++
++        initToolbar();
++        initNavigationView();
++        initTabs();
++
++    }
++
++    private void initToolbar() {
++        toolbar = (Toolbar) findViewById(R.id.toolbar);
++        toolbar.setTitle(R.string.app_name);
++        toolbar.setOnMenuItemClickListener(new Toolbar.OnMenuItemClickListener() {
++            @Override
++            public boolean onMenuItemClick(MenuItem menuItem) {
++                return false;
++            }
++        });
++
++        toolbar.inflateMenu(R.menu.menu);
++    }
++
++    private void initNavigationView() {
++        drawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
++
++        ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(this, drawerLayout, toolbar, R.string.view_navigation_open, R.string.view_navigation_close);
++        drawerLayout.setDrawerListener(toggle);
++        toggle.syncState();
++
++    }
++
++    private void initTabs() {
++        viewPager = (ViewPager) findViewById(R.id.viewPager);
++        TabsFragmentAdapter adapter = new TabsFragmentAdapter(this, getSupportFragmentManager());
++        viewPager.setAdapter(adapter);
++
++        TabLayout tabLayout = (TabLayout) findViewById(R.id.tabLayout);
++        tabLayout.setupWithViewPager(viewPager);
++
++    }
++}
+\ No newline at end of file
+Index: app/src/main/res/menu/menu_navigation.xml
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- app/src/main/res/menu/menu_navigation.xml	(revision )
++++ app/src/main/res/menu/menu_navigation.xml	(revision )
+@@ -0,0 +1,14 @@
++<?xml version="1.0" encoding="utf-8"?>
++<menu xmlns:android="http://schemas.android.com/apk/res/android">
++    <item
++        android:orderInCategory="1"
++        android:title="@string/menu_item_addcontact"
++        android:icon="@mipmap/ic_account_plus"
++        />
++
++    <item
++        android:orderInCategory="1"
++        android:title="@string/search_title"
++        />
++
++</menu>
+\ No newline at end of file
+Index: app/src/main/java/ru/kvartira_omsk/realtorapp/fragment/ObjectsFragment.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- app/src/main/java/ru/kvartira_omsk/realtorapp/fragment/ObjectsFragment.java	(revision )
++++ app/src/main/java/ru/kvartira_omsk/realtorapp/fragment/ObjectsFragment.java	(revision )
+@@ -0,0 +1,41 @@
++package ru.kvartira_omsk.realtorapp.fragment;
++
++import android.content.Context;
++import android.os.Bundle;
++import android.support.annotation.Nullable;
++import android.view.LayoutInflater;
++import android.view.View;
++import android.view.ViewGroup;
++
++import ru.kvartira_omsk.realtorapp.R;
++
++/**
++ * Created by Иван on 31.01.2016.
++ */
++public class ObjectsFragment extends AbstractTabFragment {
++
++    private static final int LAYOUT = R.layout.fragment_example;
++
++    public static ObjectsFragment getInstance(Context context) {
++        Bundle args = new Bundle();
++        ObjectsFragment fragment = new ObjectsFragment();
++        fragment.setArguments(args);
++        fragment.setContext(context);
++        fragment.setTitle(context.getString(R.string.tab_item_objects));
++
++        return fragment;
++    }
++
++    @Nullable
++    @Override
++    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
++        view = inflater.inflate(LAYOUT, container, false);
++
++
++        return view;
++    }
++
++    public void setContext(Context context) {
++        this.context = context;
++    }
++}
+Index: app/src/main/res/values-w820dp/dimens.xml
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- app/src/main/res/values-w820dp/dimens.xml	(revision )
++++ app/src/main/res/values-w820dp/dimens.xml	(revision )
+@@ -0,0 +1,6 @@
++<resources>
++    <!-- Example customization of dimensions originally defined in res/values/dimens.xml
++         (such as screen margins) for screens with more than 820dp of available width. This
++         would include 7" and 10" devices in landscape (~960dp and ~1280dp respectively). -->
++    <dimen name="activity_horizontal_margin">64dp</dimen>
++</resources>
+Index: app/src/main/res/values/strings.xml
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- app/src/main/res/values/strings.xml	(revision )
++++ app/src/main/res/values/strings.xml	(revision )
+@@ -0,0 +1,14 @@
++<resources>
++    <string name="app_name">RealtorApp</string>
++    <string name="action_settings">Settings</string>
++    <string name="search_title">Search</string>
++    <string name="menu_item_addcontact">Добавить контакт</string>
++
++    <string name="view_navigation_open">Open</string>
++    <string name="view_navigation_close">Close</string>
++
++    <string name="tab_item_objects">Объекты</string>
++    <string name="tab_item_items">События</string>
++    <string name="tab_item_contacts">Контакты</string>
++
++</resources>
+Index: app/src/main/res/menu/menu.xml
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- app/src/main/res/menu/menu.xml	(revision )
++++ app/src/main/res/menu/menu.xml	(revision )
+@@ -0,0 +1,11 @@
++<?xml version="1.0" encoding="utf-8"?>
++<menu xmlns:android="http://schemas.android.com/apk/res/android"
++    xmlns:app="http://schemas.android.com/apk/res-auto">
++    <item
++        android:id="@+id/search"
++        android:title="@string/search_title"
++        android:orderInCategory="1"
++        android:icon="@mipmap/ic_magnify"
++        app:showAsAction="ifRoom"
++        />
++</menu>
+\ No newline at end of file
+Index: app/src/main/res/layout/fragment_example.xml
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- app/src/main/res/layout/fragment_example.xml	(revision )
++++ app/src/main/res/layout/fragment_example.xml	(revision )
+@@ -0,0 +1,12 @@
++<?xml version="1.0" encoding="utf-8"?>
++<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
++    android:orientation="vertical"
++    android:layout_width="match_parent"
++    android:layout_height="match_parent">
++
++    <TextView
++        android:layout_width="match_parent"
++        android:layout_height="match_parent"
++        android:text="Hello"/>
++
++</LinearLayout>
+\ No newline at end of file
+Index: app/src/main/java/ru/kvartira_omsk/realtorapp/fragment/ItemsFragment.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- app/src/main/java/ru/kvartira_omsk/realtorapp/fragment/ItemsFragment.java	(revision )
++++ app/src/main/java/ru/kvartira_omsk/realtorapp/fragment/ItemsFragment.java	(revision )
+@@ -0,0 +1,41 @@
++package ru.kvartira_omsk.realtorapp.fragment;
++
++import android.content.Context;
++import android.os.Bundle;
++import android.support.annotation.Nullable;
++import android.view.LayoutInflater;
++import android.view.View;
++import android.view.ViewGroup;
++
++import ru.kvartira_omsk.realtorapp.R;
++
++/**
++ * Created by Иван on 31.01.2016.
++ */
++public class ItemsFragment extends AbstractTabFragment {
++
++    private static final int LAYOUT = R.layout.fragment_example;
++
++    public static ItemsFragment getInstance(Context context) {
++        Bundle args = new Bundle();
++        ItemsFragment fragment = new ItemsFragment();
++        fragment.setArguments(args);
++        fragment.setContext(context);
++        fragment.setTitle(context.getString(R.string.tab_item_items));
++
++        return fragment;
++    }
++
++    @Nullable
++    @Override
++    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
++        view = inflater.inflate(LAYOUT, container, false);
++
++
++        return view;
++    }
++
++    public void setContext(Context context) {
++        this.context = context;
++    }
++}
