@@ -1,6 +1,8 @@
 package ru.kvartira_omsk.realtorapp;
 
+import android.content.Intent;
 import android.os.Bundle;
+import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.TabLayout;
 import android.support.v4.view.ViewPager;
 import android.support.v4.widget.DrawerLayout;
@@ -8,6 +10,8 @@ import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.Toast;
 
 import ru.kvartira_omsk.realtorapp.adapter.TabsFragmentAdapter;
 
@@ -15,6 +19,8 @@ import ru.kvartira_omsk.realtorapp.adapter.TabsFragmentAdapter;
 public class MainActivity extends AppCompatActivity {
 
     private static final int LAYOUT = R.layout.activity_main;
+    private static final int OBJECT_ACTIVITY_CREATE = 20;
+    private static final int OBJECT_ACTIVITY_EDIT = 21;
 
     private Toolbar toolbar;
     private DrawerLayout drawerLayout;
@@ -30,6 +36,16 @@ public class MainActivity extends AppCompatActivity {
         initToolbar();
         initNavigationView();
         initTabs();
+
+        FloatingActionButton AddObjectButton = (FloatingActionButton) findViewById(R.id.fab);
+        AddObjectButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                //Toast.makeText(O.this.getActivity(), "Работает", Toast.LENGTH_LONG).show();
+                Intent intent = new Intent(MainActivity.this, AddObjectActivity.class);
+                startActivityForResult(intent, OBJECT_ACTIVITY_CREATE);
+            }
+        });
 
     }
 

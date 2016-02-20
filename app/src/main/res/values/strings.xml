@@ -11,4 +11,12 @@
     <string name="tab_item_items">События</string>
     <string name="tab_item_contacts">Контакты</string>
 
+    <string name="new_object">Новый объект</string>
+
+    <string name="nameobject_hint_name">Название объекта</string>
+    <string name="nameobject_hint_address">Адрес</string>
+    <string name="nameobject_hint_price">Цена клиента</string>
+    <string name="nameobject_hint_client">Клиент</string>
+
+
 </resources>
