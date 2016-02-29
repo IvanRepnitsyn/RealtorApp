@@ -18,9 +18,14 @@ import ru.kvartira_omsk.realtorapp.adapter.TabsFragmentAdapter;
 
 public class MainActivity extends AppCompatActivity {
 
+    //private DBWork dbHelper;
     private static final int LAYOUT = R.layout.activity_main;
-    private static final int OBJECT_ACTIVITY_CREATE = 20;
-    private static final int OBJECT_ACTIVITY_EDIT = 21;
+    private static final int OBJECT_ACTIVITY_CREATE = 10;
+    private static final int OBJECT_ACTIVITY_EDIT = 11;
+    private static final int EVENT_ACTIVITY_CREATE = 20;
+    private static final int EVENT_ACTIVITY_EDIT = 21;
+    private static final int CLIENT_ACTIVITY_CREATE = 30;
+    private static final int CLIENT_ACTIVITY_EDIT = 31;
 
     private Toolbar toolbar;
     private DrawerLayout drawerLayout;
@@ -41,9 +46,23 @@ public class MainActivity extends AppCompatActivity {
         AddObjectButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                //Toast.makeText(O.this.getActivity(), "Работает", Toast.LENGTH_LONG).show();
-                Intent intent = new Intent(MainActivity.this, AddObjectActivity.class);
-                startActivityForResult(intent, OBJECT_ACTIVITY_CREATE);
+                switch(viewPager.getCurrentItem()) {
+                    case 0:
+                        //Toast.makeText(O.this.getActivity(), "Работает", Toast.LENGTH_LONG).show();
+                        Intent intent_object = new Intent(MainActivity.this, AddObjectActivity.class);
+                        startActivityForResult(intent_object, OBJECT_ACTIVITY_CREATE);
+                        break;
+                    case 1:
+                        //Toast.makeText(O.this.getActivity(), "Работает", Toast.LENGTH_LONG).show();
+                        Intent intent_event = new Intent(MainActivity.this, AddEventActivity.class);
+                        startActivityForResult(intent_event, EVENT_ACTIVITY_CREATE);
+                        break;
+                    case 2:
+                        //Toast.makeText(O.this.getActivity(), "Работает", Toast.LENGTH_LONG).show();
+                        Intent intent_client = new Intent(MainActivity.this, AddClientActivity.class);
+                        startActivityForResult(intent_client, CLIENT_ACTIVITY_CREATE);
+                        break;
+                }
             }
         });
 

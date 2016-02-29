@@ -12,12 +12,12 @@ import fr.ganfra.materialspinner.MaterialSpinner;
 /**
  * Created by Иван on 14.02.2016.
  */
-public class AddObjectActivity extends AppCompatActivity {
+public class AddEventActivity extends AppCompatActivity {
 
-    private static final int LAYOUT = R.layout.add_object_activity;
+    private static final int LAYOUT = R.layout.add_event_activity;
 
     private Toolbar toolbar;
-    private MaterialSpinner spinner;
+    private MaterialSpinner spinner_objects, spinner_clients, spinner_type;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -30,11 +30,23 @@ public class AddObjectActivity extends AppCompatActivity {
         //initNavigationView();
         //initTabs();
 
-        String[] ITEMS = {"Item 1", "Item 2", "Item 3", "Item 4", "Item 5", "Item 6"};
-        ArrayAdapter<String> adapter = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_item, ITEMS);
-        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        spinner = (MaterialSpinner) findViewById(R.id.spinner_addobject);
-        spinner.setAdapter(adapter);
+        String[] ITEMS_OBJECTS = {"Object 1", "Object 2", "Object 3", "Object 4", "Object 5", "Object 6"};
+        ArrayAdapter<String> adapter_objects = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_item, ITEMS_OBJECTS);
+        adapter_objects.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        spinner_objects = (MaterialSpinner) findViewById(R.id.spinner_addevent_objects);
+        spinner_objects.setAdapter(adapter_objects);
+
+        String[] ITEMS_CLIENTS = {"Client 1", "Client 2", "Client 3", "Client 4", "Client 5", "Client 6"};
+        ArrayAdapter<String> adapter_clients = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_item, ITEMS_CLIENTS);
+        adapter_clients.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        spinner_clients = (MaterialSpinner) findViewById(R.id.spinner_addevent_clients);
+        spinner_clients.setAdapter(adapter_clients);
+
+        String[] ITEMS_TYPE = {"Встреча", "Звонок", "Показ", "Сделка"};
+        ArrayAdapter<String> adapter_type = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_item, ITEMS_TYPE);
+        adapter_type.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        spinner_type = (MaterialSpinner) findViewById(R.id.spinner_addevent_type);
+        spinner_type.setAdapter(adapter_type);
 
     }
 

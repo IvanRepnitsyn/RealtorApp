@@ -23,6 +23,17 @@
             android:label="addobject">
         </activity>
 
+        <activity
+            android:name=".AddEventActivity"
+            android:label="addobject">
+        </activity>
+
+        <activity
+            android:name=".AddClientActivity"
+            android:label="addobject">
+        </activity>
+
+
 
     </application>
 

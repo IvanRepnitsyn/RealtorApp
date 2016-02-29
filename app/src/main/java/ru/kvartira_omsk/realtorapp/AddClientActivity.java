@@ -12,9 +12,9 @@ import fr.ganfra.materialspinner.MaterialSpinner;
 /**
  * Created by Иван on 14.02.2016.
  */
-public class AddObjectActivity extends AppCompatActivity {
+public class AddClientActivity extends AppCompatActivity {
 
-    private static final int LAYOUT = R.layout.add_object_activity;
+    private static final int LAYOUT = R.layout.add_client_activity;
 
     private Toolbar toolbar;
     private MaterialSpinner spinner;
@@ -30,10 +30,10 @@ public class AddObjectActivity extends AppCompatActivity {
         //initNavigationView();
         //initTabs();
 
-        String[] ITEMS = {"Item 1", "Item 2", "Item 3", "Item 4", "Item 5", "Item 6"};
+        String[] ITEMS = {"Продавец", "Покупатель"};
         ArrayAdapter<String> adapter = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_item, ITEMS);
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        spinner = (MaterialSpinner) findViewById(R.id.spinner_addobject);
+        spinner = (MaterialSpinner) findViewById(R.id.spinner_addclient);
         spinner.setAdapter(adapter);
 
     }
@@ -45,7 +45,7 @@ public class AddObjectActivity extends AppCompatActivity {
     }
 
     private void initToolbar() {
-        toolbar = (Toolbar) findViewById(R.id.toolbar_addobject);
+        toolbar = (Toolbar) findViewById(R.id.toolbar_addclient);
         //toolbar.setTitle(R.string.new_object);
 
 
@@ -53,7 +53,7 @@ public class AddObjectActivity extends AppCompatActivity {
             setSupportActionBar(toolbar);
             //toolbar.setTitle();
             getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-            getSupportActionBar().setTitle(R.string.new_object);
+            getSupportActionBar().setTitle(R.string.new_client);
             //getSupportActionBar().setIcon(R.mipmap.ic_launcher);
             toolbar.setOnMenuItemClickListener(new Toolbar.OnMenuItemClickListener() {
                 @Override

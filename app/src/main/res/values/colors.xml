@@ -4,4 +4,13 @@
     <color name="colorPrimaryDark">#008a9a</color>
     <color name="mainBackground">#e2e2e2</color>
     <color name="colorWhite">#e2e2e2</color>
+
+    <color name="base">#717171</color>
+    <color name="highlight">#000000</color>
+    <color name="error">#D32F2F</color>
+    <color name="hint">#717171</color>
+    <color name="arrow">#456789</color>
+    <color name="floating_label">#009688</color>
+
+
 </resources>
