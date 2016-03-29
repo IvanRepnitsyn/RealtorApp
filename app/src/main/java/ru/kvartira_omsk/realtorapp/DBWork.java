@@ -11,11 +11,13 @@ import android.util.Log;
 import java.util.ArrayList;
 import java.util.List;
 
+import ru.kvartira_omsk.realtorapp.dto.ClientDTO;
+
 
 public class DBWork extends SQLiteOpenHelper {
 
     private static final String DATABASE_NAME = "realtorarm.db";
-    private static final int DATABASE_VERSION = 4;
+    private static final int DATABASE_VERSION = 1;
     private static final String DATABASE_TABLE_OBJECTS = "myobjects";
     private static final String DATABASE_TABLE_EVENTS = "myevents";
     private static final String DATABASE_TABLE_CLIENTS = "myclients";
@@ -280,6 +282,30 @@ public class DBWork extends SQLiteOpenHelper {
 
         // returning lables
         return clientlabels;
+    }
+
+    public List<ClientDTO> getAllClientsNameDTO(){
+        List<ClientDTO> clientnames = new ArrayList<>();
+
+        // Select All Query
+        String selectQuery = "SELECT nameclient FROM " + DATABASE_TABLE_CLIENTS;
+
+        SQLiteDatabase db = this.getReadableDatabase();
+        Cursor cursor = db.rawQuery(selectQuery, null);
+
+        // looping through all rows and adding to list
+        if (cursor.moveToFirst()) {
+            do {
+                clientnames.add(new ClientDTO(cursor.getString(0)));
+            } while (cursor.moveToNext());
+        }
+
+        // closing connection
+        cursor.close();
+        db.close();
+
+        // returning lables
+        return clientnames;
     }
 
 

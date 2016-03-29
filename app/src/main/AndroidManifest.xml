@@ -35,6 +35,13 @@
 
 
 
+        <activity
+            android:name=".DBWork"
+            android:label="database">
+        </activity>
+
+
+
     </application>
 
 </manifest>
