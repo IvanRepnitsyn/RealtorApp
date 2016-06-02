@@ -8,6 +8,7 @@ import android.util.Log;
 import android.view.ContextMenu;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewDebug;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.PopupMenu;
@@ -28,7 +29,7 @@ import ru.kvartira_omsk.realtorapp.fragment.ClientsFragment;
  */
 public class ClientsListAdapter extends RecyclerView.Adapter<ClientsListAdapter.ClientsViewHolder>{
     private DBWork dbHelper;
-    private List<ClientDTO> data;
+    private static List<ClientDTO> data;
     Context context;
     LayoutInflater inflater;
 
@@ -68,7 +69,8 @@ public class ClientsListAdapter extends RecyclerView.Adapter<ClientsListAdapter.
             int position = vholder.getAdapterPosition();
             //Log.d(TAG, "onClick " + position);
             Toast.makeText(v.getContext(),"This is position "+position, Toast.LENGTH_LONG ).show();
-            PopupMenu popup = new PopupMenu(v.getContext(), v);
+
+            //PopupMenu popup = new PopupMenu(v.getContext(), v);
 
         }
     };
@@ -79,7 +81,7 @@ public class ClientsListAdapter extends RecyclerView.Adapter<ClientsListAdapter.
         return data.size();
     }
 
-    public static class ClientsViewHolder extends RecyclerView.ViewHolder  {
+    public static class ClientsViewHolder extends RecyclerView.ViewHolder implements View.OnCreateContextMenuListener {
         //CardView cardViewClient;
         TextView titleClient;
         ImageView popupMenuIcon;
@@ -92,6 +94,7 @@ public class ClientsListAdapter extends RecyclerView.Adapter<ClientsListAdapter.
             //itemView.setOnCreateContextMenuListener(this);
 
             popupMenuIcon = (ImageView) itemView.findViewById(R.id.popupmenu_icon);
+            popupMenuIcon.setOnCreateContextMenuListener(this);
             //popupMenuIcon.setOnClickListener(this);
         }
 
@@ -105,18 +108,26 @@ public class ClientsListAdapter extends RecyclerView.Adapter<ClientsListAdapter.
 
 
 
-        /*@Override
+        @Override
         public void onCreateContextMenu(ContextMenu menu, View v, ContextMenu.ContextMenuInfo menuInfo) {
-            new ClientsListAdapter().info = menuInfo;
+            /*new ClientsListAdapter().info = menuInfo;
             String strResult;
             if (menuInfo == null) strResult = "No";
             else strResult = "Yes";
 
-            menu.setHeaderTitle(strResult);
-            menu.add(0, 1, 0, R.string.menu_delete);
+
+            menu.setHeaderTitle(strResult);*/
+            ClientsViewHolder vholder = (ClientsViewHolder) v.getTag();
+            int position = vholder.getAdapterPosition();
+            ClientDTO item = data.get(position);
+            menu.setHeaderTitle(item.getTitle());
+
+            menu.add(0, 1, 22, R.string.menu_delete);
 
 
-        }*/
+        }
+
+
 
     }
 

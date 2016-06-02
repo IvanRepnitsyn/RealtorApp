@@ -10,6 +10,7 @@ import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.Toast;
 
 import java.util.ArrayList;
@@ -87,10 +88,16 @@ public class ClientsFragment extends AbstractTabFragment {
     public boolean onContextItemSelected(MenuItem item) {
         //return super.onContextItemSelected(item);
         //RecyclerContextMenuInfo info = (RecyclerContextMenuInfo) item.getMenuInfo();
+
+
+        AdapterView.AdapterContextMenuInfo info = (AdapterView.AdapterContextMenuInfo) item.getMenuInfo();
+
+        int clickedItemPosition = item.getOrder();
+
         switch (item.getItemId()) {
             case 1:
-                //dbHelper.deleteClient(info.id);
-                Toast.makeText(this.getActivity(), "Delete", Toast.LENGTH_LONG).show();
+                //dbHelper.deleteClient(clickedItemPosition);
+                Toast.makeText(this.getActivity(), "Delete"+clickedItemPosition, Toast.LENGTH_LONG).show();
                 fillData();
                 return true;
 
@@ -109,6 +116,7 @@ public class ClientsFragment extends AbstractTabFragment {
     }
 
     public void setContext(Context context) {
+
         this.context = context;
     }
 
