@@ -4,8 +4,8 @@ package ru.kvartira_omsk.realtorapp.dto;
  * Created by Иван on 17.03.2016.
  */
 public class ClientDTO {
-    private long id;
-    private String titleClient;
+    public long id;
+    public String titleClient;
     //private int iconID;
 
     public ClientDTO() {

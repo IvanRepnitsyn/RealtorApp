@@ -120,9 +120,10 @@ public class ClientsListAdapter extends RecyclerView.Adapter<ClientsListAdapter.
             ClientsViewHolder vholder = (ClientsViewHolder) v.getTag();
             int position = vholder.getAdapterPosition();
             ClientDTO item = data.get(position);
+            int idClient = (int) item.id;
             menu.setHeaderTitle(item.getTitle());
 
-            menu.add(0, 1, 22, R.string.menu_delete);
+            menu.add(0, 1, idClient, R.string.menu_delete);
 
 
         }

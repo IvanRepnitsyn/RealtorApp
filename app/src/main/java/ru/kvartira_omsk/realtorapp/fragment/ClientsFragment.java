@@ -96,7 +96,7 @@ public class ClientsFragment extends AbstractTabFragment {
 
         switch (item.getItemId()) {
             case 1:
-                //dbHelper.deleteClient(clickedItemPosition);
+                dbHelper.deleteClient(clickedItemPosition);
                 Toast.makeText(this.getActivity(), "Delete"+clickedItemPosition, Toast.LENGTH_LONG).show();
                 fillData();
                 return true;

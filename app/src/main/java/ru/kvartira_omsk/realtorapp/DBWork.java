@@ -297,8 +297,11 @@ public class DBWork extends SQLiteOpenHelper {
         // looping through all rows and adding to list
         if (cursor.moveToFirst()) {
             do {
-                //clientnames.add(0, new ClientDTO(cursor.getString(0)));
-                clientnames.add(new ClientDTO(cursor.getString(1)));
+                ClientDTO clientDTO = new ClientDTO();
+                clientDTO.id = Long.parseLong(cursor.getString(cursor.getColumnIndex(COLUMN_ID)));
+                clientDTO.titleClient = cursor.getString(cursor.getColumnIndex(COLUMN_NAMECLIENT));
+                clientnames.add(clientDTO);
+                //clientnames.add(new ClientDTO(cursor.getString(1)));
             } while (cursor.moveToNext());
         }
 
