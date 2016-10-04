@@ -100,14 +100,21 @@ public class AddClientActivity extends AppCompatActivity {
             case R.id.action_ok:
                 Toast.makeText(AddClientActivity.this, "OK", Toast.LENGTH_LONG).show();
                 if (TextUtils.isEmpty(etNameClient.getText().toString())) {
-                    Toast.makeText(AddClientActivity.this, "Данные не введены",
-                            Toast.LENGTH_LONG).show();
+                    Toast.makeText(AddClientActivity.this, "Данные не введены", Toast.LENGTH_LONG).show();
                 } else {
-                    saveState();
-                    Intent intent = new Intent();
-                    intent.putExtra("nameclient", etNameClient.getText().toString());
-                    setResult(RESULT_OK, intent);
-                    finish();
+
+                    if ((isEmailValid(etMailClient.getText())) && (isPhoneValid(etPhoneClient.getText()))){
+                        saveState();
+                        Intent intent = new Intent();
+                        intent.putExtra("nameclient", etNameClient.getText().toString());
+                        setResult(RESULT_OK, intent);
+                        finish();
+                    } else if (isEmailValid(etMailClient.getText()) == false){
+                        Toast.makeText(AddClientActivity.this, "Некоректный Email", Toast.LENGTH_LONG).show();
+                    } else if (isPhoneValid(etPhoneClient.getText()) == false){
+                        Toast.makeText(AddClientActivity.this, "Некоректный телефон", Toast.LENGTH_LONG).show();
+                    }
+
                 }
                 return true;
             default:
@@ -136,4 +143,13 @@ public class AddClientActivity extends AppCompatActivity {
             mDbHelper.updateClient(mRowId, nameclient, typeclient, phoneclient, mailclient);
         }
     }
+
+    boolean isEmailValid(CharSequence email) {
+        return android.util.Patterns.EMAIL_ADDRESS.matcher(email).matches();
+    }
+
+    boolean isPhoneValid(CharSequence phone) {
+        return android.util.Patterns.PHONE.matcher(phone).matches();
+    }
+
 }

@@ -1,6 +1,7 @@
 package ru.kvartira_omsk.realtorapp.fragment;
 
 import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.widget.LinearLayoutManager;
@@ -16,6 +17,7 @@ import android.widget.Toast;
 import java.util.ArrayList;
 import java.util.List;
 
+import ru.kvartira_omsk.realtorapp.AddClientActivity;
 import ru.kvartira_omsk.realtorapp.ContextMenuRecyclerView;
 import ru.kvartira_omsk.realtorapp.ContextMenuRecyclerView.RecyclerContextMenuInfo;
 import ru.kvartira_omsk.realtorapp.DBWork;
@@ -31,6 +33,7 @@ public class ClientsFragment extends AbstractTabFragment {
     private DBWork dbHelper;
 
     private static final int LAYOUT = R.layout.fragment_clients;
+    private static final int CLIENT_ACTIVITY_CREATE = 30;
 
     public RecyclerView rvClients;
 
@@ -96,6 +99,11 @@ public class ClientsFragment extends AbstractTabFragment {
 
         switch (item.getItemId()) {
             case 1:
+                Intent intent_client = new Intent(this.getActivity(), AddClientActivity.class);
+                startActivityForResult(intent_client, CLIENT_ACTIVITY_CREATE);
+                //MainActivity.editClient();
+                break;
+            case 2:
                 dbHelper.deleteClient(clickedItemPosition);
                 Toast.makeText(this.getActivity(), "Delete"+clickedItemPosition, Toast.LENGTH_LONG).show();
                 fillData();

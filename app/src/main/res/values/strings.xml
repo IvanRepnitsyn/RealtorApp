@@ -35,6 +35,7 @@
     <string name="nameevent_hint_info">Инфо</string>
 
     <string name="menu_delete">Удалить</string>
+    <string name="menu_edit">Редактировать</string>
 
 
 </resources>

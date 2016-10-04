@@ -123,7 +123,8 @@ public class ClientsListAdapter extends RecyclerView.Adapter<ClientsListAdapter.
             int idClient = (int) item.id;
             menu.setHeaderTitle(item.getTitle());
 
-            menu.add(0, 1, idClient, R.string.menu_delete);
+            menu.add(0, 1, idClient, R.string.menu_edit);
+            menu.add(0, 2, idClient, R.string.menu_delete);
 
 
         }

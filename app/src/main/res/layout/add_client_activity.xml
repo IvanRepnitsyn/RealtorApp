@@ -74,6 +74,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:singleLine="true"
+                    android:inputType="phone"
                     android:hint="@string/nameclient_hint_phone" />
             </android.support.design.widget.TextInputLayout>
 
@@ -87,6 +88,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:singleLine="true"
+                    android:inputType="textEmailAddress"
                     android:hint="@string/nameclient_hint_mail" />
             </android.support.design.widget.TextInputLayout>
 

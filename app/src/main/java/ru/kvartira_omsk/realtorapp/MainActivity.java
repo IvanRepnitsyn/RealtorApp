@@ -100,6 +100,10 @@ public class MainActivity extends AppCompatActivity {
 
     }
 
+    public void editClient() {
+
+    }
+
     @Override
     protected void onRestart() {
         super.onRestart();
