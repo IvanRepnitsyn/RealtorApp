@@ -2,13 +2,23 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
     <item
         android:orderInCategory="1"
+        android:id="@+id/navigation_addobject"
+        android:title="@string/menu_item_addobject"
+        android:icon="@mipmap/ic_account_plus"
+        />
+    <item
+        android:orderInCategory="1"
+        android:id="@+id/navigation_addevent"
+        android:title="@string/menu_item_addevent"
+        android:icon="@mipmap/ic_account_plus"
+        />
+    <item
+        android:orderInCategory="1"
+        android:id="@+id/navigation_addclient"
         android:title="@string/menu_item_addcontact"
         android:icon="@mipmap/ic_account_plus"
         />
 
-    <item
-        android:orderInCategory="1"
-        android:title="@string/search_title"
-        />
+
 
 </menu>

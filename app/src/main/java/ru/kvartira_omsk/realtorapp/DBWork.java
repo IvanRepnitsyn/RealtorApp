@@ -12,6 +12,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 import ru.kvartira_omsk.realtorapp.dto.ClientDTO;
+import ru.kvartira_omsk.realtorapp.dto.EventDTO;
+import ru.kvartira_omsk.realtorapp.dto.ObjectDTO;
 
 
 public class DBWork extends SQLiteOpenHelper {
@@ -313,6 +315,62 @@ public class DBWork extends SQLiteOpenHelper {
         return clientnames;
     }
 
+    public List<ObjectDTO> getAllObjectsNameDTO(){
+        List<ObjectDTO> objectnames = new ArrayList<>();
+
+        // Select All Query
+        String selectQuery = "SELECT _id, nameobject FROM " + DATABASE_TABLE_OBJECTS;
+
+        SQLiteDatabase db = this.getReadableDatabase();
+        Cursor cursor = db.rawQuery(selectQuery, null);
+
+        // looping through all rows and adding to list
+        if (cursor.moveToFirst()) {
+            do {
+                ObjectDTO objectDTO = new ObjectDTO();
+                objectDTO.id = Long.parseLong(cursor.getString(cursor.getColumnIndex(COLUMN_ID)));
+                objectDTO.titleObject = cursor.getString(cursor.getColumnIndex(COLUMN_NAMEOBJECT));
+                objectnames.add(objectDTO);
+                //clientnames.add(new ClientDTO(cursor.getString(1)));
+            } while (cursor.moveToNext());
+        }
+
+        // closing connection
+        cursor.close();
+        db.close();
+
+        // returning lables
+        return objectnames;
+    }
+
+    public List<EventDTO> getAllEventsNameDTO(){
+        List<EventDTO> eventnames = new ArrayList<>();
+
+        // Select All Query
+        String selectQuery = "SELECT _id, nameeevent FROM " + DATABASE_TABLE_EVENTS;
+
+        SQLiteDatabase db = this.getReadableDatabase();
+        Cursor cursor = db.rawQuery(selectQuery, null);
+
+        // looping through all rows and adding to list
+        if (cursor.moveToFirst()) {
+            do {
+                EventDTO eventDTO = new EventDTO();
+                eventDTO.id = Long.parseLong(cursor.getString(cursor.getColumnIndex(COLUMN_ID)));
+                eventDTO.titleEvent = cursor.getString(cursor.getColumnIndex(COLUMN_NAMEEVENT));
+                eventnames.add(eventDTO);
+                //clientnames.add(new ClientDTO(cursor.getString(1)));
+            } while (cursor.moveToNext());
+        }
+
+        // closing connection
+        cursor.close();
+        db.close();
+
+        // returning lables
+        return eventnames;
+    }
+
 
     /**
      * Возвращает курсор с указанной записи
@@ -332,7 +390,8 @@ public class DBWork extends SQLiteOpenHelper {
 
     public Cursor getObjectforName(String NameObject) throws SQLException {
         SQLiteDatabase db = this.getReadableDatabase();
-        Cursor mCursor = db.query(true, DATABASE_TABLE_OBJECTS,
+        Cursor mCursor = null;
+        mCursor = db.query(true, DATABASE_TABLE_OBJECTS,
                 new String[] { COLUMN_ID,
                         COLUMN_NAMEOBJECT, COLUMN_IDCLIENT, COLUMN_OBJECTADDRESS,
                         COLUMN_PRICECLIENT }, COLUMN_NAMEOBJECT + "=" + NameObject, null,
@@ -349,6 +408,20 @@ public class DBWork extends SQLiteOpenHelper {
                 new String[] { COLUMN_ID,
                         COLUMN_IDOBJECT, COLUMN_IDCLIENT, COLUMN_NAMEEVENT, COLUMN_TYPEEVENT,
                         COLUMN_DATEEVENT, COLUMN_TIMEEVENT, COLUMN_PLACEEVENT, COLUMN_INFOEVENT }, COLUMN_ID + "=" + rowId, null,
+                null, null, null, null);
+        if (mCursor != null) {
+            mCursor.moveToFirst();
+        }
+        return mCursor;
+    }
+
+    public Cursor getEventforName(String NameEvent) throws SQLException {
+        SQLiteDatabase db = this.getReadableDatabase();
+        Cursor mCursor = null;
+        mCursor = db.query(true, DATABASE_TABLE_EVENTS,
+                new String[] { COLUMN_ID,
+                        COLUMN_IDOBJECT, COLUMN_IDCLIENT, COLUMN_NAMEEVENT, COLUMN_TYPEEVENT,
+                        COLUMN_DATEEVENT, COLUMN_TIMEEVENT, COLUMN_PLACEEVENT, COLUMN_INFOEVENT }, COLUMN_NAMEEVENT + "=" + NameEvent, null,
                 null, null, null, null);
         if (mCursor != null) {
             mCursor.moveToFirst();

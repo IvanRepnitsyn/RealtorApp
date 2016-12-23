@@ -25,12 +25,12 @@
 
         <activity
             android:name=".AddEventActivity"
-            android:label="addobject">
+            android:label="addevent">
         </activity>
 
         <activity
             android:name=".AddClientActivity"
-            android:label="addobject">
+            android:label="addclient">
         </activity>
 
 

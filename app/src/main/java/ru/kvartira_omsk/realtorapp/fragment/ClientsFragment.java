@@ -18,6 +18,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 import ru.kvartira_omsk.realtorapp.AddClientActivity;
+import ru.kvartira_omsk.realtorapp.AddEventActivity;
+import ru.kvartira_omsk.realtorapp.AddObjectActivity;
 import ru.kvartira_omsk.realtorapp.ContextMenuRecyclerView;
 import ru.kvartira_omsk.realtorapp.ContextMenuRecyclerView.RecyclerContextMenuInfo;
 import ru.kvartira_omsk.realtorapp.DBWork;
@@ -33,7 +35,12 @@ public class ClientsFragment extends AbstractTabFragment {
     private DBWork dbHelper;
 
     private static final int LAYOUT = R.layout.fragment_clients;
-    private static final int CLIENT_ACTIVITY_CREATE = 30;
+    private static final int CLIENT_ACTIVITY_CREATE = 33;
+    private static final int CLIENT_ACTIVITY_EDIT = 35;
+    private static final int OBJECT_ACTIVITY_CREATE = 31;
+    private static final int EVENT_ACTIVITY_CREATE = 32;
+
+    private long id;
 
     public RecyclerView rvClients;
 
@@ -59,7 +66,7 @@ public class ClientsFragment extends AbstractTabFragment {
         registerForContextMenu(rvClients);*/
         //Toast.makeText(this.getActivity(), "List", Toast.LENGTH_LONG).show();
         dbHelper = new DBWork(this.getActivity());
-
+        Toast.makeText(this.getActivity(), "Create ClientFragment", Toast.LENGTH_LONG).show();
         fillData();
         return view;
     }
@@ -96,21 +103,38 @@ public class ClientsFragment extends AbstractTabFragment {
         AdapterView.AdapterContextMenuInfo info = (AdapterView.AdapterContextMenuInfo) item.getMenuInfo();
 
         int clickedItemPosition = item.getOrder();
+        long longID = (long) clickedItemPosition;
 
-        switch (item.getItemId()) {
-            case 1:
-                Intent intent_client = new Intent(this.getActivity(), AddClientActivity.class);
-                startActivityForResult(intent_client, CLIENT_ACTIVITY_CREATE);
-                //MainActivity.editClient();
-                break;
-            case 2:
-                dbHelper.deleteClient(clickedItemPosition);
-                Toast.makeText(this.getActivity(), "Delete"+clickedItemPosition, Toast.LENGTH_LONG).show();
-                fillData();
-                return true;
-
-
+        if (item.getGroupId() == 3){
+            switch (item.getItemId()) {
+                case 1:
+                    Toast.makeText(this.getActivity(), "ID Client "+clickedItemPosition, Toast.LENGTH_LONG).show();
+                    Intent intent_client = new Intent(this.getActivity(), AddClientActivity.class);
+                    intent_client.putExtra("idclient", longID);
+                    Toast.makeText(this.getActivity(), "Вызов из ClientFragment", Toast.LENGTH_LONG).show();
+                    startActivityForResult(intent_client, CLIENT_ACTIVITY_EDIT);
+                    //MainActivity.editClient();
+                    break;
+                case 2:
+                    dbHelper.deleteClient(clickedItemPosition);
+                    Toast.makeText(this.getActivity(), "Delete client "+clickedItemPosition, Toast.LENGTH_LONG).show();
+                    fillData();
+                    //return true;
+                    break;
+                case 3:
+                    Intent intent_object = new Intent(this.getActivity(), AddObjectActivity.class);
+                    intent_object.putExtra("idclient", longID);
+                    startActivityForResult(intent_object, OBJECT_ACTIVITY_CREATE);
+                    break;
+                case 4:
+                    Intent intent_event = new Intent(this.getActivity(), AddEventActivity.class);
+                    intent_event.putExtra("idclient", longID);
+                    startActivityForResult(intent_event, EVENT_ACTIVITY_CREATE);
+                    break;
+            }
         }
+
+
         return super.onContextItemSelected(item);
     }
 

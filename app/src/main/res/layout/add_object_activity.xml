@@ -62,7 +62,7 @@
             </android.support.design.widget.TextInputLayout>
 
             <fr.ganfra.materialspinner.MaterialSpinner
-                android:id="@+id/spinner_addobject"
+                android:id="@+id/spinner_addobject_clients"
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
                 app:ms_multiline="true"

@@ -3,17 +3,23 @@
     <string name="action_settings">Settings</string>
     <string name="search_title">Search</string>
     <string name="menu_item_addcontact">Добавить контакт</string>
+    <string name="menu_item_addobject">Добавить объект</string>
+    <string name="menu_item_addevent">Добавить событие</string>
 
     <string name="view_navigation_open">Open</string>
     <string name="view_navigation_close">Close</string>
 
     <string name="tab_item_objects">Объекты</string>
-    <string name="tab_item_items">События</string>
+    <string name="tab_item_events">События</string>
     <string name="tab_item_contacts">Контакты</string>
 
     <string name="new_object">Новый объект</string>
     <string name="new_event">Новое событие</string>
     <string name="new_client">Новый клиент</string>
+
+    <string name="edit_client">Редактировать клиента</string>
+    <string name="edit_object">Редактировать объект</string>
+    <string name="edit_event">Редактировать событие</string>
 
     <string name="nameobject_hint_name">Название объекта</string>
     <string name="nameobject_hint_address">Адрес</string>
@@ -36,6 +42,8 @@
 
     <string name="menu_delete">Удалить</string>
     <string name="menu_edit">Редактировать</string>
+    <string name="menu_addobject">Добавить объект</string>
+    <string name="menu_addevent">Добавить событие</string>
 
 
 </resources>

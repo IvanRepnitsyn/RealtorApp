@@ -1,42 +1,36 @@
 package ru.kvartira_omsk.realtorapp.adapter;
 
 import android.content.Context;
-import android.database.Cursor;
-import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.ContextMenu;
 import android.view.LayoutInflater;
 import android.view.View;
-import android.view.ViewDebug;
 import android.view.ViewGroup;
 import android.widget.ImageView;
-import android.widget.PopupMenu;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import java.util.List;
 
 import ru.kvartira_omsk.realtorapp.DBWork;
-import ru.kvartira_omsk.realtorapp.MainActivity;
 import ru.kvartira_omsk.realtorapp.R;
-import ru.kvartira_omsk.realtorapp.dto.ClientDTO;
-import ru.kvartira_omsk.realtorapp.fragment.ClientsFragment;
+import ru.kvartira_omsk.realtorapp.dto.EventDTO;
+import ru.kvartira_omsk.realtorapp.dto.ObjectDTO;
 
 
 /**
  * Created by Иван on 14.03.2016.
  */
-public class ClientsListAdapter extends RecyclerView.Adapter<ClientsListAdapter.ClientsViewHolder>{
+public class EventsListAdapter extends RecyclerView.Adapter<EventsListAdapter.EventsViewHolder>{
     private DBWork dbHelper;
-    private static List<ClientDTO> data;
+    private static List<EventDTO> data;
     Context context;
     LayoutInflater inflater;
 
 
     //ContextMenu.ContextMenuInfo info;
 
-    public ClientsListAdapter(List<ClientDTO> data) {
+    public EventsListAdapter(List<EventDTO> data) {
 
         this.data = data;
     }
@@ -46,18 +40,18 @@ public class ClientsListAdapter extends RecyclerView.Adapter<ClientsListAdapter.
     }*/
 
     @Override
-    public ClientsViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.client_item, parent, false);
+    public EventsViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.event_item, parent, false);
 
-        return new ClientsViewHolder(view);
+        return new EventsViewHolder(view);
     }
 
     @Override
-    public void onBindViewHolder(ClientsViewHolder holder, int position) {
-        ClientDTO item = data.get(position);
-        holder.titleClient.setText(item.getTitle());
-        holder.popupMenuIconClient.setOnClickListener(clickListener);
-        holder.popupMenuIconClient.setTag(holder);
+    public void onBindViewHolder(EventsViewHolder holder, int position) {
+        EventDTO item = data.get(position);
+        holder.titleEvent.setText(item.getTitle());
+        holder.popupMenuIconEvent.setOnClickListener(clickListener);
+        holder.popupMenuIconEvent.setTag(holder);
 
 
     }
@@ -65,7 +59,7 @@ public class ClientsListAdapter extends RecyclerView.Adapter<ClientsListAdapter.
     View.OnClickListener clickListener=new View.OnClickListener() {
         @Override
         public void onClick(View v) {
-            ClientsViewHolder vholder = (ClientsViewHolder) v.getTag();
+            EventsViewHolder vholder = (EventsViewHolder) v.getTag();
             int position = vholder.getAdapterPosition();
             //Log.d(TAG, "onClick " + position);
             Toast.makeText(v.getContext(),"This is position "+position, Toast.LENGTH_LONG ).show();
@@ -81,21 +75,21 @@ public class ClientsListAdapter extends RecyclerView.Adapter<ClientsListAdapter.
         return data.size();
     }
 
-    public static class ClientsViewHolder extends RecyclerView.ViewHolder implements View.OnCreateContextMenuListener {
+    public static class EventsViewHolder extends RecyclerView.ViewHolder implements View.OnCreateContextMenuListener {
         //CardView cardViewClient;
-        TextView titleClient;
-        ImageView popupMenuIconClient;
+        TextView titleEvent;
+        ImageView popupMenuIconEvent;
 
-        public ClientsViewHolder(View itemView) {
+        public EventsViewHolder(View itemView) {
             super(itemView);
 
             //cardViewClient = (CardView) itemView.findViewById(R.id.cardViewClient);
-            titleClient = (TextView) itemView.findViewById(R.id.titleClient);
+            titleEvent = (TextView) itemView.findViewById(R.id.titleEvent);
             //itemView.setOnCreateContextMenuListener(this);
 
-            popupMenuIconClient = (ImageView) itemView.findViewById(R.id.popupmenu_client_icon);
-            popupMenuIconClient.setOnCreateContextMenuListener(this);
-            //popupMenuIconClient.setOnClickListener(this);
+            popupMenuIconEvent = (ImageView) itemView.findViewById(R.id.popupmenu_event_icon);
+            popupMenuIconEvent.setOnCreateContextMenuListener(this);
+            //popupMenuIconEvent.setOnClickListener(this);
         }
 
         /*@Override
@@ -117,16 +111,14 @@ public class ClientsListAdapter extends RecyclerView.Adapter<ClientsListAdapter.
 
 
             menu.setHeaderTitle(strResult);*/
-            ClientsViewHolder vholder = (ClientsViewHolder) v.getTag();
+            EventsViewHolder vholder = (EventsViewHolder) v.getTag();
             int position = vholder.getAdapterPosition();
-            ClientDTO item = data.get(position);
-            int idClient = (int) item.id;
+            EventDTO item = data.get(position);
+            int idEvent = (int) item.id;
             menu.setHeaderTitle(item.getTitle());
 
-            menu.add(3, 1, idClient, R.string.menu_edit);
-            menu.add(3, 2, idClient, R.string.menu_delete);
-            menu.add(3, 3, idClient, R.string.menu_addobject);
-            menu.add(3, 4, idClient, R.string.menu_addevent);
+            menu.add(2, 1, idEvent, R.string.menu_edit);
+            menu.add(2, 2, idEvent, R.string.menu_delete);
 
 
         }

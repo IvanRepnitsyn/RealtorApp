@@ -10,7 +10,7 @@ import java.util.Map;
 
 import ru.kvartira_omsk.realtorapp.fragment.AbstractTabFragment;
 import ru.kvartira_omsk.realtorapp.fragment.ClientsFragment;
-import ru.kvartira_omsk.realtorapp.fragment.ItemsFragment;
+import ru.kvartira_omsk.realtorapp.fragment.EventsFragment;
 import ru.kvartira_omsk.realtorapp.fragment.ObjectsFragment;
 
 /**
@@ -47,7 +47,7 @@ public class TabsFragmentAdapter extends FragmentPagerAdapter {
     private void initTabMap(Context context) {
         tabs = new HashMap<>();
         tabs.put(0, ObjectsFragment.getInstance(context));
-        tabs.put(1, ItemsFragment.getInstance(context));
+        tabs.put(1, EventsFragment.getInstance(context));
         tabs.put(2, ClientsFragment.getInstance(context));
     }
 }

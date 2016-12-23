@@ -3,6 +3,7 @@ package ru.kvartira_omsk.realtorapp;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
+import android.support.design.widget.NavigationView;
 import android.support.design.widget.TabLayout;
 import android.support.v4.view.ViewPager;
 import android.support.v4.widget.DrawerLayout;
@@ -16,16 +17,16 @@ import android.widget.Toast;
 import ru.kvartira_omsk.realtorapp.adapter.TabsFragmentAdapter;
 
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends AppCompatActivity  {
 
     //private DBWork dbHelper;
     private static final int LAYOUT = R.layout.activity_main;
-    private static final int OBJECT_ACTIVITY_CREATE = 10;
-    private static final int OBJECT_ACTIVITY_EDIT = 11;
-    private static final int EVENT_ACTIVITY_CREATE = 20;
-    private static final int EVENT_ACTIVITY_EDIT = 21;
-    private static final int CLIENT_ACTIVITY_CREATE = 30;
-    private static final int CLIENT_ACTIVITY_EDIT = 31;
+    private static final int OBJECT_ACTIVITY_CREATE = 11;
+    private static final int OBJECT_ACTIVITY_EDIT = 15;
+    private static final int EVENT_ACTIVITY_CREATE = 22;
+    private static final int EVENT_ACTIVITY_EDIT = 25;
+    private static final int CLIENT_ACTIVITY_CREATE = 33;
+    private static final int CLIENT_ACTIVITY_EDIT = 35;
 
     private Toolbar toolbar;
     private DrawerLayout drawerLayout;
@@ -81,15 +82,6 @@ public class MainActivity extends AppCompatActivity {
         toolbar.inflateMenu(R.menu.menu);
     }
 
-    private void initNavigationView() {
-        drawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
-
-        ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(this, drawerLayout, toolbar, R.string.view_navigation_open, R.string.view_navigation_close);
-        drawerLayout.setDrawerListener(toggle);
-        toggle.syncState();
-
-    }
-
     private void initTabs() {
         viewPager = (ViewPager) findViewById(R.id.viewPager);
         TabsFragmentAdapter adapter = new TabsFragmentAdapter(this, getSupportFragmentManager());
@@ -100,9 +92,44 @@ public class MainActivity extends AppCompatActivity {
 
     }
 
-    public void editClient() {
+    private void initNavigationView() {
+        drawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
+
+        ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(this, drawerLayout, toolbar, R.string.view_navigation_open, R.string.view_navigation_close);
+        drawerLayout.setDrawerListener(toggle);
+        toggle.syncState();
+
+        NavigationView navigationView = (NavigationView) findViewById(R.id.navigation);
+        navigationView.setNavigationItemSelectedListener(new NavigationView.OnNavigationItemSelectedListener() {
+            @Override
+            public boolean onNavigationItemSelected(MenuItem menuNavigationItem) {
+                drawerLayout.closeDrawers();
+                switch (menuNavigationItem.getItemId()) {
+                    case R.id.navigation_addobject:
+                        viewPager.setCurrentItem(0);
+                        Intent intent_object = new Intent(MainActivity.this, AddObjectActivity.class);
+                        startActivityForResult(intent_object, OBJECT_ACTIVITY_CREATE);
+                        break;
+                    case R.id.navigation_addevent:
+                        viewPager.setCurrentItem(1);
+                        Intent intent_event = new Intent(MainActivity.this, AddEventActivity.class);
+                        startActivityForResult(intent_event, EVENT_ACTIVITY_CREATE);
+                        break;
+                    case R.id.navigation_addclient:
+                        viewPager.setCurrentItem(2);
+                        Intent intent_client = new Intent(MainActivity.this, AddClientActivity.class);
+                        startActivityForResult(intent_client, OBJECT_ACTIVITY_CREATE);
+                        break;
+                }
+                return true;
+            }
+        });
 
     }
+
+   /* public void editClient() {
+
+    }*/
 
     @Override
     protected void onRestart() {
