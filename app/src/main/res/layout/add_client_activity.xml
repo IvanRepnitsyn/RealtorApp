@@ -92,9 +92,17 @@
                     android:hint="@string/nameclient_hint_mail" />
             </android.support.design.widget.TextInputLayout>
 
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:id="@+id/linearLayoutAddClient"
+                android:orientation="vertical">
+            </LinearLayout>
 
 
         </LinearLayout>
+
+
 
 
 

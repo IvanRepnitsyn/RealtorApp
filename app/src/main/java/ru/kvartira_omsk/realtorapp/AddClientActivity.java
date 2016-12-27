@@ -6,10 +6,14 @@ import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.text.TextUtils;
+import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.EditText;
+import android.widget.LinearLayout;
 import android.widget.Spinner;
 import android.widget.Toast;
 
@@ -25,7 +29,7 @@ public class AddClientActivity extends AppCompatActivity {
     private Toolbar toolbar;
     //private MaterialSpinner SpinnerTypeClient;
     //Spinner begin
-    private Spinner SpinnerTypeClient;
+    private Spinner spinnerTypeClient;
     //Spinner end
     private EditText etNameClient, etPhoneClient, etMailClient;
     private Long mRowId;
@@ -50,7 +54,7 @@ public class AddClientActivity extends AppCompatActivity {
         SpinnerTypeClient.setAdapter(adapter);*/
 
         //Spinner begin
-        SpinnerTypeClient = (Spinner) findViewById(R.id.spinner_addclient);
+        spinnerTypeClient = (Spinner) findViewById(R.id.spinner_addclient);
 
         loadSpinnerTypeClient();
         //Spinner end
@@ -77,6 +81,27 @@ public class AddClientActivity extends AppCompatActivity {
         //initNavigationView();
         //initTabs();
 
+        spinnerTypeClient.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                LinearLayout linLayout = (LinearLayout) findViewById(R.id.linearLayoutAddClient);
+                if (position == 1) {
+                    View viewFindObject = LayoutInflater.from(parent.getContext()).inflate(R.layout.client_find_object, parent, false);
+                    //Toast.makeText(AddClientActivity.this, "Выбоан покупатель2", Toast.LENGTH_LONG).show();
+                    linLayout.addView(viewFindObject);
+                }
+                if (position == 0) {
+                    linLayout.removeAllViews();
+                }
+            }
+
+            public void onNothingSelected(AdapterView<?> arg0) {
+                // TODO Auto-generated method stub
+
+            }
+
+        });
+
 
 
 
@@ -90,6 +115,8 @@ public class AddClientActivity extends AppCompatActivity {
         return true;
     }
 
+
+
     private void populateFields() {
         if (mRowId != null) {
             //Toast.makeText(this, "ID pF "+mRowId, Toast.LENGTH_LONG).show();
@@ -102,7 +129,7 @@ public class AddClientActivity extends AppCompatActivity {
                     .getColumnIndexOrThrow(DBWork.COLUMN_NAMECLIENT));
 
             Toast.makeText(this, nameCln, Toast.LENGTH_LONG).show();
-            SpinnerTypeClient.setSelection(Integer.parseInt(client.getString(client
+            spinnerTypeClient.setSelection(Integer.parseInt(client.getString(client
                     .getColumnIndexOrThrow(DBWork.COLUMN_TYPECLIENT))));
             etNameClient.setText(client.getString(client
                     .getColumnIndexOrThrow(DBWork.COLUMN_NAMECLIENT)));
@@ -190,7 +217,7 @@ public class AddClientActivity extends AppCompatActivity {
 
     private void saveState() {
 
-        String typeclient = Integer.toString(SpinnerTypeClient.getSelectedItemPosition());
+        String typeclient = Integer.toString(spinnerTypeClient.getSelectedItemPosition());
         String nameclient = etNameClient.getText().toString();
         String phoneclient = etPhoneClient.getText().toString();
         String mailclient = etMailClient.getText().toString();
@@ -219,9 +246,11 @@ public class AddClientActivity extends AppCompatActivity {
         ArrayAdapter<String> typeadapter = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_item, typedata);
         typeadapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
 
-        SpinnerTypeClient.setAdapter(typeadapter);
+        spinnerTypeClient.setAdapter(typeadapter);
     }
     //Spinner end
+
+
 
     boolean isEmailValid(CharSequence email) {
         return android.util.Patterns.EMAIL_ADDRESS.matcher(email).matches();
