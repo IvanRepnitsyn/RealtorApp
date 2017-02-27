@@ -46,5 +46,10 @@
     <string name="menu_addobject">Добавить объект</string>
     <string name="menu_addevent">Добавить событие</string>
 
+    <string name="deleteclient_dialog_title">Удалить клиента</string>
+    <string name="deleteclient_dialog_message">Клиент связан с объектами и событиями</string>
+
+    <string name="photofolder_name">/RealtorAppPhotos</string>
+
 
 </resources>

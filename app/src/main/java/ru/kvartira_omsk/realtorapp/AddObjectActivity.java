@@ -1,21 +1,44 @@
 package ru.kvartira_omsk.realtorapp;
 
+import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.database.Cursor;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.os.Bundle;
+import android.os.Environment;
+import android.provider.MediaStore;
+import android.support.design.widget.FloatingActionButton;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.text.TextUtils;
+import android.text.format.Time;
+import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.BaseAdapter;
 import android.widget.EditText;
-import android.widget.Spinner;
+import android.widget.GridView;
+import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.SpinnerAdapter;
 import android.widget.Toast;
 
+import org.apache.commons.io.FileUtils;
+
+import java.io.ByteArrayOutputStream;
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 
 import fr.ganfra.materialspinner.MaterialSpinner;
@@ -29,6 +52,9 @@ public class AddObjectActivity extends AppCompatActivity {
 
     private static final int LAYOUT = R.layout.add_object_activity;
 
+    private int REQUEST_CAMERA = 80, SELECT_FILE = 90;
+    private ImageView ivImage;
+
     private Toolbar toolbar;
     private MaterialSpinner spinner_clients;
     //Spinner begin
@@ -38,6 +64,21 @@ public class AddObjectActivity extends AppCompatActivity {
     private EditText etNameObject, etObjectAddress, etPriceClient;
     private Long mRowId, idClient;
     private DBWork mDbHelper;
+    private String userChoosenTask;
+
+    //For GridView
+    private int count;
+    private Bitmap[] thumbnails;
+    private boolean[] thumbnailsselection;
+    private String[] arrPath;
+    private ImageAdapter imageAdapter;
+    ArrayList<String> f = new ArrayList<String>();// list of file paths
+    ArrayList<String> fileName = new ArrayList<String>(); // list of file name
+    ArrayList<String> filePathEdit = new ArrayList<String>();
+    ArrayList<String> fileNameEdit = new ArrayList<String>();
+
+    File[] listFile;
+    //For GridView
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -57,6 +98,8 @@ public class AddObjectActivity extends AppCompatActivity {
 
         mRowId = null;
         idClient = null;
+
+        deleteRecursive(new File("/sdcard/RealtorAppPhotos/Temp/"));
 
         Bundle extras = getIntent().getExtras();
 
@@ -143,6 +186,17 @@ public class AddObjectActivity extends AppCompatActivity {
 
         });
 
+        FloatingActionButton AddPhotoButton = (FloatingActionButton) findViewById(R.id.fabObject);
+        AddPhotoButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                selectImage();
+
+            }
+        });
+
+
+
     }
 
     @Override
@@ -194,6 +248,23 @@ public class AddObjectActivity extends AppCompatActivity {
             stopManagingCursor(object);
             clientcursor.close();
             object.close();
+
+            //Image
+            f.clear();
+            filePathEdit.clear();
+            fileNameEdit.clear();
+            List<String> namePhotoObject = mDbHelper.getObjectPhotobyIdObject(Long.toString(mRowId));
+            for (int i=0; i< namePhotoObject.size(); i++ ){
+                f.add("/sdcard/RealtorAppPhotos/"+namePhotoObject.get(i));
+                filePathEdit.add("/sdcard/RealtorAppPhotos/"+namePhotoObject.get(i));
+                fileNameEdit.add(namePhotoObject.get(i));
+                Toast.makeText(this, "File from: /sdcard/RealtorAppPhotos/"+namePhotoObject.get(i), Toast.LENGTH_LONG).show();
+            }
+
+            GridView imagegrid = (GridView) findViewById(R.id.objectGridView);
+            imageAdapter = new ImageAdapter();
+            imagegrid.setAdapter(imageAdapter);
+            //Image
         }
 
         if ((idClient != null) && (idClient != 0)) {
@@ -214,6 +285,8 @@ public class AddObjectActivity extends AppCompatActivity {
             stopManagingCursor(clientcursor);
             clientcursor.close();
         }
+
+
     }
 
     private void initToolbar() {
@@ -298,21 +371,37 @@ public class AddObjectActivity extends AppCompatActivity {
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         if (data == null) {return;}
-        String nameclient = data.getStringExtra("nameclient");
-        Toast.makeText(this, "Get name " + nameclient, Toast.LENGTH_LONG).show();
+        switch (requestCode) {
+            case 13:
+                String nameclient = data.getStringExtra("nameclient");
+                Toast.makeText(this, "Get name " + nameclient, Toast.LENGTH_LONG).show();
 
-        loadSpinnerClientsData();
+                loadSpinnerClientsData();
 
-        int index = 0;
-        for (int i=1;i<spinner_clients.getCount();i++){
-            if (spinner_clients.getItemAtPosition(i).toString().equals(nameclient)){
-                //Toast.makeText(this, Integer.toString(i+1), Toast.LENGTH_LONG).show();
-                index = i;
+                int index = 0;
+                for (int i=1;i<spinner_clients.getCount();i++){
+                    if (spinner_clients.getItemAtPosition(i).toString().equals(nameclient)){
+                        //Toast.makeText(this, Integer.toString(i+1), Toast.LENGTH_LONG).show();
+                        index = i;
+                        break;
+                    }
+                }
+
+                spinner_clients.setSelection(index+1);
                 break;
-            }
-        }
+            case 80:
+                Toast.makeText(this, "Это была камера", Toast.LENGTH_LONG).show();
+                onCaptureImageResult(data);
+                //GridView
+                getFromSdcard();
+                //LinearLayout linLayout = (LinearLayout) findViewById(R.id.linearLayoutObjectPhoto);
 
-        spinner_clients.setSelection(index+1);
+                GridView imagegrid = (GridView) findViewById(R.id.objectGridView);
+                imageAdapter = new ImageAdapter();
+                imagegrid.setAdapter(imageAdapter);
+                //GridView
+
+        }
 
     }
 
@@ -362,13 +451,21 @@ public class AddObjectActivity extends AppCompatActivity {
             Toast.makeText(this, "Update", Toast.LENGTH_LONG).show();
             mDbHelper.updateObject(mRowId, nameobject, idclient, objectaddress, priceclient);
         }
-        /*if ((mRowId != null) & (idclnt != null)) {*/
-        /*if (mRowId != null)  {
-            if (mRowId > 0)  & (idclnt == 0)) {
-                Toast.makeText(this, "Update", Toast.LENGTH_LONG).show();
-                mDbHelper.updateObject(mRowId, nameobject, idclient, objectaddress, priceclient);
-            }
-        }*/
+
+        // ObjectPhoto
+        mDbHelper.deleteObjectPhoto(mRowId);
+        for (int i=0; i< fileName.size(); i++ ){
+            long idObjectPhoto = mDbHelper.createNewObjectPhoto(Long.toString(mRowId), fileName.get(i));
+            Toast.makeText(this, "Save: " + fileName.get(i), Toast.LENGTH_LONG).show();
+        }
+        File sourceDir = new File("/sdcard/RealtorAppPhotos/Temp/");
+        File destDir = new File("/sdcard/RealtorAppPhotos/");
+        try {
+            FileUtils.copyDirectory(sourceDir, destDir);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
     }
 
     @Override
@@ -402,6 +499,113 @@ public class AddObjectActivity extends AppCompatActivity {
         }
     }
 
+    @Override
+    public void onRequestPermissionsResult(int requestCode, String[] permissions, int[] grantResults) {
+        switch (requestCode) {
+            case Utility.MY_PERMISSIONS_REQUEST_READ_EXTERNAL_STORAGE:
+                if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                    if(userChoosenTask.equals("Take Photo"))
+                        cameraIntent();
+                    else if(userChoosenTask.equals("Choose from Library"))
+                        galleryIntent();
+                } else {
+                    //code for deny
+                }
+                break;
+        }
+    }
+
+
+    private void selectImage() {
+        final CharSequence[] items = { "Камера", "Галерея", "Закрыть" };
+
+        AlertDialog.Builder builder = new AlertDialog.Builder(AddObjectActivity.this);
+        builder.setTitle("Добавить фото");
+        builder.setItems(items, new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int item) {
+                boolean result=Utility.checkPermission(AddObjectActivity.this);
+
+                if (items[item].equals("Камера")) {
+                    userChoosenTask="Take Photo";
+                    if(result)
+                        cameraIntent();
+
+                } else if (items[item].equals("Choose from Library")) {
+                    userChoosenTask="Choose from Library";
+                    if(result)
+                        galleryIntent();
+
+                } else if (items[item].equals("Закрыть")) {
+                    dialog.dismiss();
+                }
+            }
+        });
+        builder.show();
+    }
+
+    private void galleryIntent()
+    {
+        Intent intent = new Intent();
+        intent.setType("image/*");
+        intent.setAction(Intent.ACTION_GET_CONTENT);//
+        startActivityForResult(Intent.createChooser(intent, "Select File"),SELECT_FILE);
+    }
+
+    private void cameraIntent()
+    {
+        Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+        startActivityForResult(intent, REQUEST_CAMERA);
+    }
+
+    private void onCaptureImageResult(Intent data) {
+        Time time = new Time();
+        time.setToNow();
+        Bitmap thumbnail = (Bitmap) data.getExtras().get("data");
+        ByteArrayOutputStream bytes = new ByteArrayOutputStream();
+        thumbnail.compress(Bitmap.CompressFormat.JPEG, 90, bytes);
+
+        //String strFolder = Environment.getExternalStorageDirectory().toString() + R.string.photofolder_name;
+        String strFolder = Environment.getExternalStorageDirectory().toString() + "/ReRealtorAppPhotos/Temp";
+        File folder =  new  File(strFolder);
+        if (!folder.exists()) {
+            File wallpaperDirectory = new File("/sdcard/RealtorAppPhotos/Temp/");
+            wallpaperDirectory.mkdirs();
+        }
+
+        String strFileName = null;
+        strFileName = Integer.toString(time.year) + Integer.toString(time.month+1) + Integer.toString(time.monthDay) + Integer.toString(time.hour) + Integer.toString(time.minute) + Integer.toString(time.second) +".jpg";
+        /*File destination = new File(Environment.getExternalStorageDirectory(),
+                System.currentTimeMillis() + ".jpg");*/
+        Toast.makeText(this,"Folder: " + strFolder + " File: " + strFileName, Toast.LENGTH_LONG).show();
+        File destination = new File(new File("/sdcard/RealtorAppPhotos/Temp/"), strFileName);
+
+        FileOutputStream fo;
+        try {
+            destination.createNewFile();
+            fo = new FileOutputStream(destination);
+            fo.write(bytes.toByteArray());
+            fo.close();
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+            Toast.makeText(this, "FileNotFound", Toast.LENGTH_LONG).show();
+        } catch (IOException e) {
+            e.printStackTrace();
+            Toast.makeText(this, "IOException1", Toast.LENGTH_LONG).show();
+        }
+
+        //ivImage.setImageBitmap(thumbnail);
+    }
+
+    private void deleteRecursive(File fileOrDirectory) {
+        if (fileOrDirectory.isDirectory())
+            for (File child : fileOrDirectory.listFiles())
+                deleteRecursive(child);
+
+        fileOrDirectory.delete();
+    }
+
+
 
 
     /*@Override
@@ -416,7 +620,86 @@ public class AddObjectActivity extends AppCompatActivity {
 
         super.onPause();
     }*/
+    public void getFromSdcard()
+    {
+        File file= new File("/sdcard/RealtorAppPhotos/Temp/");
 
+        f.clear();
+        fileName.clear();
+
+        Toast.makeText(AddObjectActivity.this, "mRowId: " + Long.toString(mRowId), Toast.LENGTH_LONG).show();
+
+        if ((mRowId != null) && (mRowId != 0)) {
+            for (int i=0; i< filePathEdit.size(); i++ ){
+                f.add(filePathEdit.get(i));
+                fileName.add(fileNameEdit.get(i));
+            }
+            Toast.makeText(AddObjectActivity.this, "f size: " + f.size(), Toast.LENGTH_LONG).show();
+        }
+
+
+        if (file.isDirectory())
+        {
+            listFile = file.listFiles();
+
+
+            for (int i = 0; i < listFile.length; i++)
+            {
+
+                f.add(listFile[i].getAbsolutePath());
+                fileName.add(listFile[i].getName());
+                Toast.makeText(AddObjectActivity.this, "Path:" + listFile[i].getAbsolutePath() + " Name:" + listFile[i].getName(), Toast.LENGTH_LONG).show();
+
+            }
+        }
+    }
+
+    public class ImageAdapter extends BaseAdapter {
+        private LayoutInflater mInflater;
+
+        public ImageAdapter() {
+            mInflater = (LayoutInflater) getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+        }
+
+        public int getCount() {
+            return f.size();
+        }
+
+        public Object getItem(int position) {
+            return position;
+        }
+
+        public long getItemId(int position) {
+            return position;
+        }
+
+        public View getView(int position, View convertView, ViewGroup parent) {
+            ViewHolder holder;
+            if (convertView == null) {
+                holder = new ViewHolder();
+                convertView = mInflater.inflate(
+                        R.layout.object_photo_view, null);
+                holder.imageview = (ImageView) convertView.findViewById(R.id.smallphoto_object);
+
+                convertView.setTag(holder);
+            }
+            else {
+                holder = (ViewHolder) convertView.getTag();
+            }
+
+
+            Bitmap myBitmap = BitmapFactory.decodeFile(f.get(position));
+            holder.imageview.setImageBitmap(myBitmap);
+            return convertView;
+        }
+    }
+    class ViewHolder {
+        ImageView imageview;
+
+
+    }
 
 
 }
+
+

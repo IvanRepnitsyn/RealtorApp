@@ -1,15 +1,19 @@
 package ru.kvartira_omsk.realtorapp.fragment;
 
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
+import android.database.Cursor;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.ContextMenu;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.ViewDebug;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.Toast;
@@ -39,6 +43,8 @@ public class ClientsFragment extends AbstractTabFragment {
     private static final int CLIENT_ACTIVITY_EDIT = 35;
     private static final int OBJECT_ACTIVITY_CREATE = 31;
     private static final int EVENT_ACTIVITY_CREATE = 32;
+
+    boolean b;
 
     private long id;
 
@@ -116,9 +122,10 @@ public class ClientsFragment extends AbstractTabFragment {
                     //MainActivity.editClient();
                     break;
                 case 2:
-                    dbHelper.deleteClient(clickedItemPosition);
-                    Toast.makeText(this.getActivity(), "Delete client "+clickedItemPosition, Toast.LENGTH_LONG).show();
-                    fillData();
+                    showDeleteClientDialog(clickedItemPosition);
+                    //dbHelper.deleteClient(clickedItemPosition);
+                    //Toast.makeText(this.getActivity(), "Delete client "+clickedItemPosition, Toast.LENGTH_LONG).show();
+                    //fillData();
                     //return true;
                     break;
                 case 3:
@@ -136,6 +143,65 @@ public class ClientsFragment extends AbstractTabFragment {
 
 
         return super.onContextItemSelected(item);
+    }
+
+    public void showDeleteClientDialog(final long idClient) {
+        AlertDialog.Builder builder = new AlertDialog.Builder(this.getActivity());
+        Cursor cursorClient = dbHelper.getClient(idClient);
+        String nameClient = cursorClient.getString(cursorClient
+                .getColumnIndexOrThrow(DBWork.COLUMN_NAMECLIENT));
+        String strTitle = "Удалить клиента " + nameClient;
+        builder.setTitle(strTitle);
+        Cursor cursorObject = dbHelper.getObjectforClient(idClient);
+        final int countObject = cursorObject.getCount();
+        Cursor cursorEvent = dbHelper.getEventforClient(idClient);
+        final int countEvent = cursorEvent.getCount();
+        String messageAlertDialog = "Клиент связан с "+ Integer.toString(countObject) +" объектами и с "+ Integer.toString(countEvent) +" событиями. Удаление клиента приведет к удалению всех связанных с ним объектов и событий.";
+        builder.setMessage(messageAlertDialog);
+
+        //final boolean b = true;
+
+        String positiveText = getString(android.R.string.ok);
+        builder.setPositiveButton(positiveText,
+                new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        // positive button logic
+                        dbHelper.deleteClient(idClient);
+                        if (countObject != 0) {
+                            dbHelper.deleteObjectbyIdClient(idClient);
+                        }
+                        if (countEvent != 0) {
+                            dbHelper.deleteEventbyIdClient(idClient);
+                        }
+                        dbHelper.deleteInfoObject(idClient);
+                        dbHelper.deleteObjectPhotobyIdClient(idClient);
+                        fillData();
+                        dialog.cancel();
+                    }
+                });
+
+        String negativeText = getString(android.R.string.cancel);
+        builder.setNegativeButton(negativeText,
+                new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        // negative button logic
+                        dialog.cancel();
+                    }
+                });
+
+
+        AlertDialog dialog = builder.create();
+        // display dialog
+        dialog.show();
+        /*if (b == true) {
+            Toast.makeText(this.getActivity(), "Set B true", Toast.LENGTH_LONG).show();
+            return true;
+        } else {
+            Toast.makeText(this.getActivity(), "Set B false", Toast.LENGTH_LONG).show();
+            return false;
+        }*/
     }
 
     private void fillData() {

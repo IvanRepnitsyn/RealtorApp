@@ -31,7 +31,7 @@ public class AddClientActivity extends AppCompatActivity {
     //Spinner begin
     private Spinner spinnerTypeClient;
     //Spinner end
-    private EditText etNameClient, etPhoneClient, etMailClient;
+    private EditText etNameClient, etPhoneClient, etMailClient, etInfoFindObject;
     private Long mRowId;
     private DBWork mDbHelper;
 
@@ -46,6 +46,7 @@ public class AddClientActivity extends AppCompatActivity {
         etNameClient = (EditText) findViewById(R.id.client_name);
         etPhoneClient = (EditText) findViewById(R.id.client_phone);
         etMailClient = (EditText) findViewById(R.id.client_mail);
+        //etInfoFindObject = (EditText) findViewById(R.id.findclient_info);
 
         /*String[] ITEMS = {"Продавец", "Покупатель"};
         ArrayAdapter<String> adapter = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_item, ITEMS);
@@ -75,7 +76,7 @@ public class AddClientActivity extends AppCompatActivity {
 
         }
 
-        populateFields();
+        //populateFields();
 
         initToolbar();
         //initNavigationView();
@@ -89,8 +90,10 @@ public class AddClientActivity extends AppCompatActivity {
                     View viewFindObject = LayoutInflater.from(parent.getContext()).inflate(R.layout.client_find_object, parent, false);
                     //Toast.makeText(AddClientActivity.this, "Выбоан покупатель2", Toast.LENGTH_LONG).show();
                     linLayout.addView(viewFindObject);
+                    etInfoFindObject = (EditText) findViewById(R.id.findclient_info);
+                    populateFieldsInfoObject();
                 }
-                if (position == 0) {
+                if (position != 1) {
                     linLayout.removeAllViews();
                 }
             }
@@ -102,7 +105,7 @@ public class AddClientActivity extends AppCompatActivity {
 
         });
 
-
+        populateFields();
 
 
 
@@ -137,9 +140,40 @@ public class AddClientActivity extends AppCompatActivity {
                     .getColumnIndexOrThrow(DBWork.COLUMN_PHONECLIENT)));
             etMailClient.setText(client.getString(client
                     .getColumnIndexOrThrow(DBWork.COLUMN_MAILCLIENT)));
+            Toast.makeText(AddClientActivity.this, "Type " + client.getString(client
+                    .getColumnIndexOrThrow(DBWork.COLUMN_TYPECLIENT)), Toast.LENGTH_LONG).show();
+            /*if (Integer.parseInt(client.getString(client
+                    .getColumnIndexOrThrow(DBWork.COLUMN_TYPECLIENT))) == 2) {
+                //etInfoFindObject = (EditText) findViewById(R.id.findclient_info);
+                String stringIdClient = Long.toString(mRowId);
+                Cursor cursorInfoObject = mDbHelper.getInfoObjectforId(stringIdClient);
+                startManagingCursor(cursorInfoObject);
+                String stringInfoObject = cursorInfoObject.getString(cursorInfoObject
+                        .getColumnIndexOrThrow(DBWork.COLUMN_INFOFINDOBJECT));
+                Toast.makeText(AddClientActivity.this, "Info1 " + stringInfoObject, Toast.LENGTH_LONG).show();
+                stopManagingCursor(cursorInfoObject);
+                cursorInfoObject.close();
+                etInfoFindObject = (EditText) findViewById(R.id.findclient_info);
+                etInfoFindObject.setText(stringInfoObject);
+            }*/
 
             stopManagingCursor(client);
             client.close();
+        }
+    }
+
+    private void populateFieldsInfoObject() {
+        if (mRowId != null) {
+            String stringIdClient = Long.toString(mRowId);
+            Cursor cursorInfoObject = mDbHelper.getInfoObjectforId(stringIdClient);
+            startManagingCursor(cursorInfoObject);
+            String stringInfoObject = cursorInfoObject.getString(cursorInfoObject
+                    .getColumnIndexOrThrow(DBWork.COLUMN_INFOFINDOBJECT));
+            Toast.makeText(AddClientActivity.this, "Info1 " + stringInfoObject, Toast.LENGTH_LONG).show();
+            stopManagingCursor(cursorInfoObject);
+            cursorInfoObject.close();
+            etInfoFindObject = (EditText) findViewById(R.id.findclient_info);
+            etInfoFindObject.setText(stringInfoObject);
         }
     }
 
@@ -221,6 +255,10 @@ public class AddClientActivity extends AppCompatActivity {
         String nameclient = etNameClient.getText().toString();
         String phoneclient = etPhoneClient.getText().toString();
         String mailclient = etMailClient.getText().toString();
+        String infoobject = "";
+        if (spinnerTypeClient.getSelectedItemPosition() == 2) {
+            infoobject = etInfoFindObject.getText().toString();
+        }
 
         if (typeclient.length() == 0 && nameclient.length() == 0
                 && phoneclient.length() == 0 && mailclient.length() == 0) {
@@ -228,20 +266,35 @@ public class AddClientActivity extends AppCompatActivity {
         }
 
         if (mRowId == null) {
-            Toast.makeText(AddClientActivity.this, "Create", Toast.LENGTH_LONG).show();
+            //Toast.makeText(AddClientActivity.this, "Create " + infoobject, Toast.LENGTH_LONG).show();
             long id = mDbHelper.createNewClient(nameclient, typeclient, phoneclient, mailclient);
+            if (infoobject != "") {
+                String idclient = Long.toString(id);
+                //Toast.makeText(AddClientActivity.this, "IdClient=  " + idclient + "Info= " + infoobject, Toast.LENGTH_LONG).show();
+                long idinfoobject = mDbHelper.createNewInfoObject(idclient, infoobject);
+            }
             if (id > 0) {
                 mRowId = id;
             }
         } else {
             Toast.makeText(AddClientActivity.this, "Update", Toast.LENGTH_LONG).show();
             mDbHelper.updateClient(mRowId, nameclient, typeclient, phoneclient, mailclient);
+            if (infoobject != "") {
+                String idclient = Long.toString(mRowId);
+                Cursor cursorInfoObject = mDbHelper.getInfoObjectforId(idclient);
+                startManagingCursor(cursorInfoObject);
+                Long idInfoObject = cursorInfoObject.getLong(cursorInfoObject
+                        .getColumnIndexOrThrow(DBWork.COLUMN_ID));
+                mDbHelper.updateInfoObject(idInfoObject, idclient, infoobject);
+                stopManagingCursor(cursorInfoObject);
+                cursorInfoObject.close();
+            }
         }
     }
 
     //Spinner begin
     private void loadSpinnerTypeClient() {
-        String[] typedata = {"Продавец", "Покупатель"};
+        String[] typedata = {"Продавец", "Покупатель", "Агент"};
 
         ArrayAdapter<String> typeadapter = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_item, typedata);
         typeadapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);

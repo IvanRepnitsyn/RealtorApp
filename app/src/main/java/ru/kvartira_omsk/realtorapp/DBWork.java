@@ -19,10 +19,12 @@ import ru.kvartira_omsk.realtorapp.dto.ObjectDTO;
 public class DBWork extends SQLiteOpenHelper {
 
     private static final String DATABASE_NAME = "realtorarm.db";
-    private static final int DATABASE_VERSION = 1;
+    private static final int DATABASE_VERSION = 3;
     private static final String DATABASE_TABLE_OBJECTS = "myobjects";
     private static final String DATABASE_TABLE_EVENTS = "myevents";
     private static final String DATABASE_TABLE_CLIENTS = "myclients";
+    private static final String DATABASE_TABLE_INFOOBJECT = "myinfoobject";
+    private static final String DATABASE_TABLE_OBJECTPHOTOS = "myobjectphotos";
 
     // поля таблицы
     public static final String COLUMN_ID = "_id";
@@ -77,7 +79,21 @@ public class DBWork extends SQLiteOpenHelper {
             + COLUMN_PHONECLIENT + " text,"
             + COLUMN_MAILCLIENT + " text" + ");";
 
+    public static final String COLUMN_INFOFINDOBJECT = "infofindobject";
 
+    private static final String INFOOBJECTTABLE_CREATE = "create table "
+            + DATABASE_TABLE_INFOOBJECT + "(" + COLUMN_ID
+            + " integer primary key autoincrement, "
+            + COLUMN_IDCLIENT + " text,"
+            + COLUMN_INFOFINDOBJECT + " text" + ");";
+
+    public static final String COLUMN_PHOTONAME = "photoname";
+
+    private static final String OBJECTPHOTO_CREATE = "create table "
+            + DATABASE_TABLE_OBJECTPHOTOS + "(" + COLUMN_ID
+            + " integer primary key autoincrement, "
+            + COLUMN_IDOBJECT + " text,"
+            + COLUMN_PHOTONAME + " text" + ");";
 
 
     public DBWork(Context context) {
@@ -96,6 +112,8 @@ public class DBWork extends SQLiteOpenHelper {
         db.execSQL(OBJECTSTABLE_CREATE);
         db.execSQL(EVENTSTABLE_CREATE);
         db.execSQL(CLIENTSTABLE_CREATE);
+        db.execSQL(INFOOBJECTTABLE_CREATE);
+        db.execSQL(OBJECTPHOTO_CREATE);
     }
 
     @Override
@@ -107,6 +125,8 @@ public class DBWork extends SQLiteOpenHelper {
         db.execSQL("DROP TABLE IF EXISTS myobjects");
         db.execSQL("DROP TABLE IF EXISTS myevents");
         db.execSQL("DROP TABLE IF EXISTS myclients");
+        db.execSQL("DROP TABLE IF EXISTS myinfoobject");
+        db.execSQL("DROP TABLE IF EXISTS myobjectphotos");
         onCreate(db);
     }
 
@@ -152,6 +172,26 @@ public class DBWork extends SQLiteOpenHelper {
         return row;
     }
 
+    public long createNewInfoObject (String idclient, String infofindobject) {
+        SQLiteDatabase db = this.getWritableDatabase();
+        ContentValues initialValues = createContentInfoObject(idclient, infofindobject);
+
+        long row = db.insert(DATABASE_TABLE_INFOOBJECT, null, initialValues);
+        db.close();
+
+        return row;
+    }
+
+    public long createNewObjectPhoto (String idobject, String photoname) {
+        SQLiteDatabase db = this.getWritableDatabase();
+        ContentValues initialValues = createContentObjectPhotos(idobject, photoname);
+
+        long row = db.insert(DATABASE_TABLE_OBJECTPHOTOS, null, initialValues);
+        db.close();
+
+        return row;
+    }
+
 
     /**
      * Обновляет список
@@ -188,6 +228,22 @@ public class DBWork extends SQLiteOpenHelper {
         return db.update(DATABASE_TABLE_CLIENTS, updateValues, COLUMN_ID + "=" + rowId,
                 null) > 0;
     }
+
+    public boolean updateInfoObject(long rowId, String idclient, String infofindobject) {
+        SQLiteDatabase db = this.getWritableDatabase();
+        ContentValues updateValues = createContentInfoObject(idclient, infofindobject);
+
+        return db.update(DATABASE_TABLE_INFOOBJECT, updateValues, COLUMN_ID + "=" + rowId,
+                null) > 0;
+    }
+
+    public boolean updateObjectPhoto(long rowId, String idobject, String photoname) {
+        SQLiteDatabase db = this.getWritableDatabase();
+        ContentValues updateValues = createContentObjectPhotos(idobject, photoname);
+
+        return db.update(DATABASE_TABLE_OBJECTPHOTOS, updateValues, COLUMN_ID + "=" + rowId,
+                null) > 0;
+    }
     /**
      * Удаляет элемент списка
      */
@@ -197,9 +253,27 @@ public class DBWork extends SQLiteOpenHelper {
         db.close();
     }
 
+    public void deleteObjectbyIdClient(long rowId) {
+        SQLiteDatabase db = this.getWritableDatabase();
+        db.delete(DATABASE_TABLE_OBJECTS, COLUMN_IDCLIENT + "=" + rowId, null);
+        db.close();
+    }
+
     public void deleteEvent(long rowId) {
         SQLiteDatabase db = this.getWritableDatabase();
         db.delete(DATABASE_TABLE_EVENTS, COLUMN_ID + "=" + rowId, null);
+        db.close();
+    }
+
+    public void deleteEventbyIdClient(long rowId) {
+        SQLiteDatabase db = this.getWritableDatabase();
+        db.delete(DATABASE_TABLE_EVENTS, COLUMN_IDCLIENT + "=" + rowId, null);
+        db.close();
+    }
+
+    public void deleteEventbyIdObject(long rowId) {
+        SQLiteDatabase db = this.getWritableDatabase();
+        db.delete(DATABASE_TABLE_EVENTS, COLUMN_IDOBJECT + "=" + rowId, null);
         db.close();
     }
 
@@ -208,6 +282,35 @@ public class DBWork extends SQLiteOpenHelper {
         db.delete(DATABASE_TABLE_CLIENTS, COLUMN_ID + "=" + rowId, null);
         db.close();
     }
+
+    public void deleteInfoObject(long idClient) {
+        SQLiteDatabase db = this.getWritableDatabase();
+        db.delete(DATABASE_TABLE_INFOOBJECT, COLUMN_IDCLIENT + "=" + idClient, null);
+        db.close();
+    }
+
+    public void deleteObjectPhoto(long idObject) {
+        SQLiteDatabase db = this.getWritableDatabase();
+        db.delete(DATABASE_TABLE_OBJECTPHOTOS, COLUMN_IDOBJECT + "=" + idObject, null);
+        db.close();
+    }
+
+    public void deleteObjectPhotobyIdClient(long idClient) {
+        List<String> objectlabels = new ArrayList<String>();
+        Cursor cursorObject = getObjectforClient(idClient);
+        if (cursorObject.moveToFirst()) {
+            do {
+                objectlabels.add(cursorObject.getString(0));
+            } while (cursorObject.moveToNext());
+        }
+
+        // closing connection
+        cursorObject.close();
+        for (int i=0; i< objectlabels.size(); i++ ){
+            deleteObjectPhoto(Long.parseLong(objectlabels.get(i)));
+        }
+    }
+
 
     /**
      * Возвращает курсор со всеми элементами списка дел
@@ -402,6 +505,20 @@ public class DBWork extends SQLiteOpenHelper {
         return mCursor;
     }
 
+    public Cursor getObjectforClient(long idClient) throws SQLException {
+        SQLiteDatabase db = this.getReadableDatabase();
+        Cursor mCursor = null;
+        mCursor = db.query(true, DATABASE_TABLE_OBJECTS,
+                new String[] { COLUMN_ID,
+                        COLUMN_NAMEOBJECT, COLUMN_IDCLIENT, COLUMN_OBJECTADDRESS,
+                        COLUMN_PRICECLIENT }, COLUMN_IDCLIENT + "=" + idClient, null,
+                null, null, null, null);
+        if (mCursor != null) {
+            mCursor.moveToFirst();
+        }
+        return mCursor;
+    }
+
     public Cursor getEvent(long rowId) throws SQLException {
         SQLiteDatabase db = this.getReadableDatabase();
         Cursor mCursor = db.query(true, DATABASE_TABLE_EVENTS,
@@ -422,6 +539,34 @@ public class DBWork extends SQLiteOpenHelper {
                 new String[] { COLUMN_ID,
                         COLUMN_IDOBJECT, COLUMN_IDCLIENT, COLUMN_NAMEEVENT, COLUMN_TYPEEVENT,
                         COLUMN_DATEEVENT, COLUMN_TIMEEVENT, COLUMN_PLACEEVENT, COLUMN_INFOEVENT }, COLUMN_NAMEEVENT + "=" + NameEvent, null,
+                null, null, null, null);
+        if (mCursor != null) {
+            mCursor.moveToFirst();
+        }
+        return mCursor;
+    }
+
+    public Cursor getEventforClient(long idClient) throws SQLException {
+        SQLiteDatabase db = this.getReadableDatabase();
+        Cursor mCursor = null;
+        mCursor = db.query(true, DATABASE_TABLE_EVENTS,
+                new String[] { COLUMN_ID,
+                        COLUMN_IDOBJECT, COLUMN_IDCLIENT, COLUMN_NAMEEVENT, COLUMN_TYPEEVENT,
+                        COLUMN_DATEEVENT, COLUMN_TIMEEVENT, COLUMN_PLACEEVENT, COLUMN_INFOEVENT }, COLUMN_IDCLIENT + "=" + idClient, null,
+                null, null, null, null);
+        if (mCursor != null) {
+            mCursor.moveToFirst();
+        }
+        return mCursor;
+    }
+
+    public Cursor getEventforObject(long idObject) throws SQLException {
+        SQLiteDatabase db = this.getReadableDatabase();
+        Cursor mCursor = null;
+        mCursor = db.query(true, DATABASE_TABLE_EVENTS,
+                new String[] { COLUMN_ID,
+                        COLUMN_IDOBJECT, COLUMN_IDCLIENT, COLUMN_NAMEEVENT, COLUMN_TYPEEVENT,
+                        COLUMN_DATEEVENT, COLUMN_TIMEEVENT, COLUMN_PLACEEVENT, COLUMN_INFOEVENT }, COLUMN_IDOBJECT + "=" + idObject, null,
                 null, null, null, null);
         if (mCursor != null) {
             mCursor.moveToFirst();
@@ -454,6 +599,38 @@ public class DBWork extends SQLiteOpenHelper {
             mCursor.moveToFirst();
         }
         return mCursor;
+    }
+
+    public Cursor getInfoObjectforId(String idClient) throws SQLException {
+        SQLiteDatabase db = this.getReadableDatabase();
+        Cursor mCursor = db.query(true, DATABASE_TABLE_INFOOBJECT,
+                new String[] { COLUMN_ID,
+                        COLUMN_IDCLIENT, COLUMN_INFOFINDOBJECT }, COLUMN_IDCLIENT + "=" + idClient, null,
+                null, null, null, null);
+        if (mCursor != null) {
+            mCursor.moveToFirst();
+        }
+        return mCursor;
+    }
+
+    public List<String> getObjectPhotobyIdObject(String idObject) throws SQLException {
+        List<String> namePhoto = new ArrayList<String>();
+        SQLiteDatabase db = this.getReadableDatabase();
+        Cursor mCursor = db.query(true, DATABASE_TABLE_OBJECTPHOTOS,
+                new String[] { COLUMN_ID,
+                        COLUMN_IDOBJECT, COLUMN_PHOTONAME }, COLUMN_IDOBJECT + "=" + idObject, null,
+                null, null, null, null);
+        if (mCursor.moveToFirst()) {
+            do {
+                namePhoto.add(mCursor.getString(2));
+            } while (mCursor.moveToNext());
+        }
+
+        // closing connection
+        mCursor.close();
+        db.close();
+
+        return namePhoto;
     }
 
 
@@ -493,6 +670,20 @@ public class DBWork extends SQLiteOpenHelper {
         values.put(COLUMN_TYPECLIENT, typeclient);
         values.put(COLUMN_PHONECLIENT, phoneclient);
         values.put(COLUMN_MAILCLIENT, mailclient);
+        return values;
+    }
+
+    private ContentValues createContentInfoObject(String stringIdClient, String stringInfoFindObject) {
+        ContentValues values = new ContentValues();
+        values.put(COLUMN_IDCLIENT, stringIdClient);
+        values.put(COLUMN_INFOFINDOBJECT, stringInfoFindObject);
+        return values;
+    }
+
+    private ContentValues createContentObjectPhotos(String stringIdObject, String stringPhotoName) {
+        ContentValues values = new ContentValues();
+        values.put(COLUMN_IDOBJECT, stringIdObject);
+        values.put(COLUMN_PHOTONAME, stringPhotoName);
         return values;
     }
 

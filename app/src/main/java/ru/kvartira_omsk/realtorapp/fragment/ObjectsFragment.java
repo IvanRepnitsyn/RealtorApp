@@ -1,10 +1,13 @@
 package ru.kvartira_omsk.realtorapp.fragment;
 
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
+import android.database.Cursor;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.design.widget.FloatingActionButton;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -98,9 +101,10 @@ public class ObjectsFragment extends AbstractTabFragment {
                     //MainActivity.editClient();
                     break;
                 case 2:
-                    dbHelper.deleteObject(clickedItemPosition);
+                    showDeleteObjectDialog(clickedItemPosition);
+                    /*dbHelper.deleteObject(clickedItemPosition);
                     Toast.makeText(this.getActivity(), "Delete object"+clickedItemPosition, Toast.LENGTH_LONG).show();
-                    fillData();
+                    fillData();*/
                     //return true;
                     break;
 
@@ -110,6 +114,59 @@ public class ObjectsFragment extends AbstractTabFragment {
 
 
         return super.onContextItemSelected(item);
+    }
+
+    public void showDeleteObjectDialog(final long idObject) {
+        AlertDialog.Builder builder = new AlertDialog.Builder(this.getActivity());
+        Cursor cursorObject = dbHelper.getObject(idObject);
+        String nameObject = cursorObject.getString(cursorObject
+                .getColumnIndexOrThrow(DBWork.COLUMN_NAMEOBJECT));
+        String strTitle = "Удалить объект " + nameObject;
+        builder.setTitle(strTitle);
+        Cursor cursorEvent = dbHelper.getEventforObject(idObject);
+        final int countEvent = cursorEvent.getCount();
+        String messageAlertDialog = "Объект связан с "+ Integer.toString(countEvent) +" событиями. Удаление объекта приведет к удалению всех связанных с ним событий.";
+        builder.setMessage(messageAlertDialog);
+
+        //final boolean b = true;
+
+        String positiveText = getString(android.R.string.ok);
+        builder.setPositiveButton(positiveText,
+                new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        // positive button logic
+                        dbHelper.deleteObject(idObject);
+                        dbHelper.deleteObjectPhoto(idObject);
+                        if (countEvent != 0) {
+                            dbHelper.deleteEventbyIdObject(idObject);
+                        }
+                        fillData();
+                        dialog.cancel();
+                    }
+                });
+
+        String negativeText = getString(android.R.string.cancel);
+        builder.setNegativeButton(negativeText,
+                new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        // negative button logic
+                        dialog.cancel();
+                    }
+                });
+
+
+        AlertDialog dialog = builder.create();
+        // display dialog
+        dialog.show();
+        /*if (b == true) {
+            Toast.makeText(this.getActivity(), "Set B true", Toast.LENGTH_LONG).show();
+            return true;
+        } else {
+            Toast.makeText(this.getActivity(), "Set B false", Toast.LENGTH_LONG).show();
+            return false;
+        }*/
     }
 
     private void fillData() {
@@ -131,4 +188,5 @@ public class ObjectsFragment extends AbstractTabFragment {
         fillData();
         super.onResume();
     }
+
 }
