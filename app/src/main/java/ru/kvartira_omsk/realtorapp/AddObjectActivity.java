@@ -7,6 +7,7 @@ import android.content.pm.PackageManager;
 import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.os.Environment;
 import android.provider.MediaStore;
@@ -186,6 +187,10 @@ public class AddObjectActivity extends AppCompatActivity {
 
         });
 
+
+
+
+
         FloatingActionButton AddPhotoButton = (FloatingActionButton) findViewById(R.id.fabObject);
         AddPhotoButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -264,6 +269,30 @@ public class AddObjectActivity extends AppCompatActivity {
             GridView imagegrid = (GridView) findViewById(R.id.objectGridView);
             imageAdapter = new ImageAdapter();
             imagegrid.setAdapter(imageAdapter);
+            //imagegrid.setChoiceMode(GridView.CHOICE_MODE_MULTIPLE_MODAL);
+
+
+            imagegrid.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+
+                public void onItemClick(AdapterView<?> parent, View v,
+                                        int position, long id) {
+                    Toast.makeText(AddObjectActivity.this, "Short9", Toast.LENGTH_LONG).show();
+                    //imageAdapter.setSelectedPosition(position);
+                    //imageAdapter.notifyDataSetChanged();
+                }
+            });
+
+            imagegrid.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
+                public boolean onItemLongClick(AdapterView<?> parent, View v,
+                                        int position, long id) {
+                    Toast.makeText(AddObjectActivity.this, "Long9", Toast.LENGTH_LONG).show();
+                    imageAdapter.setSelectedPosition(position);
+                    //imageAdapter.selectedPosition = position;
+                    imageAdapter.notifyDataSetChanged();
+                    return true;
+                }
+            });
+
             //Image
         }
 
@@ -656,6 +685,7 @@ public class AddObjectActivity extends AppCompatActivity {
 
     public class ImageAdapter extends BaseAdapter {
         private LayoutInflater mInflater;
+        private int selectedPosition = -1;
 
         public ImageAdapter() {
             mInflater = (LayoutInflater) getSystemService(Context.LAYOUT_INFLATER_SERVICE);
@@ -673,8 +703,12 @@ public class AddObjectActivity extends AppCompatActivity {
             return position;
         }
 
-        public View getView(int position, View convertView, ViewGroup parent) {
-            ViewHolder holder;
+        public void setSelectedPosition(int position) {
+            selectedPosition = position;
+        }
+
+        public View getView(final int position, View convertView, ViewGroup parent) {
+            final ViewHolder holder;
             if (convertView == null) {
                 holder = new ViewHolder();
                 convertView = mInflater.inflate(
@@ -687,6 +721,34 @@ public class AddObjectActivity extends AppCompatActivity {
                 holder = (ViewHolder) convertView.getTag();
             }
 
+            //multyselect
+            if (position == selectedPosition) {
+                holder.imageview.setBackgroundColor(getResources().getColor(R.color.colorPrimaryDark));
+            } else {
+                holder.imageview.setBackgroundColor(Color.TRANSPARENT);
+            }
+
+            holder.imageview.setId(position);
+            //holder.imageview.setLongClickable(true);
+            /*holder.imageview.setOnClickListener(new View.OnClickListener() {
+
+                public void onClick(View v) {
+                    // TODO Auto-generated method stub
+                    Toast.makeText(AddObjectActivity.this, "Short", Toast.LENGTH_LONG).show();
+
+
+                }
+            });
+            holder.imageview.setOnLongClickListener(new View.OnLongClickListener() {
+
+                public boolean onLongClick(View v) {
+                    Toast.makeText(AddObjectActivity.this, "Long", Toast.LENGTH_LONG).show();
+
+                    return true;
+                }
+            });*/
+
+            //multyselect
 
             Bitmap myBitmap = BitmapFactory.decodeFile(f.get(position));
             holder.imageview.setImageBitmap(myBitmap);
