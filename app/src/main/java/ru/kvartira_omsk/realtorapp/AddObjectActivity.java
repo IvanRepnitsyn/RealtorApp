@@ -17,6 +17,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.text.TextUtils;
 import android.text.format.Time;
+import android.util.SparseBooleanArray;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -66,6 +67,7 @@ public class AddObjectActivity extends AppCompatActivity {
     private Long mRowId, idClient;
     private DBWork mDbHelper;
     private String userChoosenTask;
+    private boolean ifSelectItem;
 
     //For GridView
     private int count;
@@ -276,7 +278,11 @@ public class AddObjectActivity extends AppCompatActivity {
 
                 public void onItemClick(AdapterView<?> parent, View v,
                                         int position, long id) {
-                    Toast.makeText(AddObjectActivity.this, "Short9", Toast.LENGTH_LONG).show();
+                    Toast.makeText(AddObjectActivity.this, "Short12", Toast.LENGTH_LONG).show();
+                    if (imageAdapter.checkSelectedItems()) {
+                        imageAdapter.putCheckedItems(position);
+                        imageAdapter.notifyDataSetChanged();
+                    }
                     //imageAdapter.setSelectedPosition(position);
                     //imageAdapter.notifyDataSetChanged();
                 }
@@ -285,9 +291,10 @@ public class AddObjectActivity extends AppCompatActivity {
             imagegrid.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
                 public boolean onItemLongClick(AdapterView<?> parent, View v,
                                         int position, long id) {
-                    Toast.makeText(AddObjectActivity.this, "Long9", Toast.LENGTH_LONG).show();
-                    imageAdapter.setSelectedPosition(position);
+                    Toast.makeText(AddObjectActivity.this, "Long12", Toast.LENGTH_LONG).show();
+                    //imageAdapter.setSelectedPosition(position);
                     //imageAdapter.selectedPosition = position;
+                    imageAdapter.putCheckedItems(position);
                     imageAdapter.notifyDataSetChanged();
                     return true;
                 }
@@ -323,6 +330,9 @@ public class AddObjectActivity extends AppCompatActivity {
         //toolbar.setTitle(R.string.new_object);
 
         setSupportActionBar(toolbar);
+        /*if (imageAdapter.checkSelectedItems()) {
+            toolbar.setBackgroundResource(R.color.colorBlack);
+        }*/
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         if (mRowId == null) getSupportActionBar().setTitle(R.string.new_object);
         else getSupportActionBar().setTitle(R.string.edit_object);
@@ -685,27 +695,59 @@ public class AddObjectActivity extends AppCompatActivity {
 
     public class ImageAdapter extends BaseAdapter {
         private LayoutInflater mInflater;
-        private int selectedPosition = -1;
+        Context mContext;
+        SparseBooleanArray mSparseBooleanArray;
+        //private int selectedPosition = -1;
 
         public ImageAdapter() {
             mInflater = (LayoutInflater) getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+            mSparseBooleanArray = new SparseBooleanArray();
+        }
+
+        public ArrayList<String> getCheckedItems() {
+            ArrayList<String> mTempArray = new ArrayList<String>();
+
+            for (int i = 0; i < f.size(); i++) {
+                if (mSparseBooleanArray.get(i)) {
+                    mTempArray.add(f.get(i));
+                }
+            }
+
+            return mTempArray;
+        }
+
+        public void putCheckedItems(int position){
+            if(mSparseBooleanArray.get(position))
+                mSparseBooleanArray.put(position, false);
+            else
+                mSparseBooleanArray.put(position, true);
+        }
+
+        public boolean checkSelectedItems() {
+            boolean b = false;
+            for (int i = 0; i < f.size(); i++) {
+                if (mSparseBooleanArray.get(i)) {
+                    b = true;
+                }
+            }
+            return b;
         }
 
         public int getCount() {
             return f.size();
         }
 
-        public Object getItem(int position) {
-            return position;
+        public String getItem(int position) {
+            return f.get(position);
         }
 
         public long getItemId(int position) {
-            return position;
+            return 0;
         }
 
-        public void setSelectedPosition(int position) {
+        /*public void setSelectedPosition(int position) {
             selectedPosition = position;
-        }
+        }*/
 
         public View getView(final int position, View convertView, ViewGroup parent) {
             final ViewHolder holder;
@@ -714,6 +756,7 @@ public class AddObjectActivity extends AppCompatActivity {
                 convertView = mInflater.inflate(
                         R.layout.object_photo_view, null);
                 holder.imageview = (ImageView) convertView.findViewById(R.id.smallphoto_object);
+                holder.viewBackground =  (LinearLayout) convertView.findViewById(R.id.photoLinearLayout);
 
                 convertView.setTag(holder);
             }
@@ -722,18 +765,19 @@ public class AddObjectActivity extends AppCompatActivity {
             }
 
             //multyselect
-            if (position == selectedPosition) {
+
+
+            /*if (position == selectedPosition) {
                 holder.imageview.setBackgroundColor(getResources().getColor(R.color.colorPrimaryDark));
             } else {
                 holder.imageview.setBackgroundColor(Color.TRANSPARENT);
             }
 
-            holder.imageview.setId(position);
+            holder.imageview.setId(position);*/
             //holder.imageview.setLongClickable(true);
             /*holder.imageview.setOnClickListener(new View.OnClickListener() {
 
                 public void onClick(View v) {
-                    // TODO Auto-generated method stub
                     Toast.makeText(AddObjectActivity.this, "Short", Toast.LENGTH_LONG).show();
 
 
@@ -752,12 +796,16 @@ public class AddObjectActivity extends AppCompatActivity {
 
             Bitmap myBitmap = BitmapFactory.decodeFile(f.get(position));
             holder.imageview.setImageBitmap(myBitmap);
+            if(mSparseBooleanArray.get(position))
+                holder.viewBackground.setBackgroundColor(getResources().getColor(R.color.colorPrimaryDark));
+            else
+                holder.viewBackground.setBackgroundColor(Color.TRANSPARENT);
             return convertView;
         }
     }
     class ViewHolder {
         ImageView imageview;
-
+        LinearLayout viewBackground;
 
     }
 
