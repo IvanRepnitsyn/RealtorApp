@@ -45,6 +45,7 @@
     <string name="menu_edit">Редактировать</string>
     <string name="menu_addobject">Добавить объект</string>
     <string name="menu_addevent">Добавить событие</string>
+    <string name="menu_call">Позвонить</string>
 
     <string name="deleteclient_dialog_title">Удалить клиента</string>
     <string name="deleteclient_dialog_message">Клиент связан с объектами и событиями</string>

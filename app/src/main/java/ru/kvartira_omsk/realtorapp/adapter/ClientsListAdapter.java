@@ -127,6 +127,7 @@ public class ClientsListAdapter extends RecyclerView.Adapter<ClientsListAdapter.
             menu.add(3, 2, idClient, R.string.menu_delete);
             menu.add(3, 3, idClient, R.string.menu_addobject);
             menu.add(3, 4, idClient, R.string.menu_addevent);
+            menu.add(3, 5, idClient, R.string.menu_call);
 
 
         }

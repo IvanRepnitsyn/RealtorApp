@@ -295,6 +295,13 @@ public class DBWork extends SQLiteOpenHelper {
         db.close();
     }
 
+    public void deleteObjectPhotoByName(String namePhoto) {
+        SQLiteDatabase db = this.getWritableDatabase();
+        String strNamePhoto = '\'' + namePhoto + '\'';
+        db.delete(DATABASE_TABLE_OBJECTPHOTOS, COLUMN_PHOTONAME + "=" + strNamePhoto, null);
+        db.close();
+    }
+
     public void deleteObjectPhotobyIdClient(long idClient) {
         List<String> objectlabels = new ArrayList<String>();
         Cursor cursorObject = getObjectforClient(idClient);
@@ -338,6 +345,13 @@ public class DBWork extends SQLiteOpenHelper {
         return db.query(DATABASE_TABLE_CLIENTS, new String[] { COLUMN_ID,
                         COLUMN_NAMECLIENT, COLUMN_TYPECLIENT,
                         COLUMN_PHONECLIENT, COLUMN_MAILCLIENT }, null,
+                null, null, null, null);
+    }
+
+    public Cursor getAllObjectPhotos() {
+        SQLiteDatabase db = this.getWritableDatabase();
+        return db.query(DATABASE_TABLE_OBJECTPHOTOS, new String[] { COLUMN_ID,
+                        COLUMN_IDOBJECT, COLUMN_PHOTONAME }, null,
                 null, null, null, null);
     }
 

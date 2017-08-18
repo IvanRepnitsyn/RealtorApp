@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.database.Cursor;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AlertDialog;
@@ -137,6 +138,16 @@ public class ClientsFragment extends AbstractTabFragment {
                     Intent intent_event = new Intent(this.getActivity(), AddEventActivity.class);
                     intent_event.putExtra("idclient", longID);
                     startActivityForResult(intent_event, EVENT_ACTIVITY_CREATE);
+                    break;
+                case 5:
+                    Toast.makeText(this.getActivity(), "Звоним ", Toast.LENGTH_LONG).show();
+                    // Получить из базы номер телефона клиента и передать в интенет
+                    Cursor cursorGetClient = dbHelper.getClient(clickedItemPosition);
+                    String strPhone = "tel:" + cursorGetClient.getString(cursorGetClient
+                            .getColumnIndexOrThrow(DBWork.COLUMN_PHONECLIENT));
+                    Toast.makeText(this.getActivity(), "Tel: " + strPhone.toString(), Toast.LENGTH_LONG).show();
+                    Intent intentcallclient = new Intent(Intent.ACTION_DIAL, Uri.parse(strPhone.toString()));
+                    startActivity(intentcallclient);
                     break;
             }
         }

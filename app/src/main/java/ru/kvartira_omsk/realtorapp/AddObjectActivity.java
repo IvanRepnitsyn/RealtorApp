@@ -67,7 +67,7 @@ public class AddObjectActivity extends AppCompatActivity {
     private Long mRowId, idClient;
     private DBWork mDbHelper;
     private String userChoosenTask;
-    private boolean ifSelectItem;
+
 
     //For GridView
     private int count;
@@ -81,7 +81,14 @@ public class AddObjectActivity extends AppCompatActivity {
     ArrayList<String> fileNameEdit = new ArrayList<String>();
 
     File[] listFile;
+
+    private boolean ifSelectItem;
     //For GridView
+
+    private MenuItem okMenuItem;
+    private MenuItem delMenuItem;
+    private MenuItem homeMenuItem;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -98,6 +105,8 @@ public class AddObjectActivity extends AppCompatActivity {
         etNameObject = (EditText) findViewById(R.id.object_name);
         etObjectAddress = (EditText) findViewById(R.id.object_address);
         etPriceClient = (EditText) findViewById(R.id.object_price);
+
+        //Menu menuToolbar;
 
         mRowId = null;
         idClient = null;
@@ -122,12 +131,14 @@ public class AddObjectActivity extends AppCompatActivity {
         }
         loadSpinnerClientsData();
 
-
+        ifSelectItem = false;
 
 
         initToolbar();
         //initNavigationView();
         //initTabs();
+
+
 
         populateFields();
 
@@ -209,6 +220,11 @@ public class AddObjectActivity extends AppCompatActivity {
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.menu_toolbar, menu);
+        homeMenuItem = menu.findItem(android.R.id.home);
+        okMenuItem = menu.findItem(R.id.action_ok);
+        delMenuItem = menu.findItem(R.id.action_delete);
+        setToolbarAttributes();
+
         return true;
     }
 
@@ -257,6 +273,12 @@ public class AddObjectActivity extends AppCompatActivity {
             object.close();
 
             //Image
+
+            //Check table
+            Cursor cursorObjectPhotos = mDbHelper.getAllObjectPhotos();
+            Toast.makeText(this, "SIZE OBJECTPHOTOS: " + cursorObjectPhotos.getCount(), Toast.LENGTH_LONG).show();
+            //Check Table
+
             f.clear();
             filePathEdit.clear();
             fileNameEdit.clear();
@@ -268,21 +290,29 @@ public class AddObjectActivity extends AppCompatActivity {
                 Toast.makeText(this, "File from: /sdcard/RealtorAppPhotos/"+namePhotoObject.get(i), Toast.LENGTH_LONG).show();
             }
 
-            GridView imagegrid = (GridView) findViewById(R.id.objectGridView);
+            /*GridView imagegrid = (GridView) findViewById(R.id.objectGridView);
             imageAdapter = new ImageAdapter();
             imagegrid.setAdapter(imageAdapter);
             //imagegrid.setChoiceMode(GridView.CHOICE_MODE_MULTIPLE_MODAL);
+
+            //Toolbar localToolBar = getTo
 
 
             imagegrid.setOnItemClickListener(new AdapterView.OnItemClickListener() {
 
                 public void onItemClick(AdapterView<?> parent, View v,
                                         int position, long id) {
-                    Toast.makeText(AddObjectActivity.this, "Short12", Toast.LENGTH_LONG).show();
+                    Toast.makeText(AddObjectActivity.this, "Short48", Toast.LENGTH_LONG).show();
                     if (imageAdapter.checkSelectedItems()) {
+                        ifSelectItem = true;
+                        //toolbar.setBackgroundColor(Color.CYAN);
+                        //getSupportActionBar().setBackgroundDrawable();
                         imageAdapter.putCheckedItems(position);
                         imageAdapter.notifyDataSetChanged();
+                    } else {
+                        ifSelectItem = false;
                     }
+                    setToolbarAttributes();
                     //imageAdapter.setSelectedPosition(position);
                     //imageAdapter.notifyDataSetChanged();
                 }
@@ -291,14 +321,15 @@ public class AddObjectActivity extends AppCompatActivity {
             imagegrid.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
                 public boolean onItemLongClick(AdapterView<?> parent, View v,
                                         int position, long id) {
-                    Toast.makeText(AddObjectActivity.this, "Long12", Toast.LENGTH_LONG).show();
+                    Toast.makeText(AddObjectActivity.this, "Long48", Toast.LENGTH_LONG).show();
                     //imageAdapter.setSelectedPosition(position);
                     //imageAdapter.selectedPosition = position;
                     imageAdapter.putCheckedItems(position);
                     imageAdapter.notifyDataSetChanged();
+                    setToolbarAttributes();
                     return true;
                 }
-            });
+            });*/
 
             //Image
         }
@@ -322,6 +353,47 @@ public class AddObjectActivity extends AppCompatActivity {
             clientcursor.close();
         }
 
+        GridView imagegrid = (GridView) findViewById(R.id.objectGridView);
+        imageAdapter = new ImageAdapter();
+        imagegrid.setAdapter(imageAdapter);
+        //imagegrid.setChoiceMode(GridView.CHOICE_MODE_MULTIPLE_MODAL);
+
+        //Toolbar localToolBar = getTo
+
+
+        imagegrid.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+
+            public void onItemClick(AdapterView<?> parent, View v,
+                                    int position, long id) {
+                Toast.makeText(AddObjectActivity.this, "Short51", Toast.LENGTH_LONG).show();
+                if (imageAdapter.checkSelectedItems()) {
+                    ifSelectItem = true;
+                    //toolbar.setBackgroundColor(Color.CYAN);
+                    //getSupportActionBar().setBackgroundDrawable();
+                    imageAdapter.putCheckedItems(position);
+                    imageAdapter.notifyDataSetChanged();
+                } else {
+                    ifSelectItem = false;
+                }
+                setToolbarAttributes();
+                //imageAdapter.setSelectedPosition(position);
+                //imageAdapter.notifyDataSetChanged();
+            }
+        });
+
+        imagegrid.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
+            public boolean onItemLongClick(AdapterView<?> parent, View v,
+                                           int position, long id) {
+                Toast.makeText(AddObjectActivity.this, "Long51", Toast.LENGTH_LONG).show();
+                //imageAdapter.setSelectedPosition(position);
+                //imageAdapter.selectedPosition = position;
+                imageAdapter.putCheckedItems(position);
+                imageAdapter.notifyDataSetChanged();
+                setToolbarAttributes();
+                return true;
+            }
+        });
+
 
     }
 
@@ -330,9 +402,7 @@ public class AddObjectActivity extends AppCompatActivity {
         //toolbar.setTitle(R.string.new_object);
 
         setSupportActionBar(toolbar);
-        /*if (imageAdapter.checkSelectedItems()) {
-            toolbar.setBackgroundResource(R.color.colorBlack);
-        }*/
+
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         if (mRowId == null) getSupportActionBar().setTitle(R.string.new_object);
         else getSupportActionBar().setTitle(R.string.edit_object);
@@ -361,6 +431,41 @@ public class AddObjectActivity extends AppCompatActivity {
         });
 
         toolbar.inflateMenu(R.menu.menu);*/
+    }
+
+    private void setToolbarAttributes() {
+       /* if (mRowId != null) {
+            if (imageAdapter.getCheckedItems().size()!=0) {
+                toolbar.setBackgroundColor(getResources().getColor(R.color.colorPrimary));
+                getSupportActionBar().setTitle("Выделено " + imageAdapter.getCheckedItems().size() + " фото");
+                okMenuItem.setVisible(false);
+                delMenuItem.setVisible(true);
+                //toolbar.inflateMenu(R.menu.menu_toolbar_delete);
+                //toolbar.setOverflowIcon(getResources().getDrawable(R.mipmap.ic_delete));
+                //menu.getItem(0).setIcon(getResources().getDrawable(R.drawable.ic_launcher));
+            } else {
+                toolbar.setBackgroundColor(getResources().getColor(R.color.colorPrimaryDark));
+                okMenuItem.setVisible(true);
+                delMenuItem.setVisible(false);
+                if (mRowId == null) getSupportActionBar().setTitle(R.string.new_object);
+                else getSupportActionBar().setTitle(R.string.edit_object);
+            }
+        } else {*/
+            if (imageAdapter.getCheckedItems().size()!=0) {
+                toolbar.setBackgroundColor(getResources().getColor(R.color.colorPrimary));
+                getSupportActionBar().setTitle("Выделено " + imageAdapter.getCheckedItems().size() + " фото");
+                okMenuItem.setVisible(false);
+                delMenuItem.setVisible(true);
+            } else {
+                toolbar.setBackgroundColor(getResources().getColor(R.color.colorPrimaryDark));
+                okMenuItem.setVisible(true);
+                delMenuItem.setVisible(false);
+                if (mRowId == null) getSupportActionBar().setTitle(R.string.new_object);
+                else getSupportActionBar().setTitle(R.string.edit_object);
+            }
+       /* } */
+
+
     }
 
     private void loadSpinnerClientsData() {
@@ -431,15 +536,24 @@ public class AddObjectActivity extends AppCompatActivity {
             case 80:
                 Toast.makeText(this, "Это была камера", Toast.LENGTH_LONG).show();
                 onCaptureImageResult(data);
-                //GridView
-                getFromSdcard();
-                //LinearLayout linLayout = (LinearLayout) findViewById(R.id.linearLayoutObjectPhoto);
 
-                GridView imagegrid = (GridView) findViewById(R.id.objectGridView);
-                imageAdapter = new ImageAdapter();
-                imagegrid.setAdapter(imageAdapter);
-                //GridView
+                break;
+            case 90:
+                Toast.makeText(this, "Это была галерея", Toast.LENGTH_LONG).show();
+                onSelectFromGalleryResult(data);
 
+                break;
+
+        }
+        if ((requestCode == 80) | (requestCode == 90)) {
+            //GridView
+            getFromSdcard();
+            //LinearLayout linLayout = (LinearLayout) findViewById(R.id.linearLayoutObjectPhoto);
+
+            GridView imagegrid = (GridView) findViewById(R.id.objectGridView);
+            imageAdapter = new ImageAdapter();
+            imagegrid.setAdapter(imageAdapter);
+            //GridView
         }
 
     }
@@ -510,11 +624,46 @@ public class AddObjectActivity extends AppCompatActivity {
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         Toast.makeText(AddObjectActivity.this, "Press", Toast.LENGTH_LONG).show();
+
+        if (item.equals(okMenuItem)) {
+            String checkObjectStr = '\'' + etNameObject.getText().toString() + '\'';
+            Cursor cursorObject = mDbHelper.getObjectforName(checkObjectStr);
+            if (TextUtils.isEmpty(etNameObject.getText().toString())) {
+                Toast.makeText(AddObjectActivity.this, "Данные не введены",
+                        Toast.LENGTH_LONG).show();
+            } else if ((cursorObject != null) && (cursorObject.getCount()>0) && ((mRowId == null) || (mRowId == 0)))  {
+                String nameobjectstr = cursorObject.getString(cursorObject.getColumnIndexOrThrow(DBWork.COLUMN_NAMEOBJECT));
+                Toast.makeText(AddObjectActivity.this, "Имя объекта не уникально " + nameobjectstr, Toast.LENGTH_LONG).show();
+            } else {
+                Toast.makeText(AddObjectActivity.this, "Сохраняем", Toast.LENGTH_LONG).show();
+                saveState();
+                Intent intent = new Intent();
+                intent.putExtra("nameobject", etNameObject.getText().toString());
+                setResult(RESULT_OK, intent);
+                finish();
+            }
+            return super.onOptionsItemSelected(item);
+        } else if (item.equals(delMenuItem)) {
+            Toast.makeText(AddObjectActivity.this, "Удаляем", Toast.LENGTH_LONG).show();
+            showDeleteObjectDialog();
+            return super.onOptionsItemSelected(item);
+            }
+        //return super.onOptionsItemSelected(item);
         switch (item.getItemId()) {
             case android.R.id.home:
-                finish();
+                if (delMenuItem.isVisible()){
+                    imageAdapter.uncheckedAllItems();
+                    imageAdapter.notifyDataSetChanged();
+                    toolbar.setBackgroundColor(getResources().getColor(R.color.colorPrimaryDark));
+                    okMenuItem.setVisible(true);
+                    delMenuItem.setVisible(false);
+                    if (mRowId == null) getSupportActionBar().setTitle(R.string.new_object);
+                    else getSupportActionBar().setTitle(R.string.edit_object);
+                } else {
+                    finish();
+                }
                 return true;
-            case R.id.action_ok:
+            /*case R.id.action_ok:
                 String checkObjectStr = '\'' + etNameObject.getText().toString() + '\'';
                 Cursor cursorObject = mDbHelper.getObjectforName(checkObjectStr);
                 if (TextUtils.isEmpty(etNameObject.getText().toString())) {
@@ -533,6 +682,9 @@ public class AddObjectActivity extends AppCompatActivity {
                 }
                 stopManagingCursor(cursorObject);
                 cursorObject.close();
+            case R.id.action_delete:
+
+                Toast.makeText(AddObjectActivity.this, "Удаляем", Toast.LENGTH_LONG).show();*/
             default:
                 return super.onOptionsItemSelected(item);
         }
@@ -570,7 +722,7 @@ public class AddObjectActivity extends AppCompatActivity {
                     if(result)
                         cameraIntent();
 
-                } else if (items[item].equals("Choose from Library")) {
+                } else if (items[item].equals("Галерея")) {
                     userChoosenTask="Choose from Library";
                     if(result)
                         galleryIntent();
@@ -581,6 +733,85 @@ public class AddObjectActivity extends AppCompatActivity {
             }
         });
         builder.show();
+    }
+
+    public void showDeleteObjectDialog() {
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+
+        String messageAlertDialog = "Вы действительно хотите удалить выделенные фотографии";
+        builder.setMessage(messageAlertDialog);
+
+        //final boolean b = true;
+
+        String positiveText = getString(android.R.string.ok);
+        builder.setPositiveButton(positiveText,
+                new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        // positive button logic
+                        ArrayList<String> itemForDelete = new ArrayList<String>();
+                        ArrayList<String> itemForDeleteName = new ArrayList<String>();
+                        //Toast.makeText(AddObjectActivity.this, "Size: " +  f.size(), Toast.LENGTH_LONG).show();
+                        for (int i=0; i< f.size(); i++ ) {
+                            if (imageAdapter.checkItemStatus(i) == true){
+                                Toast.makeText(AddObjectActivity.this, "Prosto!!!", Toast.LENGTH_LONG).show();
+                                Toast.makeText(AddObjectActivity.this, "Item: " + i + " Status TRUE " + f.get(i) + " NameFile: " + fileNameEdit.get(i), Toast.LENGTH_LONG).show();
+                                itemForDelete.add(f.get(i));
+                                itemForDeleteName.add(fileNameEdit.get(i));
+                            } else {
+                                Toast.makeText(AddObjectActivity.this, "Item: " + i + "Status FALSE", Toast.LENGTH_LONG).show();
+                            }
+                            Toast.makeText(AddObjectActivity.this, "Item for delete:  " + itemForDelete.size(), Toast.LENGTH_LONG).show();
+
+                        }
+
+                        for (int i=0; i< itemForDelete.size(); i++ ) {
+                            File fileForDelete = new File(itemForDelete.get(i));
+                            boolean deleted = fileForDelete.delete();
+                            mDbHelper.deleteObjectPhotoByName(itemForDeleteName.get(i));
+                            for (int j=0; j< f.size(); j++ ) {
+                                if (f.get(j) == itemForDelete.get(i)){
+                                    f.remove(j);
+                                    break;
+                                }
+                            }
+                        }
+                        if (delMenuItem.isVisible()){
+                            imageAdapter.uncheckedAllItems();
+                            toolbar.setBackgroundColor(getResources().getColor(R.color.colorPrimaryDark));
+                            okMenuItem.setVisible(true);
+                            delMenuItem.setVisible(false);
+                            if (mRowId == null) getSupportActionBar().setTitle(R.string.new_object);
+                            else getSupportActionBar().setTitle(R.string.edit_object);
+                        }
+                        imageAdapter.notifyDataSetChanged();
+                        //File fileForDelete = new File(selectedFilePath);
+                        //boolean deleted = file.delete();
+                        dialog.cancel();
+                    }
+                });
+
+        String negativeText = getString(android.R.string.cancel);
+        builder.setNegativeButton(negativeText,
+                new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        // negative button logic
+                        dialog.cancel();
+                    }
+                });
+
+
+        AlertDialog dialog = builder.create();
+        // display dialog
+        dialog.show();
+        /*if (b == true) {
+            Toast.makeText(this.getActivity(), "Set B true", Toast.LENGTH_LONG).show();
+            return true;
+        } else {
+            Toast.makeText(this.getActivity(), "Set B false", Toast.LENGTH_LONG).show();
+            return false;
+        }*/
     }
 
     private void galleryIntent()
@@ -614,8 +845,8 @@ public class AddObjectActivity extends AppCompatActivity {
 
         String strFileName = null;
         strFileName = Integer.toString(time.year) + Integer.toString(time.month+1) + Integer.toString(time.monthDay) + Integer.toString(time.hour) + Integer.toString(time.minute) + Integer.toString(time.second) +".jpg";
-        /*File destination = new File(Environment.getExternalStorageDirectory(),
-                System.currentTimeMillis() + ".jpg");*/
+            /*File destination = new File(Environment.getExternalStorageDirectory(),
+                    System.currentTimeMillis() + ".jpg");*/
         Toast.makeText(this,"Folder: " + strFolder + " File: " + strFileName, Toast.LENGTH_LONG).show();
         File destination = new File(new File("/sdcard/RealtorAppPhotos/Temp/"), strFileName);
 
@@ -634,6 +865,51 @@ public class AddObjectActivity extends AppCompatActivity {
         }
 
         //ivImage.setImageBitmap(thumbnail);
+    }
+
+    @SuppressWarnings("deprecation")
+    private void onSelectFromGalleryResult(Intent data) {
+        Time time = new Time();
+        time.setToNow();
+        Bitmap bm=null;
+        if (data != null) {
+            try {
+                bm = MediaStore.Images.Media.getBitmap(getApplicationContext().getContentResolver(), data.getData());
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+        ByteArrayOutputStream bytes = new ByteArrayOutputStream();
+        bm.compress(Bitmap.CompressFormat.JPEG, 90, bytes);
+
+        String strFolder = Environment.getExternalStorageDirectory().toString() + "/ReRealtorAppPhotos/Temp";
+        File folder =  new  File(strFolder);
+        if (!folder.exists()) {
+            File wallpaperDirectory = new File("/sdcard/RealtorAppPhotos/Temp/");
+            wallpaperDirectory.mkdirs();
+        }
+
+        String strFileName = null;
+        strFileName = Integer.toString(time.year) + Integer.toString(time.month+1) + Integer.toString(time.monthDay) + Integer.toString(time.hour) + Integer.toString(time.minute) + Integer.toString(time.second) +".jpg";
+            /*File destination = new File(Environment.getExternalStorageDirectory(),
+                    System.currentTimeMillis() + ".jpg");*/
+        Toast.makeText(this,"Folder: " + strFolder + " File: " + strFileName, Toast.LENGTH_LONG).show();
+        File destination = new File(new File("/sdcard/RealtorAppPhotos/Temp/"), strFileName);
+
+        FileOutputStream fo;
+        try {
+            destination.createNewFile();
+            fo = new FileOutputStream(destination);
+            fo.write(bytes.toByteArray());
+            fo.close();
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+            Toast.makeText(this, "FileNotFound", Toast.LENGTH_LONG).show();
+        } catch (IOException e) {
+            e.printStackTrace();
+            Toast.makeText(this, "IOException1", Toast.LENGTH_LONG).show();
+        }
+        //ivImage.setImageBitmap(bm);
     }
 
     private void deleteRecursive(File fileOrDirectory) {
@@ -666,7 +942,7 @@ public class AddObjectActivity extends AppCompatActivity {
         f.clear();
         fileName.clear();
 
-        Toast.makeText(AddObjectActivity.this, "mRowId: " + Long.toString(mRowId), Toast.LENGTH_LONG).show();
+        //Toast.makeText(AddObjectActivity.this, "mRowId: " + Long.toString(mRowId), Toast.LENGTH_LONG).show();
 
         if ((mRowId != null) && (mRowId != 0)) {
             for (int i=0; i< filePathEdit.size(); i++ ){
@@ -682,15 +958,14 @@ public class AddObjectActivity extends AppCompatActivity {
             listFile = file.listFiles();
 
 
-            for (int i = 0; i < listFile.length; i++)
-            {
-
+            for (int i = 0; i < listFile.length; i++) {
                 f.add(listFile[i].getAbsolutePath());
                 fileName.add(listFile[i].getName());
+                fileNameEdit.add(listFile[i].getName());
                 Toast.makeText(AddObjectActivity.this, "Path:" + listFile[i].getAbsolutePath() + " Name:" + listFile[i].getName(), Toast.LENGTH_LONG).show();
-
             }
         }
+        Toast.makeText(AddObjectActivity.this, "f size after: " + f.size(), Toast.LENGTH_LONG).show();
     }
 
     public class ImageAdapter extends BaseAdapter {
@@ -723,12 +998,26 @@ public class AddObjectActivity extends AppCompatActivity {
                 mSparseBooleanArray.put(position, true);
         }
 
+        public void uncheckedAllItems(){
+            for (int i=0; i< f.size(); i++ ) {
+                mSparseBooleanArray.put(i, false);
+            }
+        }
+
         public boolean checkSelectedItems() {
             boolean b = false;
             for (int i = 0; i < f.size(); i++) {
                 if (mSparseBooleanArray.get(i)) {
                     b = true;
                 }
+            }
+            return b;
+        }
+
+        public boolean checkItemStatus(int position){
+            boolean b = false;
+            if (mSparseBooleanArray.get(position)) {
+                b = true;
             }
             return b;
         }
