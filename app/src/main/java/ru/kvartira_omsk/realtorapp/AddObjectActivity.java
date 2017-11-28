@@ -26,10 +26,12 @@ import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.BaseAdapter;
+import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.GridView;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.RadioGroup;
 import android.widget.SpinnerAdapter;
 import android.widget.Toast;
 
@@ -45,6 +47,8 @@ import java.util.List;
 
 import fr.ganfra.materialspinner.MaterialSpinner;
 
+import com.github.aakira.expandablelayout.ExpandableRelativeLayout;
+
 /**
  * Created by Иван on 14.02.2016.
  */
@@ -58,12 +62,17 @@ public class AddObjectActivity extends AppCompatActivity {
     private ImageView ivImage;
 
     private Toolbar toolbar;
-    private MaterialSpinner spinner_clients;
+    private MaterialSpinner spinner_clients, spinner_numberroom, spinner_typeplan, spinner_bathroom, spinner_balcony, spinner_repairs, spinner_windows, spinner_viewfromwindows, spinner_material;
+    private RadioGroup radiogroup_newbuild;
+    private CheckBox chbIpoteka, chbClearsale, chbChange, chbCornerflat;
     //Spinner begin
     //private Spinner spinner_clients;
     //Spinner end
 
-    private EditText etNameObject, etObjectAddress, etPriceClient;
+
+    ExpandableRelativeLayout expandableLayout1;
+
+    private EditText etNameObject, etObjectAddress, etPriceClient, etAllSquare, etLiveSquare, etKitchenSquare, etFloor, etAllFloor, etYearConstruction, etAddInfo, etPriceSale;
     private Long mRowId, idClient;
     private DBWork mDbHelper;
     private String userChoosenTask;
@@ -99,12 +108,36 @@ public class AddObjectActivity extends AppCompatActivity {
         mDbHelper = new DBWork(this);
 
         spinner_clients = (MaterialSpinner) findViewById(R.id.spinner_addobject_clients);
+        spinner_numberroom = (MaterialSpinner) findViewById(R.id.spinner_addobject_numberroom);
+        spinner_typeplan = (MaterialSpinner) findViewById(R.id.spinner_addobject_typeplan);
+        spinner_bathroom = (MaterialSpinner) findViewById(R.id.spinner_addobject_bathroom);
+        spinner_balcony = (MaterialSpinner) findViewById(R.id.spinner_addobject_balcony);
+        spinner_repairs = (MaterialSpinner) findViewById(R.id.spinner_addobject_repairs);
+        spinner_windows = (MaterialSpinner) findViewById(R.id.spinner_addobject_windows);
+        spinner_viewfromwindows = (MaterialSpinner) findViewById(R.id.spinner_addobject_viewfromwindows);
+        spinner_material = (MaterialSpinner) findViewById(R.id.spinner_addobject_material);
         //Spinner begin
         //spinner_clients = (Spinner) findViewById(R.id.spinner_addobject_clients);
         //Spinner end
         etNameObject = (EditText) findViewById(R.id.object_name);
         etObjectAddress = (EditText) findViewById(R.id.object_address);
         etPriceClient = (EditText) findViewById(R.id.object_price);
+        etAllSquare = (EditText) findViewById(R.id.object_allsquare);
+        etLiveSquare = (EditText) findViewById(R.id.object_livesquare);
+        etKitchenSquare = (EditText) findViewById(R.id.object_kitchensquare);
+        etFloor = (EditText) findViewById(R.id.object_floor);
+        etAllFloor = (EditText) findViewById(R.id.object_allfloor);
+        etYearConstruction = (EditText) findViewById(R.id.object_yearconstruction);
+        etAddInfo = (EditText) findViewById(R.id.object_addinfo);
+        etPriceSale =(EditText) findViewById(R.id.object_pricesale);
+
+        chbIpoteka = (CheckBox) findViewById(R.id.checkBox_ipoteka);
+        chbClearsale = (CheckBox) findViewById(R.id.checkBox_clearsale);
+        chbChange = (CheckBox) findViewById(R.id.checkBox_change);
+        chbCornerflat = (CheckBox) findViewById(R.id.checkBox_cornerflat);
+
+
+        radiogroup_newbuild = (RadioGroup) findViewById(R.id.radiogroup_newbuild);
 
         //Menu menuToolbar;
 
@@ -129,7 +162,18 @@ public class AddObjectActivity extends AppCompatActivity {
         } else {
             Toast.makeText(this, "Object Null", Toast.LENGTH_LONG).show();
         }
+
+        Toast.makeText(this, "Variant 35", Toast.LENGTH_LONG).show();
+
         loadSpinnerClientsData();
+        loadSpinnerNumberroom();
+        loadSpinnerTypeplan();
+        loadSpinnerBathroom();
+        loadSpinnerBalcony();
+        loadSpinnerRepairs();
+        loadSpinnerWindows();
+        loadSpinnerViewfromwindows();
+        loadSpinnerMaterial();
 
         ifSelectItem = false;
 
@@ -223,6 +267,9 @@ public class AddObjectActivity extends AppCompatActivity {
         homeMenuItem = menu.findItem(android.R.id.home);
         okMenuItem = menu.findItem(R.id.action_ok);
         delMenuItem = menu.findItem(R.id.action_delete);
+
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+
         setToolbarAttributes();
 
         return true;
@@ -240,6 +287,21 @@ public class AddObjectActivity extends AppCompatActivity {
                     .getColumnIndexOrThrow(DBWork.COLUMN_NAMEOBJECT));
             Toast.makeText(this, nameObj, Toast.LENGTH_LONG).show();
             Long idclient = object.getLong(object.getColumnIndexOrThrow(DBWork.COLUMN_IDCLIENT));
+            int idnumberroom = object.getInt(object.getColumnIndexOrThrow(DBWork.COLUMN_NUMBERROOM));
+            int idnewbuild = object.getInt(object.getColumnIndexOrThrow(DBWork.COLUMN_NEWBUILD));
+            int idtypeplan = object.getInt(object.getColumnIndexOrThrow(DBWork.COLUMN_TYPYPLAN));
+            int idbathroom = object.getInt(object.getColumnIndexOrThrow(DBWork.COLUMN_BATHROOM));
+            int idbalcony = object.getInt(object.getColumnIndexOrThrow(DBWork.COLUMN_BALCONY));
+            int idrepairs = object.getInt(object.getColumnIndexOrThrow(DBWork.COLUMN_REPAIRS));
+            int idwindows = object.getInt(object.getColumnIndexOrThrow(DBWork.COLUMN_WINDOWS));
+            int idviewfromwindows = object.getInt(object.getColumnIndexOrThrow(DBWork.COLUMN_VIEWFROMWINDOWS));
+            int idmaterial = object.getInt(object.getColumnIndexOrThrow(DBWork.COLUMN_MATERIAL));
+            int idconditiondeal = object.getInt(object.getColumnIndexOrThrow(DBWork.COLUMN_CONDITIONDEAL));
+            int idcornerflat = object.getInt(object.getColumnIndexOrThrow(DBWork.COLUMN_CORNERFLAT));
+            /*float allsquare = object.getFloat(object.getColumnIndexOrThrow(DBWork.COLUMN_ALLSQUARE));
+            float livesquare = object.getFloat(object.getColumnIndexOrThrow(DBWork.COLUMN_LIVESQUARE));
+            float kitchensquare = object.getFloat(object.getColumnIndexOrThrow(DBWork.COLUMN_KITCHENSQUARE));*/
+            Toast.makeText(this, "Newbuild " + idnewbuild, Toast.LENGTH_LONG).show();
             Cursor clientcursor = mDbHelper.getClient(idclient);
             String clientstr = clientcursor.getString(clientcursor.getColumnIndexOrThrow(DBWork.COLUMN_NAMECLIENT));
             Toast.makeText(this, "Клиент: " + clientstr, Toast.LENGTH_LONG).show();
@@ -266,7 +328,76 @@ public class AddObjectActivity extends AppCompatActivity {
                     .getColumnIndexOrThrow(DBWork.COLUMN_OBJECTADDRESS)));
             etPriceClient.setText(object.getString(object
                     .getColumnIndexOrThrow(DBWork.COLUMN_PRICECLIENT)));
+            spinner_numberroom.setSelection(idnumberroom);
+            radiogroup_newbuild.check(radiogroup_newbuild.getChildAt(idnewbuild).getId());
+            etAllSquare.setText(object.getString(object
+                    .getColumnIndexOrThrow(DBWork.COLUMN_ALLSQUARE)));
+            etLiveSquare.setText(object.getString(object
+                    .getColumnIndexOrThrow(DBWork.COLUMN_LIVESQUARE)));
+            etKitchenSquare.setText(object.getString(object
+                    .getColumnIndexOrThrow(DBWork.COLUMN_KITCHENSQUARE)));
+            etFloor.setText(object.getString(object
+                    .getColumnIndexOrThrow(DBWork.COLUMN_FLOOR)));
+            etAllFloor.setText(object.getString(object
+                    .getColumnIndexOrThrow(DBWork.COLUMN_ALLFLOOR)));
+            spinner_typeplan.setSelection(idtypeplan);
+            spinner_bathroom.setSelection(idbathroom);
+            spinner_balcony.setSelection(idbalcony);
+            spinner_repairs.setSelection(idrepairs);
+            spinner_windows.setSelection(idwindows);
+            spinner_viewfromwindows.setSelection(idviewfromwindows);
+            spinner_material.setSelection(idmaterial);
+            etYearConstruction.setText(object.getString(object
+                    .getColumnIndexOrThrow(DBWork.COLUMN_YEARCONSTRUCTION)));
 
+            switch (idconditiondeal) {
+                case 0:
+                    chbIpoteka.setChecked(false);
+                    chbClearsale.setChecked(false);
+                    chbChange.setChecked(false);
+                    break;
+                case 1:
+                    chbIpoteka.setChecked(true);
+                    chbClearsale.setChecked(false);
+                    chbChange.setChecked(false);
+                    break;
+                case 2:
+                    chbIpoteka.setChecked(false);
+                    chbClearsale.setChecked(true);
+                    chbChange.setChecked(false);
+                    break;
+                case 3:
+                    chbIpoteka.setChecked(true);
+                    chbClearsale.setChecked(true);
+                    chbChange.setChecked(false);
+                    break;
+                case 4:
+                    chbIpoteka.setChecked(false);
+                    chbClearsale.setChecked(false);
+                    chbChange.setChecked(true);
+                    break;
+                case 5:
+                    chbIpoteka.setChecked(true);
+                    chbClearsale.setChecked(false);
+                    chbChange.setChecked(true);
+                    break;
+                case 6:
+                    chbIpoteka.setChecked(false);
+                    chbClearsale.setChecked(true);
+                    chbChange.setChecked(true);
+                    break;
+                case 7:
+                    chbIpoteka.setChecked(true);
+                    chbClearsale.setChecked(true);
+                    chbChange.setChecked(true);
+                    break;
+            }
+            if (idcornerflat == 0) chbCornerflat.setChecked(false);
+            if (idcornerflat == 1) chbCornerflat.setChecked(true);
+            etPriceSale.setText(object.getString(object
+                    .getColumnIndexOrThrow(DBWork.COLUMN_PRICESALE)));
+            etAddInfo.setText(object.getString(object
+                    .getColumnIndexOrThrow(DBWork.COLUMN_ADDINFO)));
             stopManagingCursor(clientcursor);
             stopManagingCursor(object);
             clientcursor.close();
@@ -365,7 +496,7 @@ public class AddObjectActivity extends AppCompatActivity {
 
             public void onItemClick(AdapterView<?> parent, View v,
                                     int position, long id) {
-                Toast.makeText(AddObjectActivity.this, "Short51", Toast.LENGTH_LONG).show();
+                Toast.makeText(AddObjectActivity.this, "Short53", Toast.LENGTH_LONG).show();
                 if (imageAdapter.checkSelectedItems()) {
                     ifSelectItem = true;
                     //toolbar.setBackgroundColor(Color.CYAN);
@@ -384,7 +515,7 @@ public class AddObjectActivity extends AppCompatActivity {
         imagegrid.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
             public boolean onItemLongClick(AdapterView<?> parent, View v,
                                            int position, long id) {
-                Toast.makeText(AddObjectActivity.this, "Long51", Toast.LENGTH_LONG).show();
+                Toast.makeText(AddObjectActivity.this, "Long53", Toast.LENGTH_LONG).show();
                 //imageAdapter.setSelectedPosition(position);
                 //imageAdapter.selectedPosition = position;
                 imageAdapter.putCheckedItems(position);
@@ -482,6 +613,66 @@ public class AddObjectActivity extends AppCompatActivity {
         spinner_clients.setAdapter(adapter);
     }
 
+    private void loadSpinnerNumberroom() {
+        //List<String> stringNumberroom = null;
+        String[] ITEMSNUMBERROOM = {"1 комн.", "2 комн.", "3 комн.", "4 комн.", "5 комн."};
+        //stringNumberroom.toArray(ITEMSNUMBERROOM);
+        ArrayAdapter<String> adapterNumberroom = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_item, ITEMSNUMBERROOM);
+        adapterNumberroom.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        spinner_numberroom.setAdapter(adapterNumberroom);
+    }
+
+    private void loadSpinnerTypeplan() {
+        //List<String> stringNumberroom = null;
+        String[] ITEMSTYPEPLAN = {"изолированные комнаты", "смежные комнаты", "смежно-изолированные комнаты", "свободная планировка", "студия"};
+        //stringNumberroom.toArray(ITEMSNUMBERROOM);
+        ArrayAdapter<String> adapterTypeplan = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_item, ITEMSTYPEPLAN);
+        adapterTypeplan.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        spinner_typeplan.setAdapter(adapterTypeplan);
+    }
+
+    private void loadSpinnerBathroom() {
+        String[] ITEMSBATHROOM = {"раздельный", "совмещенный", "нет", "более одного санузла"};
+        ArrayAdapter<String> adapterBathroom = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_item, ITEMSBATHROOM);
+        adapterBathroom.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        spinner_bathroom.setAdapter(adapterBathroom);
+    }
+
+    private void loadSpinnerBalcony() {
+        String[] ITEMSBALCONY = {"балкон", "лоджия", "нет"};
+        ArrayAdapter<String> adapterBalcony = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_item, ITEMSBALCONY);
+        adapterBalcony.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        spinner_balcony.setAdapter(adapterBalcony);
+    }
+
+    private void loadSpinnerRepairs() {
+        String[] ITEMSREPAIRS = {"евроремонт", "дизайнерский ремонт", "косметический ремонт", "требует ремонта", "ремонт от застройщика", "чистовая отделка", "черновая отделка"};
+        ArrayAdapter<String> adapterRepairs = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_item, ITEMSREPAIRS);
+        adapterRepairs.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        spinner_repairs.setAdapter(adapterRepairs);
+    }
+
+    private void loadSpinnerWindows() {
+        String[] ITEMSWINDOWS = {"деревянные", "пластиковые (ПВХ)"};
+        ArrayAdapter<String> adapterWindows = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_item, ITEMSWINDOWS);
+        adapterWindows.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        spinner_windows.setAdapter(adapterWindows);
+    }
+
+    private void loadSpinnerViewfromwindows() {
+        String[] ITEMSVIEWFROMWINDOWS = {"во двор", "на улицу", "во двор и на улицу"};
+        ArrayAdapter<String> adapterViewfromwindows = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_item, ITEMSVIEWFROMWINDOWS);
+        adapterViewfromwindows.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        spinner_viewfromwindows.setAdapter(adapterViewfromwindows);
+    }
+
+    private void loadSpinnerMaterial() {
+        String[] ITEMSMATERIAL = {"кирпичный", "панельный", "монолитный", "монолитно-кирпичный", "рубленный", "брусовой", "каркасно-насыпной", "прочее"};
+        ArrayAdapter<String> adapterMaterial = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_item, ITEMSMATERIAL);
+        adapterMaterial.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        spinner_material.setAdapter(adapterMaterial);
+    }
+
     private void CallAddClient() {
         Intent intent = new Intent(this, AddClientActivity.class);
         //intent.putExtra(DBWork.COLUMN_ID, id);
@@ -521,6 +712,13 @@ public class AddObjectActivity extends AppCompatActivity {
                 Toast.makeText(this, "Get name " + nameclient, Toast.LENGTH_LONG).show();
 
                 loadSpinnerClientsData();
+                loadSpinnerNumberroom();
+                loadSpinnerTypeplan();
+                loadSpinnerBathroom();
+                loadSpinnerBalcony();
+                loadSpinnerWindows();
+                loadSpinnerViewfromwindows();
+                loadSpinnerMaterial();
 
                 int index = 0;
                 for (int i=1;i<spinner_clients.getCount();i++){
@@ -570,6 +768,35 @@ public class AddObjectActivity extends AppCompatActivity {
         cursorClient.close();
         String objectaddress = etObjectAddress.getText().toString();
         String priceclient = etPriceClient.getText().toString();
+        String numberroom = Integer.toString(spinner_numberroom.getSelectedItemPosition());
+        String checkedRadioBtnNewbuild = Integer.toString(radiogroup_newbuild.indexOfChild(findViewById(radiogroup_newbuild.getCheckedRadioButtonId())));
+        String allsquare = etAllSquare.getText().toString();
+        String livesquare = etLiveSquare.getText().toString();
+        String kitchensquare = etKitchenSquare.getText().toString();
+        String floor = etFloor.getText().toString();
+        String allfloor = etAllFloor.getText().toString();
+        String typeplan = Integer.toString(spinner_typeplan.getSelectedItemPosition());
+        String bathroom = Integer.toString(spinner_bathroom.getSelectedItemPosition());
+        String balcony = Integer.toString(spinner_balcony.getSelectedItemPosition());
+        String repairs = Integer.toString(spinner_repairs.getSelectedItemPosition());
+        String windows = Integer.toString(spinner_windows.getSelectedItemPosition());
+        String viewfromwindows = Integer.toString(spinner_viewfromwindows.getSelectedItemPosition());
+        String material = Integer.toString(spinner_material.getSelectedItemPosition());
+        String yearconstruction = etYearConstruction.getText().toString();
+        int conditional = 0;
+        if (chbIpoteka.isChecked()) conditional = conditional+ 1;
+        if (chbClearsale.isChecked()) conditional = conditional + 2;
+        if (chbChange.isChecked()) conditional =  conditional + 4;
+        String strConditional = Integer.toString(conditional);
+        String addinfo = etAddInfo.getText().toString();
+        String pricesale = etPriceSale.getText().toString();
+        int cornerflat = 0;
+        if (chbCornerflat.isChecked()) cornerflat = 1;
+        String strCornerflat = Integer.toString(cornerflat);
+
+        Toast.makeText(this, "Add info" + addinfo, Toast.LENGTH_LONG).show();
+
+
         /*if (idclnt != null) {Toast.makeText(this, idclnt.toString(), Toast.LENGTH_LONG).show();}
         else Toast.makeText(this, "Косяк", Toast.LENGTH_LONG).show();*/
         if (nameobject.length() == 0 && nameclient.length() == 0 && objectaddress.length() == 0
@@ -595,14 +822,20 @@ public class AddObjectActivity extends AppCompatActivity {
         if (((mRowId == null) & (idClient == null)) || ((mRowId == 0) & (idClient > 0)))  {
             //Toast.makeText(this, idclnt.toString(), Toast.LENGTH_LONG).show();
             Toast.makeText(this, "Create", Toast.LENGTH_LONG).show();
-            long id = mDbHelper.createNewObject(nameobject, idclient, objectaddress, priceclient);
+            long id = mDbHelper.createNewObject(nameobject, idclient,
+                    objectaddress, priceclient, numberroom, checkedRadioBtnNewbuild, allsquare, livesquare,
+                    kitchensquare, floor, allfloor, typeplan, bathroom, balcony, repairs, windows,
+                    viewfromwindows, material, yearconstruction, strConditional, addinfo, pricesale, strCornerflat);
             if (id > 0) {
                 mRowId = id;
             }
 
         } else {
             Toast.makeText(this, "Update", Toast.LENGTH_LONG).show();
-            mDbHelper.updateObject(mRowId, nameobject, idclient, objectaddress, priceclient);
+            mDbHelper.updateObject(mRowId, nameobject, idclient,
+                    objectaddress, priceclient, numberroom, checkedRadioBtnNewbuild, allsquare, livesquare,
+                    kitchensquare, floor, allfloor, typeplan, bathroom, balcony, repairs, windows,
+                    viewfromwindows, material, yearconstruction, strConditional, addinfo, pricesale, strCornerflat);
         }
 
         // ObjectPhoto
@@ -967,6 +1200,12 @@ public class AddObjectActivity extends AppCompatActivity {
         }
         Toast.makeText(AddObjectActivity.this, "f size after: " + f.size(), Toast.LENGTH_LONG).show();
     }
+
+
+   /* public void expandableButton1(View view) {
+        expandableLayout1 = (ExpandableRelativeLayout) findViewById(R.id.expandableLayout1);
+        expandableLayout1.toggle(); // toggle expand and collapse
+    }*/
 
     public class ImageAdapter extends BaseAdapter {
         private LayoutInflater mInflater;

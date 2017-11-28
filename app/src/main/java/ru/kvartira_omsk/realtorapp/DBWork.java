@@ -19,7 +19,7 @@ import ru.kvartira_omsk.realtorapp.dto.ObjectDTO;
 public class DBWork extends SQLiteOpenHelper {
 
     private static final String DATABASE_NAME = "realtorarm.db";
-    private static final int DATABASE_VERSION = 3;
+    private static final int DATABASE_VERSION = 6;
     private static final String DATABASE_TABLE_OBJECTS = "myobjects";
     private static final String DATABASE_TABLE_EVENTS = "myevents";
     private static final String DATABASE_TABLE_CLIENTS = "myclients";
@@ -32,16 +32,60 @@ public class DBWork extends SQLiteOpenHelper {
     public static final String COLUMN_IDCLIENT = "idclient";
     public static final String COLUMN_OBJECTADDRESS = "objectaddress";
     public static final String COLUMN_PRICECLIENT = "priceclient";
+    // изменение 20170824
+    public static final String COLUMN_NUMBERROOM = "numberroom";
+    public static final String COLUMN_NEWBUILD = "newbuild";
+    public static final String COLUMN_ALLSQUARE = "allsquare";
+    public static final String COLUMN_LIVESQUARE = "livesquare";
+    public static final String COLUMN_KITCHENSQUARE = "kitchensquare";
+    public static final String COLUMN_FLOOR = "floor";
+    public static final String COLUMN_ALLFLOOR = "allfloor";
+    public static final String COLUMN_TYPYPLAN = "typeplan";
+    public static final String COLUMN_BATHROOM = "bathroom";
+    public static final String COLUMN_BALCONY = "balcony";
+    public static final String COLUMN_REPAIRS = "repairs";
+    public static final String COLUMN_WINDOWS = "windows";
+    public static final String COLUMN_VIEWFROMWINDOWS = "viewfromwindows";
+    public static final String COLUMN_MATERIAL = "material";
+    public static final String COLUMN_YEARCONSTRUCTION = "yearconstruction";
+    public static final String COLUMN_CONDITIONDEAL = "conditiondeal";
+    public static final String COLUMN_ADDINFO = "addinfo";
+    // изменение 20170922
+    public static final String COLUMN_PRICESALE = "pricesale";
+    public static final String COLUMN_CORNERFLAT = "cornerflat";
 
-
-
+    /*private static final String OBJECTSTABLE_CREATE = "create table "
+            + DATABASE_TABLE_OBJECTS + "(" + COLUMN_ID
+            + " integer primary key autoincrement, " + COLUMN_NAMEOBJECT
+            + " text not null, " + COLUMN_IDCLIENT + " text,"
+            + COLUMN_OBJECTADDRESS + " text,"
+            + COLUMN_PRICECLIENT + " text" + ");";*/
 
     private static final String OBJECTSTABLE_CREATE = "create table "
             + DATABASE_TABLE_OBJECTS + "(" + COLUMN_ID
             + " integer primary key autoincrement, " + COLUMN_NAMEOBJECT
             + " text not null, " + COLUMN_IDCLIENT + " text,"
             + COLUMN_OBJECTADDRESS + " text,"
-            + COLUMN_PRICECLIENT + " text" + ");";
+            + COLUMN_PRICECLIENT + " text,"
+            + COLUMN_NUMBERROOM + " integer,"
+            + COLUMN_NEWBUILD + " numeric,"
+            + COLUMN_ALLSQUARE + " real,"
+            + COLUMN_LIVESQUARE + " real,"
+            + COLUMN_KITCHENSQUARE + " real,"
+            + COLUMN_FLOOR + " integer,"
+            + COLUMN_ALLFLOOR + " integer,"
+            + COLUMN_TYPYPLAN + " integer,"
+            + COLUMN_BATHROOM + " numeric,"
+            + COLUMN_BALCONY + " integer,"
+            + COLUMN_REPAIRS + " integer,"
+            + COLUMN_WINDOWS + " integer,"
+            + COLUMN_VIEWFROMWINDOWS + " integer,"
+            + COLUMN_MATERIAL + " integer,"
+            + COLUMN_YEARCONSTRUCTION + " text,"
+            + COLUMN_CONDITIONDEAL + " integer,"
+            + COLUMN_ADDINFO + " text,"
+            + COLUMN_PRICESALE + " text,"
+            + COLUMN_CORNERFLAT + " integer" + ");";
 
 
     public static final String COLUMN_IDOBJECT = "idobject";
@@ -119,26 +163,63 @@ public class DBWork extends SQLiteOpenHelper {
     @Override
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
         // TODO Auto-generated method stub
-        Log.w(DBWork.class.getName(), "Upgrading database from version "
-                + oldVersion + " to " + newVersion
-                + ", which will destroy all old data");
-        db.execSQL("DROP TABLE IF EXISTS myobjects");
-        db.execSQL("DROP TABLE IF EXISTS myevents");
-        db.execSQL("DROP TABLE IF EXISTS myclients");
-        db.execSQL("DROP TABLE IF EXISTS myinfoobject");
-        db.execSQL("DROP TABLE IF EXISTS myobjectphotos");
-        onCreate(db);
+        if (oldVersion == 3) {
+            db.execSQL("ALTER TABLE myobjects ADD COLUMN " + COLUMN_NUMBERROOM +" integer");
+            db.execSQL("ALTER TABLE myobjects ADD COLUMN " + COLUMN_NEWBUILD +" numeric");
+            db.execSQL("ALTER TABLE myobjects ADD COLUMN " + COLUMN_ALLSQUARE +" real");
+            db.execSQL("ALTER TABLE myobjects ADD COLUMN " + COLUMN_LIVESQUARE +" real");
+            db.execSQL("ALTER TABLE myobjects ADD COLUMN " + COLUMN_KITCHENSQUARE +" real");
+            db.execSQL("ALTER TABLE myobjects ADD COLUMN " + COLUMN_FLOOR +" integer");
+            db.execSQL("ALTER TABLE myobjects ADD COLUMN " + COLUMN_ALLFLOOR +" integer");
+            db.execSQL("ALTER TABLE myobjects ADD COLUMN " + COLUMN_TYPYPLAN +" integer");
+            db.execSQL("ALTER TABLE myobjects ADD COLUMN " + COLUMN_BATHROOM +" numeric");
+            db.execSQL("ALTER TABLE myobjects ADD COLUMN " + COLUMN_BALCONY +" integer");
+            db.execSQL("ALTER TABLE myobjects ADD COLUMN " + COLUMN_REPAIRS +" integer");
+            db.execSQL("ALTER TABLE myobjects ADD COLUMN " + COLUMN_WINDOWS +" integer");
+            db.execSQL("ALTER TABLE myobjects ADD COLUMN " + COLUMN_VIEWFROMWINDOWS +" integer");
+            db.execSQL("ALTER TABLE myobjects ADD COLUMN " + COLUMN_MATERIAL +" integer");
+            db.execSQL("ALTER TABLE myobjects ADD COLUMN " + COLUMN_YEARCONSTRUCTION +" text");
+            db.execSQL("ALTER TABLE myobjects ADD COLUMN " + COLUMN_CONDITIONDEAL +" integer");
+            db.execSQL("ALTER TABLE myobjects ADD COLUMN " + COLUMN_ADDINFO +" text");
+            db.execSQL("ALTER TABLE myobjects ADD COLUMN " + COLUMN_PRICESALE +" text");
+            db.execSQL("ALTER TABLE myobjects ADD COLUMN " + COLUMN_CORNERFLAT +" integer");
+        } else if (oldVersion == 4) {
+            db.execSQL("ALTER TABLE myobjects ADD COLUMN " + COLUMN_PRICESALE +" text");
+            db.execSQL("ALTER TABLE myobjects ADD COLUMN " + COLUMN_CORNERFLAT +" integer");
+        } else if (oldVersion == 5) {
+            db.execSQL("ALTER TABLE myobjects RENAME TO myobjects_old");
+            db.execSQL(OBJECTSTABLE_CREATE);
+            db.execSQL("INSERT INTO myobjects(_id , nameobject, idclient, objectaddress, priceclient, numberroom, newbuild, allsquare, livesquare, kitchensquare, floor, allfloor, typeplan, bathroom, balcony, repairs, windows, viewfromwindows, material, yearconstruction, conditiondeal, addinfo, pricesale, cornerflat)" +
+                    " SELECT _id , nameobject, idclient, objectaddress, priceclient, numberroom, newbuild, allsquare, livesquare, kitchensquare, floor, allfloor, typeplan, bathroom, balcony, repairs, windows, viewfromwindows, material, yearconstruction, conditiondeal, addinfo, pricesale, angelflat" +
+                    " FROM myobjects_old");
+            db.execSQL("DROP TABLE myobjects_old");
+        }else {
+            Log.w(DBWork.class.getName(), "Upgrading database from version "
+                    + oldVersion + " to " + newVersion
+                    + ", which will destroy all old data");
+            db.execSQL("DROP TABLE IF EXISTS myobjects");
+            db.execSQL("DROP TABLE IF EXISTS myevents");
+            db.execSQL("DROP TABLE IF EXISTS myclients");
+            db.execSQL("DROP TABLE IF EXISTS myinfoobject");
+            db.execSQL("DROP TABLE IF EXISTS myobjectphotos");
+            onCreate(db);
+        }
+
     }
 
     /**
      * Создаёт новый элемент списка объектов. Если создан успешно - возвращается
      * номер строки rowId, иначе -1
      */
-    public long createNewObject (String nameobject, String idclient,
-                                 String objectaddress, String priceclient) {
+    public long createNewObject (String nameobject, String idclient, String objectaddress, String priceclient, String numberroom,
+                                 String newbuild, String allsquare, String livesquare, String kitchensquare, String floor, String allfloor,
+                                 String typeplan, String bathroom, String balcony, String repairs, String windows, String viewfromwindows,
+                                 String material, String yearconstruction, String conditional, String addinfo, String pricesale, String cornerflat) {
         SQLiteDatabase db = this.getWritableDatabase();
         ContentValues initialValues = createContentObjects(nameobject, idclient,
-                objectaddress, priceclient);
+                objectaddress, priceclient, numberroom, newbuild, allsquare, livesquare,
+                kitchensquare, floor, allfloor, typeplan, bathroom, balcony, repairs, windows,
+                viewfromwindows, material, yearconstruction, conditional, addinfo, pricesale, cornerflat);
 
         long row = db.insert(DATABASE_TABLE_OBJECTS, null, initialValues);
         db.close();
@@ -198,11 +279,15 @@ public class DBWork extends SQLiteOpenHelper {
      */
 
 
-    public boolean updateObject(long rowId, String nameobject, String idclient,
-                                String objectaddress, String priceclient) {
+    public boolean updateObject(long rowId, String nameobject, String idclient, String objectaddress, String priceclient, String numberroom,
+                                String newbuild, String allsquare, String livesquare, String kitchensquare, String floor, String allfloor,
+                                String typeplan, String bathroom, String balcony, String repairs, String windows, String viewfromwindows,
+                                String material, String yearconstruction, String conditional, String addinfo, String pricesale, String cornerflat) {
         SQLiteDatabase db = this.getWritableDatabase();
         ContentValues updateValues = createContentObjects(nameobject, idclient,
-                objectaddress, priceclient);
+                objectaddress, priceclient, numberroom, newbuild, allsquare, livesquare,
+                kitchensquare, floor, allfloor, typeplan, bathroom, balcony, repairs, windows,
+                viewfromwindows, material, yearconstruction, conditional, addinfo, pricesale, cornerflat);
 
         return db.update(DATABASE_TABLE_OBJECTS, updateValues, COLUMN_ID + "=" + rowId,
                 null) > 0;
@@ -497,7 +582,12 @@ public class DBWork extends SQLiteOpenHelper {
         Cursor mCursor = db.query(true, DATABASE_TABLE_OBJECTS,
                 new String[] { COLUMN_ID,
                         COLUMN_NAMEOBJECT, COLUMN_IDCLIENT, COLUMN_OBJECTADDRESS,
-                        COLUMN_PRICECLIENT }, COLUMN_ID + "=" + rowId, null,
+                        COLUMN_PRICECLIENT, COLUMN_NUMBERROOM, COLUMN_NEWBUILD,
+                        COLUMN_ALLSQUARE, COLUMN_LIVESQUARE, COLUMN_KITCHENSQUARE,
+                        COLUMN_FLOOR, COLUMN_ALLFLOOR, COLUMN_TYPYPLAN, COLUMN_BATHROOM,
+                        COLUMN_BALCONY, COLUMN_REPAIRS, COLUMN_WINDOWS, COLUMN_VIEWFROMWINDOWS,
+                        COLUMN_MATERIAL, COLUMN_YEARCONSTRUCTION, COLUMN_CONDITIONDEAL,
+                        COLUMN_ADDINFO, COLUMN_PRICESALE, COLUMN_CORNERFLAT }, COLUMN_ID + "=" + rowId, null,
                 null, null, null, null);
         if (mCursor != null) {
             mCursor.moveToFirst();
@@ -651,13 +741,34 @@ public class DBWork extends SQLiteOpenHelper {
     /*
 	 * Создаёт пару ключ-значение и записывает в базу
 	 */
-    private ContentValues createContentObjects(String nameobject, String idclient,
-                                               String objectaddress, String priceclient) {
+    private ContentValues createContentObjects(String nameobject, String idclient, String objectaddress, String priceclient, String numberroom,
+                                               String newbuild, String allsquare, String livesquare, String kitchensquare, String floor, String allfloor,
+                                               String typeplan, String bathroom, String balcony, String repairs, String windows, String viewfromwindows,
+                                               String material, String yearconstruction, String conditional, String addinfo, String pricesale, String cornerflat) {
         ContentValues values = new ContentValues();
         values.put(COLUMN_NAMEOBJECT, nameobject);
         values.put(COLUMN_IDCLIENT, idclient);
         values.put(COLUMN_OBJECTADDRESS, objectaddress);
         values.put(COLUMN_PRICECLIENT, priceclient);
+        values.put(COLUMN_NUMBERROOM, numberroom);
+        values.put(COLUMN_NEWBUILD, newbuild);
+        values.put(COLUMN_ALLSQUARE, allsquare);
+        values.put(COLUMN_LIVESQUARE, livesquare);
+        values.put(COLUMN_KITCHENSQUARE, kitchensquare);
+        values.put(COLUMN_FLOOR, floor);
+        values.put(COLUMN_ALLFLOOR, allfloor);
+        values.put(COLUMN_TYPYPLAN, typeplan);
+        values.put(COLUMN_BATHROOM, bathroom);
+        values.put(COLUMN_BALCONY, balcony);
+        values.put(COLUMN_REPAIRS, repairs);
+        values.put(COLUMN_WINDOWS, windows);
+        values.put(COLUMN_VIEWFROMWINDOWS, viewfromwindows);
+        values.put(COLUMN_MATERIAL, material);
+        values.put(COLUMN_YEARCONSTRUCTION, yearconstruction);
+        values.put(COLUMN_CONDITIONDEAL, conditional);
+        values.put(COLUMN_ADDINFO, addinfo);
+        values.put(COLUMN_PRICESALE, pricesale);
+        values.put(COLUMN_CORNERFLAT, cornerflat);
         return values;
     }
 

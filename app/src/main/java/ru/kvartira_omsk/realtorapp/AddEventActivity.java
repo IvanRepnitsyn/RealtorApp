@@ -55,6 +55,10 @@ public class AddEventActivity extends AppCompatActivity {
     private int myMinute;
     private int mySecond;
 
+    private MenuItem okMenuItem;
+    private MenuItem delMenuItem;
+    private MenuItem homeMenuItem;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         setTheme(R.style.AppDefault);
@@ -290,6 +294,14 @@ public class AddEventActivity extends AppCompatActivity {
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.menu_toolbar, menu);
+
+        homeMenuItem = menu.findItem(android.R.id.home);
+        okMenuItem = menu.findItem(R.id.action_ok);
+        delMenuItem = menu.findItem(R.id.action_delete);
+
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+
+        setToolbarAttributes();
         return true;
     }
 
@@ -413,6 +425,11 @@ public class AddEventActivity extends AppCompatActivity {
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         if (mRowId == null) getSupportActionBar().setTitle(R.string.new_event);
         else getSupportActionBar().setTitle(R.string.edit_event);
+    }
+
+    private void setToolbarAttributes() {
+        okMenuItem.setVisible(true);
+        delMenuItem.setVisible(false);
     }
 
     private void loadSpinnerClientsData() {

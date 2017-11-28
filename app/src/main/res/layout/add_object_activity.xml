@@ -24,58 +24,415 @@
                 android:background="?attr/colorPrimary" />
         </android.support.design.widget.AppBarLayout>
 
-        <LinearLayout
-            xmlns:android="http://schemas.android.com/apk/res/android"
+        <android.support.v4.widget.NestedScrollView
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_marginTop="?attr/actionBarSize"
-            android:orientation="vertical"
-            android:paddingLeft="16dp"
-            android:paddingRight="16dp"
-            android:paddingTop="16dp"
-            android:paddingBottom="16dp">
+            app:layout_behavior="@string/appbar_scrolling_view_behavior"
+            android:paddingBottom="88dp"
+            android:clipToPadding="false"
+            android:fillViewport="true">
 
-            <android.support.design.widget.TextInputLayout
-                android:id="@+id/input_object_name"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content">
 
-                <EditText
-                    android:id="@+id/object_name"
-                    android:layout_width="match_parent"
+       <LinearLayout
+           xmlns:android="http://schemas.android.com/apk/res/android"
+           android:layout_width="match_parent"
+           android:layout_height="match_parent"
+           android:layout_marginTop="?attr/actionBarSize"
+           android:orientation="vertical"
+           android:paddingLeft="16dp"
+           android:paddingRight="16dp"
+           android:paddingTop="16dp"
+           android:paddingBottom="16dp">
+
+           <android.support.design.widget.TextInputLayout
+               android:id="@+id/input_object_name"
+               android:layout_width="match_parent"
+               android:layout_height="wrap_content">
+
+               <EditText
+                   android:id="@+id/object_name"
+                   android:layout_width="match_parent"
+                   android:layout_height="wrap_content"
+                   android:singleLine="true"
+                   android:hint="@string/nameobject_hint_name" />
+           </android.support.design.widget.TextInputLayout>
+
+           <android.support.design.widget.TextInputLayout
+               android:id="@+id/input_object_address"
+               android:layout_width="match_parent"
+               android:layout_height="wrap_content">
+
+               <EditText
+                   android:id="@+id/object_address"
+                   android:layout_width="match_parent"
+                   android:layout_height="wrap_content"
+                   android:singleLine="true"
+                   android:hint="@string/nameobject_hint_address" />
+           </android.support.design.widget.TextInputLayout>
+
+           <fr.ganfra.materialspinner.MaterialSpinner
+               android:id="@+id/spinner_addobject_clients"
+               android:layout_width="fill_parent"
+               android:layout_height="wrap_content"
+               app:ms_multiline="true"
+               app:ms_hintColor="@color/hint"
+               app:ms_hint="@string/nameobject_hint_client"
+               app:ms_thickness="2dp"
+               app:ms_arrowColor="@color/colorPrimaryDark"
+               app:ms_arrowSize="16dp"
+               app:ms_alignLabels="true"
+               app:ms_enableFloatingLabel="true"
+               app:ms_floatingLabelColor="@color/floating_label"
+               app:ms_floatingLabelText="Клиент"
+               />
+
+           <fr.ganfra.materialspinner.MaterialSpinner
+               android:id="@+id/spinner_addobject_numberroom"
+               android:layout_width="fill_parent"
+               android:layout_height="wrap_content"
+               app:ms_multiline="true"
+               app:ms_hintColor="@color/hint"
+               app:ms_hint="@string/nameobject_hint_numberroom"
+               app:ms_thickness="2dp"
+               app:ms_arrowColor="@color/colorPrimaryDark"
+               app:ms_arrowSize="16dp"
+               app:ms_alignLabels="true"
+               app:ms_enableFloatingLabel="true"
+               app:ms_floatingLabelColor="@color/floating_label"
+               app:ms_floatingLabelText="Количество комнат"
+               />
+
+
+          <!-- <Button
+               android:id="@+id/expandableButton1"
+               android:layout_width="fill_parent"
+               android:layout_height="wrap_content"
+               android:background="#9c27b0"
+               android:drawableRight="@android:drawable/arrow_down_float"
+               android:onClick="expandableButton1"
+               android:paddingRight="10dp"
+               android:text="What Is Android"
+               android:textColor="#fff" />
+
+           <com.github.aakira.expandablelayout.ExpandableRelativeLayout
+               android:id="@+id/expandableLayout1"
+               android:layout_width="match_parent"
+               android:layout_height="match_parent"
+               android:layout_below="@+id/expandableButton1"
+               android:background="#ba68c8"
+               android:padding="16dp"
+               app:ael_duration="400"
+               app:ael_expanded="false"
+               app:ael_interpolator="accelerate"
+               app:ael_orientation="vertical">
+
+               <TextView
+                   android:layout_width="wrap_content"
+                   android:layout_height="wrap_content"
+                   android:textColor="#FFFFFF"
+                   android:text="Android is an open source and Linux-based Operating System for mobile devices such as smartphones and tablet computers. Android was developed by the Open Handset Alliance, led by Google, and other companies. The first beta version of the Android Software Development Kit (SDK) was released by Google in 2007 where as the first commercial version, Android 1.0, was released in September 2008." />
+           </com.github.aakira.expandablelayout.ExpandableRelativeLayout> -->
+
+            <TextView
+                android:id="@+id/newbuild_textview"
+                android:paddingRight="20dp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/nameobject_hint_newbuild"
+                android:fontFeatureSettings="@string/nameobject_hint_client"
+                android:textSize="18dp"
+                android:fontFamily="@string/nameobject_hint_client"/>
+            <RadioGroup
+                android:id="@+id/radiogroup_newbuild"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:theme="@style/MyRadioButton"
+                android:layout_toRightOf="@+id/newbuild_textview"
+                android:orientation="horizontal"
+                >
+                <RadioButton
+                    android:id="@+id/secondarybuild_radio_btn"
+                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:singleLine="true"
-                    android:hint="@string/nameobject_hint_name" />
-            </android.support.design.widget.TextInputLayout>
-
-            <android.support.design.widget.TextInputLayout
-                android:id="@+id/input_object_address"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content">
-
-                <EditText
-                    android:id="@+id/object_address"
-                    android:layout_width="match_parent"
+                    android:text="@string/secondarybuild"
+                    android:checked="true"
+                    />
+                <RadioButton
+                    android:id="@+id/newbuild_radio_btn"
+                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:singleLine="true"
-                    android:hint="@string/nameobject_hint_address" />
-            </android.support.design.widget.TextInputLayout>
+                    android:text = "@string/newbuild"
+                    android:checked="false"
+                    />
+            </RadioGroup>
+
+            <LinearLayout
+                xmlns:android="http://schemas.android.com/apk/res/android"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+                <android.support.design.widget.TextInputLayout
+                    android:id="@+id/input_object_allsquare"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1">
+
+                    <EditText
+                        android:id="@+id/object_allsquare"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:singleLine="true"
+                        android:inputType="numberDecimal"
+                        android:hint="@string/nameobject_hint_allsquare" />
+                </android.support.design.widget.TextInputLayout>
+
+                <android.support.design.widget.TextInputLayout
+                    android:id="@+id/input_object_livesquare"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1">
+
+                    <EditText
+                        android:id="@+id/object_livesquare"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:singleLine="true"
+                        android:inputType="numberDecimal"
+                        android:hint="@string/nameobject_hint_livesquare" />
+                </android.support.design.widget.TextInputLayout>
+
+                <android.support.design.widget.TextInputLayout
+                    android:id="@+id/input_object_kitchensquare"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1">
+
+                    <EditText
+                        android:id="@+id/object_kitchensquare"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:singleLine="true"
+                        android:inputType="numberDecimal"
+                        android:hint="@string/nameobject_hint_kitchensquare" />
+                </android.support.design.widget.TextInputLayout>
+
+
+            </LinearLayout>
+
+            <LinearLayout
+                xmlns:android="http://schemas.android.com/apk/res/android"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+                <android.support.design.widget.TextInputLayout
+                    android:id="@+id/input_object_floor"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1">
+
+                    <EditText
+                        android:id="@+id/object_floor"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:singleLine="true"
+                        android:inputType="number"
+                        android:hint="@string/nameobject_hint_floor" />
+                </android.support.design.widget.TextInputLayout>
+
+                <android.support.design.widget.TextInputLayout
+                    android:id="@+id/input_object_allfloor"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1">
+
+                    <EditText
+                        android:id="@+id/object_allfloor"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:singleLine="true"
+                        android:inputType="number"
+                        android:hint="@string/nameobject_hint_allfloor" />
+                </android.support.design.widget.TextInputLayout>
+
+            </LinearLayout>
 
             <fr.ganfra.materialspinner.MaterialSpinner
-                android:id="@+id/spinner_addobject_clients"
+                android:id="@+id/spinner_addobject_typeplan"
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
                 app:ms_multiline="true"
                 app:ms_hintColor="@color/hint"
-                app:ms_hint="@string/nameobject_hint_client"
+                app:ms_hint="@string/nameobject_hint_typeplan"
                 app:ms_thickness="2dp"
                 app:ms_arrowColor="@color/colorPrimaryDark"
                 app:ms_arrowSize="16dp"
                 app:ms_alignLabels="true"
                 app:ms_enableFloatingLabel="true"
                 app:ms_floatingLabelColor="@color/floating_label"
-                app:ms_floatingLabelText="Клиент"
+                app:ms_floatingLabelText="Планировка"
                 />
+
+            <fr.ganfra.materialspinner.MaterialSpinner
+                android:id="@+id/spinner_addobject_bathroom"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                app:ms_multiline="true"
+                app:ms_hintColor="@color/hint"
+                app:ms_hint="@string/nameobject_hint_bathroom"
+                app:ms_thickness="2dp"
+                app:ms_arrowColor="@color/colorPrimaryDark"
+                app:ms_arrowSize="16dp"
+                app:ms_alignLabels="true"
+                app:ms_enableFloatingLabel="true"
+                app:ms_floatingLabelColor="@color/floating_label"
+                app:ms_floatingLabelText="Санузел"
+                />
+
+            <fr.ganfra.materialspinner.MaterialSpinner
+                android:id="@+id/spinner_addobject_balcony"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                app:ms_multiline="true"
+                app:ms_hintColor="@color/hint"
+                app:ms_hint="@string/nameobject_hint_balcony"
+                app:ms_thickness="2dp"
+                app:ms_arrowColor="@color/colorPrimaryDark"
+                app:ms_arrowSize="16dp"
+                app:ms_alignLabels="true"
+                app:ms_enableFloatingLabel="true"
+                app:ms_floatingLabelColor="@color/floating_label"
+                app:ms_floatingLabelText="Балкон"
+                />
+
+            <fr.ganfra.materialspinner.MaterialSpinner
+                android:id="@+id/spinner_addobject_repairs"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                app:ms_multiline="true"
+                app:ms_hintColor="@color/hint"
+                app:ms_hint="@string/nameobject_hint_repairs"
+                app:ms_thickness="2dp"
+                app:ms_arrowColor="@color/colorPrimaryDark"
+                app:ms_arrowSize="16dp"
+                app:ms_alignLabels="true"
+                app:ms_enableFloatingLabel="true"
+                app:ms_floatingLabelColor="@color/floating_label"
+                app:ms_floatingLabelText="Ремонт"
+                />
+
+            <fr.ganfra.materialspinner.MaterialSpinner
+                android:id="@+id/spinner_addobject_windows"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                app:ms_multiline="true"
+                app:ms_hintColor="@color/hint"
+                app:ms_hint="@string/nameobject_hint_windows"
+                app:ms_thickness="2dp"
+                app:ms_arrowColor="@color/colorPrimaryDark"
+                app:ms_arrowSize="16dp"
+                app:ms_alignLabels="true"
+                app:ms_enableFloatingLabel="true"
+                app:ms_floatingLabelColor="@color/floating_label"
+                app:ms_floatingLabelText="Окна"
+                />
+
+            <fr.ganfra.materialspinner.MaterialSpinner
+                android:id="@+id/spinner_addobject_viewfromwindows"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                app:ms_multiline="true"
+                app:ms_hintColor="@color/hint"
+                app:ms_hint="@string/nameobject_hint_viewfromwindows"
+                app:ms_thickness="2dp"
+                app:ms_arrowColor="@color/colorPrimaryDark"
+                app:ms_arrowSize="16dp"
+                app:ms_alignLabels="true"
+                app:ms_enableFloatingLabel="true"
+                app:ms_floatingLabelColor="@color/floating_label"
+                app:ms_floatingLabelText="Вид из окон"
+                />
+
+
+
+            <fr.ganfra.materialspinner.MaterialSpinner
+                android:id="@+id/spinner_addobject_material"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                app:ms_multiline="true"
+                app:ms_hintColor="@color/hint"
+                app:ms_hint="@string/nameobject_hint_material"
+                app:ms_thickness="2dp"
+                app:ms_arrowColor="@color/colorPrimaryDark"
+                app:ms_arrowSize="16dp"
+                app:ms_alignLabels="true"
+                app:ms_enableFloatingLabel="true"
+                app:ms_floatingLabelColor="@color/floating_label"
+                app:ms_floatingLabelText="Материал"
+                />
+
+            <android.support.design.widget.TextInputLayout
+                android:id="@+id/input_object_yearconsruction"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <EditText
+                    android:id="@+id/object_yearconstruction"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:singleLine="true"
+                    android:inputType="number"
+                    android:hint="@string/nameobject_hint_yearconstruction" />
+            </android.support.design.widget.TextInputLayout>
+
+            <TextView
+                android:id="@+id/conditiondeal_textview"
+                android:paddingRight="20dp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/nameobject_hint_conditiondeal"
+                android:fontFeatureSettings="@string/nameobject_hint_client"
+                android:textSize="18dp"
+                android:fontFamily="@string/nameobject_hint_client"/>
+
+            <CheckBox
+                android:id="@+id/checkBox_ipoteka"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:theme="@style/MyRadioButton"
+                android:text="@string/nameobject_hint_ipoteka" />
+
+            <CheckBox
+                android:id="@+id/checkBox_clearsale"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:theme="@style/MyRadioButton"
+                android:text="@string/nameobject_hint_clearsale" />
+
+            <CheckBox
+                android:id="@+id/checkBox_change"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:theme="@style/MyRadioButton"
+                android:text="@string/nameobject_hint_change" />
+
+            <TextView
+                android:id="@+id/cornerflat_textview"
+                android:paddingRight="20dp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/nameobject_hint_location"
+                android:fontFeatureSettings="@string/nameobject_hint_client"
+                android:textSize="18dp"
+                android:fontFamily="@string/nameobject_hint_client"/>
+
+            <CheckBox
+                android:id="@+id/checkBox_cornerflat"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:theme="@style/MyRadioButton"
+                android:text="@string/nameobject_hint_corner" />
 
             <android.support.design.widget.TextInputLayout
                 android:id="@+id/input_object_price"
@@ -87,8 +444,40 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:singleLine="true"
+                    android:inputType="numberDecimal"
                     android:hint="@string/nameobject_hint_price" />
             </android.support.design.widget.TextInputLayout>
+
+            <android.support.design.widget.TextInputLayout
+                android:id="@+id/input_object_pricesale"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <EditText
+                    android:id="@+id/object_pricesale"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:singleLine="true"
+                    android:inputType="numberDecimal"
+                    android:hint="@string/nameobject_hint_pricesale" />
+            </android.support.design.widget.TextInputLayout>
+
+            <android.support.design.widget.TextInputLayout
+                android:id="@+id/input_object_addinfo"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <EditText
+                    android:id="@+id/object_addinfo"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:singleLine="true"
+                    android:inputType="textMultiLine"
+                    android:lines="2"
+                    android:hint="@string/nameobject_hint_addinfo" />
+            </android.support.design.widget.TextInputLayout>
+
+
 
             <LinearLayout
                 xmlns:android="http://schemas.android.com/apk/res/android"
@@ -104,25 +493,35 @@
                     android:numColumns="4" />
             </LinearLayout>
 
+           <LinearLayout
+               xmlns:android="http://schemas.android.com/apk/res/android"
+               android:layout_width="match_parent"
+               android:layout_height="match_parent"
+               android:orientation="vertical">
+
+           </LinearLayout>
+
 
 
 
         </LinearLayout>
 
-        <android.support.design.widget.FloatingActionButton
-            android:id="@+id/fabObject"
-            android:layout_height="wrap_content"
-            android:layout_width="wrap_content"
-            android:src="@mipmap/ic_camera_white_24dp"
-            android:layout_gravity="end|bottom"
-            android:layout_marginBottom="@dimen/fab_margin"
-            android:layout_marginRight="@dimen/fab_margin"
-            android:clickable="true"/>
+        </android.support.v4.widget.NestedScrollView>
+
+       <android.support.design.widget.FloatingActionButton
+           android:id="@+id/fabObject"
+           android:layout_height="wrap_content"
+           android:layout_width="wrap_content"
+           android:src="@mipmap/ic_camera_white_24dp"
+           android:layout_gravity="end|bottom"
+           android:layout_marginBottom="@dimen/fab_margin"
+           android:layout_marginRight="@dimen/fab_margin"
+           android:clickable="true"/>
 
 
 
 
-    </android.support.design.widget.CoordinatorLayout>
+   </android.support.design.widget.CoordinatorLayout>
 
 
 

@@ -35,6 +35,10 @@ public class AddClientActivity extends AppCompatActivity {
     private Long mRowId;
     private DBWork mDbHelper;
 
+    private MenuItem okMenuItem;
+    private MenuItem delMenuItem;
+    private MenuItem homeMenuItem;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         setTheme(R.style.AppDefault);
@@ -115,6 +119,14 @@ public class AddClientActivity extends AppCompatActivity {
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.menu_toolbar, menu);
+
+        homeMenuItem = menu.findItem(android.R.id.home);
+        okMenuItem = menu.findItem(R.id.action_ok);
+        delMenuItem = menu.findItem(R.id.action_delete);
+
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+
+        setToolbarAttributes();
         return true;
     }
 
@@ -182,6 +194,7 @@ public class AddClientActivity extends AppCompatActivity {
         //toolbar.setTitle(R.string.new_object);
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        //delMenuItem.setVisible(false);
         if (mRowId == null) getSupportActionBar().setTitle(R.string.new_client);
         else getSupportActionBar().setTitle(R.string.edit_client);
         /*if (toolbar != null) {
@@ -208,6 +221,11 @@ public class AddClientActivity extends AppCompatActivity {
         });
 
         toolbar.inflateMenu(R.menu.menu_toolbar);*/
+    }
+
+    private void setToolbarAttributes() {
+        okMenuItem.setVisible(true);
+        delMenuItem.setVisible(false);
     }
 
     @Override

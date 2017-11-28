@@ -25,6 +25,29 @@
     <string name="nameobject_hint_address">Адрес</string>
     <string name="nameobject_hint_price">Цена клиента</string>
     <string name="nameobject_hint_client">Клиент</string>
+    <string name="nameobject_hint_numberroom">Количество комнат</string>
+    <string name="nameobject_hint_newbuild">Тип объекта</string>
+    <string name="nameobject_hint_allsquare">S общая </string>
+    <string name="nameobject_hint_livesquare">S жилая</string>
+    <string name="nameobject_hint_kitchensquare">S кухни</string>
+    <string name="nameobject_hint_floor">Этаж</string>
+    <string name="nameobject_hint_allfloor">Этажность</string>
+    <string name="nameobject_hint_typeplan">Планировка</string>
+    <string name="nameobject_hint_bathroom">Санузел</string>
+    <string name="nameobject_hint_balcony">Балкон</string>
+    <string name="nameobject_hint_repairs">Ремонт</string>
+    <string name="nameobject_hint_windows">Окна</string>
+    <string name="nameobject_hint_viewfromwindows">Вид из окон</string>
+    <string name="nameobject_hint_material">Материал</string>
+    <string name="nameobject_hint_yearconstruction">Год постройки</string>
+    <string name="nameobject_hint_conditiondeal">Условия продажи</string>
+    <string name="nameobject_hint_ipoteka">Ипотека</string>
+    <string name="nameobject_hint_clearsale">Чистая продажа</string>
+    <string name="nameobject_hint_change">Обмен</string>
+    <string name="nameobject_hint_pricesale">Цена продажи</string>
+    <string name="nameobject_hint_addinfo">Доп. информация</string>
+    <string name="nameobject_hint_location">Угловая</string>
+    <string name="nameobject_hint_corner">Угловая</string>
 
     <string name="nameclient_hint_name">Имя клиента</string>
     <string name="nameclient_hint_type">Тип клиента</string>
@@ -51,6 +74,9 @@
     <string name="deleteclient_dialog_message">Клиент связан с объектами и событиями</string>
 
     <string name="photofolder_name">/RealtorAppPhotos</string>
+
+    <string name="secondarybuild">Вторичный рынок</string>
+    <string name="newbuild">Новостройка</string>
 
 
 </resources>
