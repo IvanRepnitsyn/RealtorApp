@@ -39,7 +39,7 @@ public class AddEventActivity extends AppCompatActivity {
     private static final int LAYOUT = R.layout.add_event_activity;
 
     private Toolbar toolbar;
-    private MaterialSpinner spinner_objects, spinner_clients, spinner_type;
+    private MaterialSpinner spinner_objects, spinner_clients, spinner_type, spinner_reminder;
     private EditText etDateEvent, etTimeEvent, etNameEvent, etPlaceEvent, etInfoEvent;
     private Long mRowId, idClient;
     private DBWork mDbHelper;
@@ -110,6 +110,14 @@ public class AddEventActivity extends AppCompatActivity {
         adapter_type.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         spinner_type = (MaterialSpinner) findViewById(R.id.spinner_addevent_type);
         spinner_type.setAdapter(adapter_type);
+
+        String[] ITEMS_REMINDER = {"Не напоминать", "За 5 минут", "За 15 минут", "За 30 минут", "За 1 час"};
+        ArrayAdapter<String> adapter_reminder = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_item, ITEMS_REMINDER);
+        adapter_type.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        spinner_reminder = (MaterialSpinner) findViewById(R.id.spinner_reminder);
+        spinner_reminder.setAdapter(adapter_reminder);
+
+
 
         populateFields();
 
@@ -390,6 +398,8 @@ public class AddEventActivity extends AppCompatActivity {
                     .getColumnIndexOrThrow(DBWork.COLUMN_PLACEEVENT)));
             etInfoEvent.setText(event.getString(event
                     .getColumnIndexOrThrow(DBWork.COLUMN_INFOEVENT)));
+            spinner_reminder.setSelection(Integer.parseInt(event.getString(event
+                    .getColumnIndexOrThrow(DBWork.COLUMN_REMINDEREVENT))));
 
             stopManagingCursor(event);
             event.close();
@@ -542,6 +552,8 @@ public class AddEventActivity extends AppCompatActivity {
         String timeevent = etTimeEvent.getText().toString();
         String placeevent = etPlaceEvent.getText().toString();
         String infoevent = etInfoEvent.getText().toString();
+        String reminderevent = Integer.toString(spinner_reminder.getSelectedItemPosition());
+
         /*String str = "mRowId=";
         if (mRowId == null) {
             str = str + "null, ";
@@ -560,14 +572,14 @@ public class AddEventActivity extends AppCompatActivity {
         if (mRowId == null) {
             //Toast.makeText(this, idclnt.toString(), Toast.LENGTH_LONG).show();
             Toast.makeText(this, "Create", Toast.LENGTH_LONG).show();
-            long id = mDbHelper.createNewEvent(idobject, idclient, nameevent, typeevent, dateevent, timeevent, placeevent, infoevent);
+            long id = mDbHelper.createNewEvent(idobject, idclient, nameevent, typeevent, dateevent, timeevent, placeevent, infoevent, reminderevent);
             if (id > 0) {
                 mRowId = id;
             }
 
         } else {
             Toast.makeText(this, "Update typeevent" + typeevent, Toast.LENGTH_LONG).show();
-            mDbHelper.updateEvent(mRowId, idobject, idclient ,nameevent, typeevent, dateevent, timeevent, placeevent, infoevent);
+            mDbHelper.updateEvent(mRowId, idobject, idclient ,nameevent, typeevent, dateevent, timeevent, placeevent, infoevent, reminderevent);
         }
 
         stopManagingCursor(cursorObject);

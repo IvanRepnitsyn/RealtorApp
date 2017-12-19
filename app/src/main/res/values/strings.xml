@@ -62,6 +62,8 @@
     <string name="nameevent_hint_time">Время</string>
     <string name="nameevent_hint_place">Место</string>
     <string name="nameevent_hint_info">Инфо</string>
+    <string name="nameevent_hint_reminder">Напомнить</string>
+
     <string name="findclient_hint_info">Информация о нужном объекте</string>
 
     <string name="menu_delete">Удалить</string>

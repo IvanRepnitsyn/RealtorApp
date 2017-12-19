@@ -19,7 +19,7 @@ import ru.kvartira_omsk.realtorapp.dto.ObjectDTO;
 public class DBWork extends SQLiteOpenHelper {
 
     private static final String DATABASE_NAME = "realtorarm.db";
-    private static final int DATABASE_VERSION = 6;
+    private static final int DATABASE_VERSION = 7;
     private static final String DATABASE_TABLE_OBJECTS = "myobjects";
     private static final String DATABASE_TABLE_EVENTS = "myevents";
     private static final String DATABASE_TABLE_CLIENTS = "myclients";
@@ -95,7 +95,8 @@ public class DBWork extends SQLiteOpenHelper {
     public static final String COLUMN_TIMEEVENT = "timeevent";
     public static final String COLUMN_PLACEEVENT = "placeevent";
     public static final String COLUMN_INFOEVENT = "infoevent";
-
+    // изменение 20170824
+    public static final String COLUMN_REMINDEREVENT = "reminder";
 
     private static final String EVENTSTABLE_CREATE = "create table "
             + DATABASE_TABLE_EVENTS + "(" + COLUMN_ID
@@ -107,7 +108,8 @@ public class DBWork extends SQLiteOpenHelper {
             + COLUMN_DATEEVENT + " text,"
             + COLUMN_TIMEEVENT + " text,"
             + COLUMN_PLACEEVENT + " text,"
-            + COLUMN_INFOEVENT + " text" + ");";
+            + COLUMN_INFOEVENT + " text,"
+            + COLUMN_REMINDEREVENT + " text" + ");";
 
 
     public static final String COLUMN_NAMECLIENT = "nameclient";
@@ -183,9 +185,11 @@ public class DBWork extends SQLiteOpenHelper {
             db.execSQL("ALTER TABLE myobjects ADD COLUMN " + COLUMN_ADDINFO +" text");
             db.execSQL("ALTER TABLE myobjects ADD COLUMN " + COLUMN_PRICESALE +" text");
             db.execSQL("ALTER TABLE myobjects ADD COLUMN " + COLUMN_CORNERFLAT +" integer");
+            db.execSQL("ALTER TABLE myevents ADD COLUMN " + COLUMN_REMINDEREVENT +" text");
         } else if (oldVersion == 4) {
             db.execSQL("ALTER TABLE myobjects ADD COLUMN " + COLUMN_PRICESALE +" text");
             db.execSQL("ALTER TABLE myobjects ADD COLUMN " + COLUMN_CORNERFLAT +" integer");
+            db.execSQL("ALTER TABLE myevents ADD COLUMN " + COLUMN_REMINDEREVENT +" text");
         } else if (oldVersion == 5) {
             db.execSQL("ALTER TABLE myobjects RENAME TO myobjects_old");
             db.execSQL(OBJECTSTABLE_CREATE);
@@ -193,6 +197,9 @@ public class DBWork extends SQLiteOpenHelper {
                     " SELECT _id , nameobject, idclient, objectaddress, priceclient, numberroom, newbuild, allsquare, livesquare, kitchensquare, floor, allfloor, typeplan, bathroom, balcony, repairs, windows, viewfromwindows, material, yearconstruction, conditiondeal, addinfo, pricesale, angelflat" +
                     " FROM myobjects_old");
             db.execSQL("DROP TABLE myobjects_old");
+            db.execSQL("ALTER TABLE myevents ADD COLUMN " + COLUMN_REMINDEREVENT +" text");
+        } else if (oldVersion == 6) {
+            db.execSQL("ALTER TABLE myevents ADD COLUMN " + COLUMN_REMINDEREVENT +" text");
         }else {
             Log.w(DBWork.class.getName(), "Upgrading database from version "
                     + oldVersion + " to " + newVersion
@@ -230,10 +237,10 @@ public class DBWork extends SQLiteOpenHelper {
     public long createNewEvent (String idobject, String idclient,  String nameevent,
                                 String typeevent, String dateevent,
                                 String timeevent, String placeevent,
-                                String infoevent) {
+                                String infoevent, String reminderevent) {
         SQLiteDatabase db = this.getWritableDatabase();
         ContentValues initialValues = createContentEvents(idobject, idclient, nameevent,
-                typeevent, dateevent, timeevent, placeevent, infoevent);
+                typeevent, dateevent, timeevent, placeevent, infoevent, reminderevent);
 
         long row = db.insert(DATABASE_TABLE_EVENTS, null, initialValues);
         db.close();
@@ -295,10 +302,11 @@ public class DBWork extends SQLiteOpenHelper {
 
     public boolean updateEvent (long rowId, String idobject, String idclient, String nameevent,
                                 String typeevent, String dateevent,
-                                String timeevent, String placeevent, String infoevent) {
+                                String timeevent, String placeevent,
+                                String infoevent, String reminderevent) {
         SQLiteDatabase db = this.getWritableDatabase();
         ContentValues updateValues = createContentEvents(idobject, idclient, nameevent,
-                typeevent, dateevent, timeevent, placeevent, infoevent);
+                typeevent, dateevent, timeevent, placeevent, infoevent, reminderevent);
 
         return db.update(DATABASE_TABLE_EVENTS, updateValues, COLUMN_ID + "=" + rowId,
                 null) > 0;
@@ -628,7 +636,7 @@ public class DBWork extends SQLiteOpenHelper {
         Cursor mCursor = db.query(true, DATABASE_TABLE_EVENTS,
                 new String[] { COLUMN_ID,
                         COLUMN_IDOBJECT, COLUMN_IDCLIENT, COLUMN_NAMEEVENT, COLUMN_TYPEEVENT,
-                        COLUMN_DATEEVENT, COLUMN_TIMEEVENT, COLUMN_PLACEEVENT, COLUMN_INFOEVENT }, COLUMN_ID + "=" + rowId, null,
+                        COLUMN_DATEEVENT, COLUMN_TIMEEVENT, COLUMN_PLACEEVENT, COLUMN_INFOEVENT, COLUMN_REMINDEREVENT }, COLUMN_ID + "=" + rowId, null,
                 null, null, null, null);
         if (mCursor != null) {
             mCursor.moveToFirst();
@@ -642,7 +650,7 @@ public class DBWork extends SQLiteOpenHelper {
         mCursor = db.query(true, DATABASE_TABLE_EVENTS,
                 new String[] { COLUMN_ID,
                         COLUMN_IDOBJECT, COLUMN_IDCLIENT, COLUMN_NAMEEVENT, COLUMN_TYPEEVENT,
-                        COLUMN_DATEEVENT, COLUMN_TIMEEVENT, COLUMN_PLACEEVENT, COLUMN_INFOEVENT }, COLUMN_NAMEEVENT + "=" + NameEvent, null,
+                        COLUMN_DATEEVENT, COLUMN_TIMEEVENT, COLUMN_PLACEEVENT, COLUMN_INFOEVENT, COLUMN_REMINDEREVENT }, COLUMN_NAMEEVENT + "=" + NameEvent, null,
                 null, null, null, null);
         if (mCursor != null) {
             mCursor.moveToFirst();
@@ -656,7 +664,7 @@ public class DBWork extends SQLiteOpenHelper {
         mCursor = db.query(true, DATABASE_TABLE_EVENTS,
                 new String[] { COLUMN_ID,
                         COLUMN_IDOBJECT, COLUMN_IDCLIENT, COLUMN_NAMEEVENT, COLUMN_TYPEEVENT,
-                        COLUMN_DATEEVENT, COLUMN_TIMEEVENT, COLUMN_PLACEEVENT, COLUMN_INFOEVENT }, COLUMN_IDCLIENT + "=" + idClient, null,
+                        COLUMN_DATEEVENT, COLUMN_TIMEEVENT, COLUMN_PLACEEVENT, COLUMN_INFOEVENT, COLUMN_REMINDEREVENT }, COLUMN_IDCLIENT + "=" + idClient, null,
                 null, null, null, null);
         if (mCursor != null) {
             mCursor.moveToFirst();
@@ -670,7 +678,7 @@ public class DBWork extends SQLiteOpenHelper {
         mCursor = db.query(true, DATABASE_TABLE_EVENTS,
                 new String[] { COLUMN_ID,
                         COLUMN_IDOBJECT, COLUMN_IDCLIENT, COLUMN_NAMEEVENT, COLUMN_TYPEEVENT,
-                        COLUMN_DATEEVENT, COLUMN_TIMEEVENT, COLUMN_PLACEEVENT, COLUMN_INFOEVENT }, COLUMN_IDOBJECT + "=" + idObject, null,
+                        COLUMN_DATEEVENT, COLUMN_TIMEEVENT, COLUMN_PLACEEVENT, COLUMN_INFOEVENT, COLUMN_REMINDEREVENT }, COLUMN_IDOBJECT + "=" + idObject, null,
                 null, null, null, null);
         if (mCursor != null) {
             mCursor.moveToFirst();
@@ -775,7 +783,7 @@ public class DBWork extends SQLiteOpenHelper {
     private ContentValues createContentEvents(String idobject, String idclient, String nameevent,
                                               String typeevent, String dateevent,
                                               String timeevent, String placeevent,
-                                              String infoevent) {
+                                              String infoevent, String reminderevent) {
         ContentValues values = new ContentValues();
         values.put(COLUMN_IDOBJECT, idobject);
         values.put(COLUMN_IDCLIENT, idclient);
@@ -785,6 +793,7 @@ public class DBWork extends SQLiteOpenHelper {
         values.put(COLUMN_TIMEEVENT, timeevent);
         values.put(COLUMN_PLACEEVENT, placeevent);
         values.put(COLUMN_INFOEVENT, infoevent);
+        values.put(COLUMN_REMINDEREVENT, reminderevent);
         return values;
     }
 

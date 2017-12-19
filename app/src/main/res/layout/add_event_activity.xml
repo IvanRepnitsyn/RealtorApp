@@ -24,6 +24,14 @@
                 android:background="?attr/colorPrimary" />
         </android.support.design.widget.AppBarLayout>
 
+        <android.support.v4.widget.NestedScrollView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            app:layout_behavior="@string/appbar_scrolling_view_behavior"
+            android:paddingBottom="88dp"
+            android:clipToPadding="false"
+            android:fillViewport="true">
+
         <LinearLayout
             xmlns:android="http://schemas.android.com/apk/res/android"
             android:layout_width="match_parent"
@@ -146,11 +154,27 @@
                     android:hint="@string/nameevent_hint_info" />
             </android.support.design.widget.TextInputLayout>
 
+            <fr.ganfra.materialspinner.MaterialSpinner
+                android:id="@+id/spinner_reminder"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                app:ms_multiline="true"
+                app:ms_hintColor="@color/hint"
+                app:ms_hint="@string/nameevent_hint_reminder"
+                app:ms_thickness="2dp"
+                app:ms_arrowColor="@color/colorPrimaryDark"
+                app:ms_arrowSize="16dp"
+                app:ms_alignLabels="true"
+                app:ms_enableFloatingLabel="true"
+                app:ms_floatingLabelColor="@color/floating_label"
+                app:ms_floatingLabelText="Напомнить"
+                />
+
 
 
         </LinearLayout>
 
-
+        </android.support.v4.widget.NestedScrollView>
 
     </android.support.design.widget.CoordinatorLayout>
 
