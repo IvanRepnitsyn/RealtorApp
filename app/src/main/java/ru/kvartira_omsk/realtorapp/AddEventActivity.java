@@ -1,13 +1,17 @@
 package ru.kvartira_omsk.realtorapp;
 
+import android.app.AlarmManager;
 import android.app.DatePickerDialog;
 import android.app.DatePickerDialog.OnDateSetListener;
 
 import android.app.Dialog;
+import android.app.PendingIntent;
 import android.app.TimePickerDialog;
+import android.content.Context;
 import android.content.Intent;
 import android.database.Cursor;
 import android.os.Bundle;
+import android.os.SystemClock;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.text.TextUtils;
@@ -553,7 +557,9 @@ public class AddEventActivity extends AppCompatActivity {
         String placeevent = etPlaceEvent.getText().toString();
         String infoevent = etInfoEvent.getText().toString();
         String reminderevent = Integer.toString(spinner_reminder.getSelectedItemPosition());
-
+        //Notification
+        if (spinner_reminder.getSelectedItemPosition() != 1) startNotification();
+        //Notification
         /*String str = "mRowId=";
         if (mRowId == null) {
             str = str + "null, ";
@@ -594,6 +600,18 @@ public class AddEventActivity extends AppCompatActivity {
                 mDbHelper.updateEvent(mRowId, idobject, idclient ,nameevent, typeevent, dateevent, timeevent, placeevent, infoevent);
             }
         }*/
+    }
+
+    private void startNotification() {
+        AlarmManager alarmManager = (AlarmManager) getSystemService(Context.ALARM_SERVICE);
+        Intent alarmIntent;
+        PendingIntent alarmPendingIntent;
+
+        alarmIntent = new Intent(this, AlarmNotification.class);
+        alarmPendingIntent = PendingIntent.getBroadcast(this, 0, alarmIntent, 0);
+
+        alarmManager.set(AlarmManager.RTC_WAKEUP, SystemClock.elapsedRealtime()+3000, alarmPendingIntent);
+
     }
 
     @Override
