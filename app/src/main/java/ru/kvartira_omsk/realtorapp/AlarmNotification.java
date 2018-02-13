@@ -23,7 +23,7 @@ public class AlarmNotification extends BroadcastReceiver {
                 .setWhen(System.currentTimeMillis())
                 .setSmallIcon(R.mipmap.ic_launcher)
                 .setContentTitle("Напоминание")
-                .setContentText("Текст напоминания")
+                .setContentText("Напоминание")
                 .setDefaults(Notification.DEFAULT_LIGHTS | Notification.DEFAULT_SOUND)
                 .setContentInfo("Info");
 

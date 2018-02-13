@@ -558,6 +558,7 @@ public class AddEventActivity extends AppCompatActivity {
         String infoevent = etInfoEvent.getText().toString();
         String reminderevent = Integer.toString(spinner_reminder.getSelectedItemPosition());
         //Notification
+        //public String strNotificationText = "Звонок";
         if (spinner_reminder.getSelectedItemPosition() != 1) startNotification();
         //Notification
         /*String str = "mRowId=";
