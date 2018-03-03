@@ -14,9 +14,12 @@ import android.support.v7.app.NotificationCompat;
  */
 public class AlarmNotification extends BroadcastReceiver {
 
+    public static String NOTIFICATION_ID = "notification-id";
+    public static String NOTIFICATION = "notification";
+
     @Override
     public void onReceive(Context context, Intent intent) {
-        NotificationCompat.Builder builder = new NotificationCompat.Builder(context);
+        /*NotificationCompat.Builder builder = new NotificationCompat.Builder(context);
 
         builder.setAutoCancel(true)
                 .setDefaults(Notification.DEFAULT_ALL)
@@ -25,9 +28,13 @@ public class AlarmNotification extends BroadcastReceiver {
                 .setContentTitle("Напоминание")
                 .setContentText("Напоминание")
                 .setDefaults(Notification.DEFAULT_LIGHTS | Notification.DEFAULT_SOUND)
-                .setContentInfo("Info");
+                .setContentInfo("Info");*/
 
         NotificationManager notificationManager = (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
-        notificationManager.notify(1, builder.build());
+
+        Notification notification = intent.getParcelableExtra(NOTIFICATION);
+        int id = intent.getIntExtra(NOTIFICATION_ID, 0);
+        notificationManager.notify(id, notification);
+        //notificationManager.notify(1, builder.build());
     }
 }

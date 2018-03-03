@@ -1,5 +1,6 @@
 package ru.kvartira_omsk.realtorapp.fragment;
 
+import android.app.AlarmManager;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
@@ -93,6 +94,9 @@ public class EventsFragment extends AbstractTabFragment {
                     break;
                 case 2:
                     dbHelper.deleteEvent(clickedItemPosition);
+                    /*AlarmManager alarmManager = (AlarmManager) context.getSystemService(Context.ALARM_SERVICE);
+                    int idNotify = (int) clickedItemPosition;
+                    alarmManager.cancel(idNotify);*/
                     Toast.makeText(this.getActivity(), "Delete event "+clickedItemPosition, Toast.LENGTH_LONG).show();
                     fillData();
                     //return true;

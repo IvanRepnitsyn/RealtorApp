@@ -5,6 +5,7 @@ import android.app.DatePickerDialog;
 import android.app.DatePickerDialog.OnDateSetListener;
 
 import android.app.Dialog;
+import android.app.Notification;
 import android.app.PendingIntent;
 import android.app.TimePickerDialog;
 import android.content.Context;
@@ -30,6 +31,8 @@ import android.widget.Toast;
 //import com.wdullaer.materialdatetimepicker.time.TimePickerDialog;
 // com.wdullaer.materialdatetimepicker.time.TimePickerDialog.OnTimeSetListener;
 
+import java.sql.Date;
+import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.List;
 
@@ -115,7 +118,7 @@ public class AddEventActivity extends AppCompatActivity {
         spinner_type = (MaterialSpinner) findViewById(R.id.spinner_addevent_type);
         spinner_type.setAdapter(adapter_type);
 
-        String[] ITEMS_REMINDER = {"Не напоминать", "За 5 минут", "За 15 минут", "За 30 минут", "За 1 час"};
+        String[] ITEMS_REMINDER = {"Не напоминать", "За 5 минут", "За 15 минут", "За 30 минут", "За 1 час", "За 2 часа"};
         ArrayAdapter<String> adapter_reminder = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_item, ITEMS_REMINDER);
         adapter_type.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         spinner_reminder = (MaterialSpinner) findViewById(R.id.spinner_reminder);
@@ -559,7 +562,7 @@ public class AddEventActivity extends AppCompatActivity {
         String reminderevent = Integer.toString(spinner_reminder.getSelectedItemPosition());
         //Notification
         //public String strNotificationText = "Звонок";
-        if (spinner_reminder.getSelectedItemPosition() != 1) startNotification();
+        //if (spinner_reminder.getSelectedItemPosition() != 1) startNotification();
         //Notification
         /*String str = "mRowId=";
         if (mRowId == null) {
@@ -589,6 +592,53 @@ public class AddEventActivity extends AppCompatActivity {
             mDbHelper.updateEvent(mRowId, idobject, idclient ,nameevent, typeevent, dateevent, timeevent, placeevent, infoevent, reminderevent);
         }
 
+        if (spinner_reminder.getSelectedItemPosition() > 1) {
+            Calendar alarmFor =  Calendar.getInstance();
+            //SimpleDateFormat sdf = new SimpleDateFormat("dd.MM.yyyy hh:mm");
+            SimpleDateFormat sdf  = new SimpleDateFormat("dd.MM.yyyy hh:mm:ss");
+            String dateInString = dateevent + " " + timeevent + ":00";
+            Toast.makeText(this, dateInString, Toast.LENGTH_LONG).show();
+            //String dateInString = "01.04.2018 12:25";
+            //Date setDate = sdf.parse(dateInString);
+            try {
+                alarmFor.setTime(sdf.parse(dateInString));
+            } catch (Exception e) {
+                Toast.makeText(this, "Ошибка даты", Toast.LENGTH_LONG).show();
+            }
+
+            String strTextNotification = null;
+            if (spinner_type.getSelectedItemPosition() == 1) {
+                strTextNotification = "Встреча " + "\n" + "Клиент: " + spinner_clients.getSelectedItem().toString() + "\n" + "Объект: " + spinner_objects.getSelectedItem().toString() + "\n" + "Время: " + timeevent;
+            }
+            if (spinner_type.getSelectedItemPosition() == 2) {
+                strTextNotification = "Звонок" + "\n" + "Клиент: " + spinner_clients.getSelectedItem().toString() + "\n" + "Объект: " + spinner_objects.getSelectedItem().toString() + "\n" + "Время: " + timeevent;
+            }
+            if (spinner_type.getSelectedItemPosition() == 3) {
+                strTextNotification = "Показ" + "\n" + "Клиент: " + spinner_clients.getSelectedItem().toString() + "\n" + "Объект: " + spinner_objects.getSelectedItem().toString() + "\n" + "Время: " + timeevent;
+            }
+            if (spinner_type.getSelectedItemPosition() == 4) {
+                strTextNotification = "Сделка" + "\n" + "Клиент: " + spinner_clients.getSelectedItem().toString() + "\n" + "Объект: " + spinner_objects.getSelectedItem().toString() + "\n" + "Время: " + timeevent;
+            }
+
+            if (spinner_reminder.getSelectedItemPosition() == 2) {
+                alarmFor.roll(Calendar.MINUTE, -5);
+            }
+            if (spinner_reminder.getSelectedItemPosition() == 3) {
+                alarmFor.roll(Calendar.MINUTE, -15);
+            }
+            if (spinner_reminder.getSelectedItemPosition() == 4) {
+                alarmFor.roll(Calendar.MINUTE, -30);
+            }
+            if (spinner_reminder.getSelectedItemPosition() == 5) {
+                alarmFor.roll(Calendar.HOUR, -1);
+            }
+            if (spinner_reminder.getSelectedItemPosition() == 6) {
+                alarmFor.roll(Calendar.HOUR, -2);
+            }
+            startNotification(getNotification(strTextNotification), spinner_reminder.getSelectedItemPosition(), alarmFor);
+
+        }
+
         stopManagingCursor(cursorObject);
         stopManagingCursor(cursorClient);
         cursorObject.close();
@@ -603,16 +653,32 @@ public class AddEventActivity extends AppCompatActivity {
         }*/
     }
 
-    private void startNotification() {
+    private void startNotification(Notification notification, int numDelay, Calendar dateEvent) {
         AlarmManager alarmManager = (AlarmManager) getSystemService(Context.ALARM_SERVICE);
         Intent alarmIntent;
         PendingIntent alarmPendingIntent;
 
         alarmIntent = new Intent(this, AlarmNotification.class);
+        alarmIntent.putExtra(AlarmNotification.NOTIFICATION_ID, mRowId);
+        alarmIntent.putExtra(AlarmNotification.NOTIFICATION, notification);
         alarmPendingIntent = PendingIntent.getBroadcast(this, 0, alarmIntent, 0);
 
-        alarmManager.set(AlarmManager.RTC_WAKEUP, SystemClock.elapsedRealtime()+3000, alarmPendingIntent);
+        Toast.makeText(this,"Set notification " + dateEvent, Toast.LENGTH_LONG).show();
 
+        alarmManager.set(AlarmManager.RTC_WAKEUP, dateEvent.getTimeInMillis(), alarmPendingIntent);
+        //alarmManager.set(AlarmManager.RTC_WAKEUP, SystemClock.elapsedRealtime() + 5000, alarmPendingIntent);
+
+    }
+
+    private Notification getNotification(String content) {
+        Notification.Builder builder = new Notification.Builder(this);
+        builder.setAutoCancel(true);
+        builder.setContentTitle("Scheduled Notification");
+        builder.setContentText(content);
+        builder.setStyle(new Notification.BigTextStyle().bigText(content));
+        builder.setSmallIcon(R.mipmap.ic_launcher);
+        builder.setWhen(0);
+        return builder.build();
     }
 
     @Override
@@ -646,4 +712,6 @@ public class AddEventActivity extends AppCompatActivity {
                 return super.onOptionsItemSelected(item);
         }
     }
+
+
 }
