@@ -621,19 +621,26 @@ public class AddEventActivity extends AppCompatActivity {
             }
 
             if (spinner_reminder.getSelectedItemPosition() == 2) {
-                alarmFor.roll(Calendar.MINUTE, -5);
+                alarmFor.add(Calendar.MINUTE, -5);
+                //if (Calendar.MINUTE < 5) alarmFor.roll(Calendar.HOUR, -1);
+                //if (Calendar.HOUR = 23) alarmFor.roll(Calendar.DAY_OF_MONTH, -1);
+
             }
             if (spinner_reminder.getSelectedItemPosition() == 3) {
-                alarmFor.roll(Calendar.MINUTE, -15);
+                alarmFor.add(Calendar.MINUTE, -15);
+                //if (Calendar.MINUTE < 15) alarmFor.roll(Calendar.HOUR, -1);
             }
             if (spinner_reminder.getSelectedItemPosition() == 4) {
-                alarmFor.roll(Calendar.MINUTE, -30);
+                alarmFor.add(Calendar.MINUTE, -30);
+                //if (Calendar.MINUTE < 30) alarmFor.roll(Calendar.HOUR, -1);
             }
             if (spinner_reminder.getSelectedItemPosition() == 5) {
-                alarmFor.roll(Calendar.HOUR, -1);
+                alarmFor.add(Calendar.HOUR, -1);
+                //if (Calendar.HOUR < 1) alarmFor.roll(Calendar.DAY_OF_MONTH, -1);
             }
             if (spinner_reminder.getSelectedItemPosition() == 6) {
-                alarmFor.roll(Calendar.HOUR, -2);
+                alarmFor.add(Calendar.HOUR, -2);
+                //if (Calendar.HOUR < 2) alarmFor.roll(Calendar.DAY_OF_MONTH, -1);
             }
             startNotification(getNotification(strTextNotification), spinner_reminder.getSelectedItemPosition(), alarmFor);
 
@@ -663,7 +670,7 @@ public class AddEventActivity extends AppCompatActivity {
         alarmIntent.putExtra(AlarmNotification.NOTIFICATION, notification);
         alarmPendingIntent = PendingIntent.getBroadcast(this, 0, alarmIntent, 0);
 
-        Toast.makeText(this,"Set notification " + dateEvent, Toast.LENGTH_LONG).show();
+        Toast.makeText(this,"Set notification " + dateEvent + " IDNotification: " + mRowId, Toast.LENGTH_LONG).show();
 
         alarmManager.set(AlarmManager.RTC_WAKEUP, dateEvent.getTimeInMillis(), alarmPendingIntent);
         //alarmManager.set(AlarmManager.RTC_WAKEUP, SystemClock.elapsedRealtime() + 5000, alarmPendingIntent);

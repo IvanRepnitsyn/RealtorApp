@@ -8,6 +8,8 @@ import android.content.Intent;
 import android.content.SyncAdapterType;
 import android.provider.Settings;
 import android.support.v7.app.NotificationCompat;
+import android.view.ViewDebug;
+import android.widget.Toast;
 
 /**
  * Created by Иван on 15.01.2018.
@@ -34,6 +36,7 @@ public class AlarmNotification extends BroadcastReceiver {
 
         Notification notification = intent.getParcelableExtra(NOTIFICATION);
         int id = intent.getIntExtra(NOTIFICATION_ID, 0);
+        //Toast.makeText( ,"IDNotification: " + Integer.toString(id), Toast.LENGTH_LONG).show();
         notificationManager.notify(id, notification);
         //notificationManager.notify(1, builder.build());
     }
