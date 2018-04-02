@@ -11,6 +11,8 @@ import android.app.TimePickerDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.database.Cursor;
+import android.media.RingtoneManager;
+import android.net.Uri;
 import android.os.Bundle;
 import android.os.SystemClock;
 import android.support.v7.app.AppCompatActivity;
@@ -289,9 +291,13 @@ public class AddEventActivity extends AppCompatActivity {
         @Override
         public void onDateSet(DatePicker view, int year, int monthOfYear, int dayOfMonth) {
             myYear = year;
+            String strNullMonth = "";
             myMonth = monthOfYear+1;
+            if (myMonth <= 9) strNullMonth = "0";
+            String strNullDay = "";
             myDay = dayOfMonth;
-            etDateEvent.setText(myDay + "." + myMonth + "." + myYear);
+            if (myDay <= 9) strNullDay = "0";
+            etDateEvent.setText(strNullDay + myDay + "." + strNullMonth + myMonth + "." + myYear);
         }
     };
 
@@ -299,9 +305,13 @@ public class AddEventActivity extends AppCompatActivity {
             = new TimePickerDialog.OnTimeSetListener() {
         @Override
         public void onTimeSet(TimePicker view, int hourOfDay, int minute) {
+            String strNullHour = "";
             myHour = hourOfDay;
+            if (myHour <= 9) strNullHour = "0";
+            String strNullMinute = "";
             myMinute = minute;
-            etTimeEvent.setText(myHour + ":" + myMinute);
+            if (myMinute <= 9) strNullMinute = "0";
+            etTimeEvent.setText(strNullHour + myHour + ":" + strNullMinute + myMinute);
         }
 
     };
@@ -685,6 +695,9 @@ public class AddEventActivity extends AppCompatActivity {
         builder.setStyle(new Notification.BigTextStyle().bigText(content));
         builder.setSmallIcon(R.mipmap.ic_launcher);
         builder.setWhen(0);
+        Uri alarmSound = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION);
+        builder.setSound(alarmSound);
+        builder.setVibrate(new long[] { 1000, 1000, 1000, 1000, 1000 });
         return builder.build();
     }
 
