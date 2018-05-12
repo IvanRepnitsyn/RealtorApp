@@ -1,6 +1,7 @@
 package ru.kvartira_omsk.realtorapp.adapter;
 
 import android.content.Context;
+import android.content.Intent;
 import android.support.v7.widget.RecyclerView;
 import android.view.ContextMenu;
 import android.view.LayoutInflater;
@@ -12,8 +13,10 @@ import android.widget.Toast;
 
 import java.util.List;
 
+import ru.kvartira_omsk.realtorapp.AddObjectActivity;
 import ru.kvartira_omsk.realtorapp.DBWork;
 import ru.kvartira_omsk.realtorapp.R;
+import ru.kvartira_omsk.realtorapp.ViewObjectActivity;
 import ru.kvartira_omsk.realtorapp.dto.ClientDTO;
 import ru.kvartira_omsk.realtorapp.dto.ObjectDTO;
 
@@ -75,10 +78,11 @@ public class ObjectsListAdapter extends RecyclerView.Adapter<ObjectsListAdapter.
         return data.size();
     }
 
-    public static class ObjectsViewHolder extends RecyclerView.ViewHolder implements View.OnCreateContextMenuListener {
+    public static class ObjectsViewHolder extends RecyclerView.ViewHolder implements View.OnCreateContextMenuListener, View.OnClickListener {
         //CardView cardViewClient;
         TextView titleObject;
         ImageView popupMenuIconObject;
+        private static final int OBJECT_ACTIVITY_VIEW = 16;
 
         public ObjectsViewHolder(View itemView) {
             super(itemView);
@@ -89,6 +93,7 @@ public class ObjectsListAdapter extends RecyclerView.Adapter<ObjectsListAdapter.
 
             popupMenuIconObject = (ImageView) itemView.findViewById(R.id.popupmenu_object_icon);
             popupMenuIconObject.setOnCreateContextMenuListener(this);
+            itemView.setOnClickListener(this);
             //popupMenuIconObject.setOnClickListener(this);
             //Исправить
         }
@@ -122,6 +127,17 @@ public class ObjectsListAdapter extends RecyclerView.Adapter<ObjectsListAdapter.
             menu.add(1, 2, idObject, R.string.menu_delete);
 
 
+        }
+
+        @Override
+        public void onClick(View v) {
+            //Toast.makeText(v.getContext(),"Click item", Toast.LENGTH_LONG ).show();
+            Intent intent_viewobject = new Intent(v.getContext(), ViewObjectActivity.class);
+            ObjectDTO item = data.get(getPosition());
+            long selPosition = (long) Long.valueOf(item.id);
+            intent_viewobject.putExtra("idviewobject", selPosition);
+            v.getContext().startActivity(intent_viewobject);
+            Toast.makeText(v.getContext(),"Clicked item " +selPosition, Toast.LENGTH_LONG ).show();
         }
 
 

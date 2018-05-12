@@ -39,6 +39,11 @@
             android:label="addclient">
         </activity>
 
+        <activity
+            android:name=".ViewObjectActivity"
+            android:label="viewobject">
+        </activity>
+
 
 
         <activity

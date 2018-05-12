@@ -48,6 +48,7 @@
     <string name="nameobject_hint_addinfo">Доп. информация</string>
     <string name="nameobject_hint_location">Угловая</string>
     <string name="nameobject_hint_corner">Угловая</string>
+    <string name="nameobject_hint_photo">Фото</string>
 
     <string name="nameclient_hint_name">Имя клиента</string>
     <string name="nameclient_hint_type">Тип клиента</string>

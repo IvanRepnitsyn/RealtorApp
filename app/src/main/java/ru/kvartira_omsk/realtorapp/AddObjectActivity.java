@@ -98,12 +98,16 @@ public class AddObjectActivity extends AppCompatActivity {
     private MenuItem delMenuItem;
     private MenuItem homeMenuItem;
 
+    private Boolean isAddImage;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         setTheme(R.style.AppDefault);
         super.onCreate(savedInstanceState);
         setContentView(LAYOUT);
+
+        isAddImage = false;
 
         mDbHelper = new DBWork(this);
 
@@ -163,7 +167,7 @@ public class AddObjectActivity extends AppCompatActivity {
             Toast.makeText(this, "Object Null", Toast.LENGTH_LONG).show();
         }
 
-        Toast.makeText(this, "Variant 35", Toast.LENGTH_LONG).show();
+        //Toast.makeText(this, "Variant 35", Toast.LENGTH_LONG).show();
 
         loadSpinnerClientsData();
         loadSpinnerNumberroom();
@@ -279,13 +283,13 @@ public class AddObjectActivity extends AppCompatActivity {
         if ((mRowId != null) && (mRowId != 0)) {
             //Toast.makeText(this, "ID pF "+mRowId, Toast.LENGTH_LONG).show();
             Cursor object = mDbHelper.getObject(mRowId);
-            if (object != null) Toast.makeText(this, "Получилось object", Toast.LENGTH_LONG).show();
-            else Toast.makeText(this, "Не получилось object", Toast.LENGTH_LONG).show();
+            /*if (object != null) Toast.makeText(this, "Получилось object", Toast.LENGTH_LONG).show();
+            else Toast.makeText(this, "Не получилось object", Toast.LENGTH_LONG).show();*/
             startManagingCursor(object);
 
             String nameObj = object.getString(object
                     .getColumnIndexOrThrow(DBWork.COLUMN_NAMEOBJECT));
-            Toast.makeText(this, nameObj, Toast.LENGTH_LONG).show();
+            //Toast.makeText(this, nameObj, Toast.LENGTH_LONG).show();
             Long idclient = object.getLong(object.getColumnIndexOrThrow(DBWork.COLUMN_IDCLIENT));
             int idnumberroom = object.getInt(object.getColumnIndexOrThrow(DBWork.COLUMN_NUMBERROOM));
             int idnewbuild = object.getInt(object.getColumnIndexOrThrow(DBWork.COLUMN_NEWBUILD));
@@ -301,19 +305,19 @@ public class AddObjectActivity extends AppCompatActivity {
             /*float allsquare = object.getFloat(object.getColumnIndexOrThrow(DBWork.COLUMN_ALLSQUARE));
             float livesquare = object.getFloat(object.getColumnIndexOrThrow(DBWork.COLUMN_LIVESQUARE));
             float kitchensquare = object.getFloat(object.getColumnIndexOrThrow(DBWork.COLUMN_KITCHENSQUARE));*/
-            Toast.makeText(this, "Newbuild " + idnewbuild, Toast.LENGTH_LONG).show();
+            //Toast.makeText(this, "Newbuild " + idnewbuild, Toast.LENGTH_LONG).show();
             Cursor clientcursor = mDbHelper.getClient(idclient);
             String clientstr = clientcursor.getString(clientcursor.getColumnIndexOrThrow(DBWork.COLUMN_NAMECLIENT));
-            Toast.makeText(this, "Клиент: " + clientstr, Toast.LENGTH_LONG).show();
+            //Toast.makeText(this, "Клиент: " + clientstr, Toast.LENGTH_LONG).show();
             //spinner.setSelection(getIndex(spinner, clientstr));
             SpinnerAdapter adapterclnt = (SpinnerAdapter) spinner_clients.getAdapter();
             //int positionclnt = adapterclnt.getPosition(clientstr);
             String countStr = Integer.toString(spinner_clients.getCount());
-            Toast.makeText(this, "Count " + countStr, Toast.LENGTH_LONG).show();
+            //Toast.makeText(this, "Count " + countStr, Toast.LENGTH_LONG).show();
             int index = 0;
             for (int i=1;i<spinner_clients.getCount();i++){
                 if (spinner_clients.getItemAtPosition(i).toString().equals(clientstr)){
-                    Toast.makeText(this, Integer.toString(i+1), Toast.LENGTH_LONG).show();
+                    //Toast.makeText(this, Integer.toString(i+1), Toast.LENGTH_LONG).show();
                     index = i;
                     break;
                 }
@@ -472,7 +476,7 @@ public class AddObjectActivity extends AppCompatActivity {
             int index = 0;
             for (int i=1;i<spinner_clients.getCount();i++){
                 if (spinner_clients.getItemAtPosition(i).toString().equals(clientstr)){
-                    Toast.makeText(this, Integer.toString(i+1), Toast.LENGTH_LONG).show();
+                    //Toast.makeText(this, Integer.toString(i+1), Toast.LENGTH_LONG).show();
                     index = i;
                     break;
                 }
@@ -496,7 +500,7 @@ public class AddObjectActivity extends AppCompatActivity {
 
             public void onItemClick(AdapterView<?> parent, View v,
                                     int position, long id) {
-                Toast.makeText(AddObjectActivity.this, "Short53", Toast.LENGTH_LONG).show();
+                //Toast.makeText(AddObjectActivity.this, "Short53", Toast.LENGTH_LONG).show();
                 if (imageAdapter.checkSelectedItems()) {
                     ifSelectItem = true;
                     //toolbar.setBackgroundColor(Color.CYAN);
@@ -515,7 +519,7 @@ public class AddObjectActivity extends AppCompatActivity {
         imagegrid.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
             public boolean onItemLongClick(AdapterView<?> parent, View v,
                                            int position, long id) {
-                Toast.makeText(AddObjectActivity.this, "Long53", Toast.LENGTH_LONG).show();
+                //Toast.makeText(AddObjectActivity.this, "Long53", Toast.LENGTH_LONG).show();
                 //imageAdapter.setSelectedPosition(position);
                 //imageAdapter.selectedPosition = position;
                 imageAdapter.putCheckedItems(position);
@@ -646,7 +650,7 @@ public class AddObjectActivity extends AppCompatActivity {
     }
 
     private void loadSpinnerRepairs() {
-        String[] ITEMSREPAIRS = {"евроремонт", "дизайнерский ремонт", "косметический ремонт", "требует ремонта", "ремонт от застройщика", "чистовая отделка", "черновая отделка"};
+        String[] ITEMSREPAIRS = {"евроремонт", "дизайнерский ремонт", "требует ремонта", "ремонт от застройщика", "чистовая отделка", "черновая отделка"};
         ArrayAdapter<String> adapterRepairs = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_item, ITEMSREPAIRS);
         adapterRepairs.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         spinner_repairs.setAdapter(adapterRepairs);
@@ -677,7 +681,7 @@ public class AddObjectActivity extends AppCompatActivity {
         Intent intent = new Intent(this, AddClientActivity.class);
         //intent.putExtra(DBWork.COLUMN_ID, id);
         // активити вернет результат если будет вызвано с помощью этого метода
-        Toast.makeText(this, "Вызов из AddObject", Toast.LENGTH_LONG).show();
+        //Toast.makeText(this, "Вызов из AddObject", Toast.LENGTH_LONG).show();
         startActivityForResult(intent, 13);
     }
 
@@ -709,7 +713,7 @@ public class AddObjectActivity extends AppCompatActivity {
         switch (requestCode) {
             case 13:
                 String nameclient = data.getStringExtra("nameclient");
-                Toast.makeText(this, "Get name " + nameclient, Toast.LENGTH_LONG).show();
+                //Toast.makeText(this, "Get name " + nameclient, Toast.LENGTH_LONG).show();
 
                 loadSpinnerClientsData();
                 loadSpinnerNumberroom();
@@ -732,12 +736,12 @@ public class AddObjectActivity extends AppCompatActivity {
                 spinner_clients.setSelection(index+1);
                 break;
             case 80:
-                Toast.makeText(this, "Это была камера", Toast.LENGTH_LONG).show();
+                //Toast.makeText(this, "Это была камера", Toast.LENGTH_LONG).show();
                 onCaptureImageResult(data);
 
                 break;
             case 90:
-                Toast.makeText(this, "Это была галерея", Toast.LENGTH_LONG).show();
+                //Toast.makeText(this, "Это была галерея", Toast.LENGTH_LONG).show();
                 onSelectFromGalleryResult(data);
 
                 break;
@@ -794,7 +798,7 @@ public class AddObjectActivity extends AppCompatActivity {
         if (chbCornerflat.isChecked()) cornerflat = 1;
         String strCornerflat = Integer.toString(cornerflat);
 
-        Toast.makeText(this, "Add info" + addinfo, Toast.LENGTH_LONG).show();
+        //Toast.makeText(this, "Add info" + addinfo, Toast.LENGTH_LONG).show();
 
 
         /*if (idclnt != null) {Toast.makeText(this, idclnt.toString(), Toast.LENGTH_LONG).show();}
@@ -821,7 +825,7 @@ public class AddObjectActivity extends AppCompatActivity {
         /*if (((mRowId == null) & (idclnt == null)) || ((mRowId == 0) & (idclnt > 0))) {*/
         if (((mRowId == null) & (idClient == null)) || ((mRowId == 0) & (idClient > 0)))  {
             //Toast.makeText(this, idclnt.toString(), Toast.LENGTH_LONG).show();
-            Toast.makeText(this, "Create", Toast.LENGTH_LONG).show();
+            //Toast.makeText(this, "Create", Toast.LENGTH_LONG).show();
             long id = mDbHelper.createNewObject(nameobject, idclient,
                     objectaddress, priceclient, numberroom, checkedRadioBtnNewbuild, allsquare, livesquare,
                     kitchensquare, floor, allfloor, typeplan, bathroom, balcony, repairs, windows,
@@ -831,7 +835,7 @@ public class AddObjectActivity extends AppCompatActivity {
             }
 
         } else {
-            Toast.makeText(this, "Update", Toast.LENGTH_LONG).show();
+            //Toast.makeText(this, "Update", Toast.LENGTH_LONG).show();
             mDbHelper.updateObject(mRowId, nameobject, idclient,
                     objectaddress, priceclient, numberroom, checkedRadioBtnNewbuild, allsquare, livesquare,
                     kitchensquare, floor, allfloor, typeplan, bathroom, balcony, repairs, windows,
@@ -839,36 +843,38 @@ public class AddObjectActivity extends AppCompatActivity {
         }
 
         // ObjectPhoto
-        mDbHelper.deleteObjectPhoto(mRowId);
-        for (int i=0; i< fileName.size(); i++ ){
-            long idObjectPhoto = mDbHelper.createNewObjectPhoto(Long.toString(mRowId), fileName.get(i));
-            Toast.makeText(this, "Save: " + fileName.get(i), Toast.LENGTH_LONG).show();
+        if (isAddImage) {
+            mDbHelper.deleteObjectPhoto(mRowId);
+            for (int i = 0; i < fileName.size(); i++) {
+                long idObjectPhoto = mDbHelper.createNewObjectPhoto(Long.toString(mRowId), fileName.get(i));
+                Toast.makeText(this, "Save: " + fileName.get(i), Toast.LENGTH_LONG).show();
+            }
+            File sourceDir = new File("/sdcard/RealtorAppPhotos/Temp/");
+            File destDir = new File("/sdcard/RealtorAppPhotos/");
+            try {
+                FileUtils.copyDirectory(sourceDir, destDir);
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
         }
-        File sourceDir = new File("/sdcard/RealtorAppPhotos/Temp/");
-        File destDir = new File("/sdcard/RealtorAppPhotos/");
-        try {
-            FileUtils.copyDirectory(sourceDir, destDir);
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+
 
     }
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        Toast.makeText(AddObjectActivity.this, "Press", Toast.LENGTH_LONG).show();
+        //Toast.makeText(AddObjectActivity.this, "Press", Toast.LENGTH_LONG).show();
 
         if (item.equals(okMenuItem)) {
             String checkObjectStr = '\'' + etNameObject.getText().toString() + '\'';
             Cursor cursorObject = mDbHelper.getObjectforName(checkObjectStr);
             if (TextUtils.isEmpty(etNameObject.getText().toString())) {
-                Toast.makeText(AddObjectActivity.this, "Данные не введены",
-                        Toast.LENGTH_LONG).show();
+                Toast.makeText(AddObjectActivity.this, "Данные не введены", Toast.LENGTH_LONG).show();
             } else if ((cursorObject != null) && (cursorObject.getCount()>0) && ((mRowId == null) || (mRowId == 0)))  {
                 String nameobjectstr = cursorObject.getString(cursorObject.getColumnIndexOrThrow(DBWork.COLUMN_NAMEOBJECT));
                 Toast.makeText(AddObjectActivity.this, "Имя объекта не уникально " + nameobjectstr, Toast.LENGTH_LONG).show();
             } else {
-                Toast.makeText(AddObjectActivity.this, "Сохраняем", Toast.LENGTH_LONG).show();
+                //Toast.makeText(AddObjectActivity.this, "Сохраняем", Toast.LENGTH_LONG).show();
                 saveState();
                 Intent intent = new Intent();
                 intent.putExtra("nameobject", etNameObject.getText().toString());
@@ -877,7 +883,7 @@ public class AddObjectActivity extends AppCompatActivity {
             }
             return super.onOptionsItemSelected(item);
         } else if (item.equals(delMenuItem)) {
-            Toast.makeText(AddObjectActivity.this, "Удаляем", Toast.LENGTH_LONG).show();
+            //Toast.makeText(AddObjectActivity.this, "Удаляем", Toast.LENGTH_LONG).show();
             showDeleteObjectDialog();
             return super.onOptionsItemSelected(item);
             }
@@ -1171,6 +1177,8 @@ public class AddObjectActivity extends AppCompatActivity {
     public void getFromSdcard()
     {
         File file= new File("/sdcard/RealtorAppPhotos/Temp/");
+
+        isAddImage = true;
 
         f.clear();
         fileName.clear();

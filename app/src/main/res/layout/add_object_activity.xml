@@ -483,6 +483,16 @@
                 android:layout_height="match_parent"
                 android:orientation="vertical">
 
+                <TextView
+                    android:id="@+id/photo_textview"
+                    android:paddingRight="20dp"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/nameobject_hint_photo"
+                    android:fontFeatureSettings="@string/nameobject_hint_client"
+                    android:textSize="18dp"
+                    android:fontFamily="@string/nameobject_hint_client"/>
+
                 <GridView
                     android:id="@+id/objectGridView"
                     android:layout_width="fill_parent"
