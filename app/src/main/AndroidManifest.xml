@@ -44,11 +44,14 @@
             android:label="viewobject">
         </activity>
 
-
+        <activity
+            android:name=".ViewEventActivity"
+            android:label="viewevent">
+        </activity>
 
         <activity
-            android:name=".DBWork"
-            android:label="database">
+            android:name=".ViewClientActivity"
+            android:label="viewevent">
         </activity>
 
 

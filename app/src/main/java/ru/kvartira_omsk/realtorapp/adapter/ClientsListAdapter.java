@@ -1,6 +1,7 @@
 package ru.kvartira_omsk.realtorapp.adapter;
 
 import android.content.Context;
+import android.content.Intent;
 import android.database.Cursor;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
@@ -20,7 +21,10 @@ import java.util.List;
 import ru.kvartira_omsk.realtorapp.DBWork;
 import ru.kvartira_omsk.realtorapp.MainActivity;
 import ru.kvartira_omsk.realtorapp.R;
+import ru.kvartira_omsk.realtorapp.ViewClientActivity;
+import ru.kvartira_omsk.realtorapp.ViewEventActivity;
 import ru.kvartira_omsk.realtorapp.dto.ClientDTO;
+import ru.kvartira_omsk.realtorapp.dto.EventDTO;
 import ru.kvartira_omsk.realtorapp.fragment.ClientsFragment;
 
 
@@ -81,7 +85,7 @@ public class ClientsListAdapter extends RecyclerView.Adapter<ClientsListAdapter.
         return data.size();
     }
 
-    public static class ClientsViewHolder extends RecyclerView.ViewHolder implements View.OnCreateContextMenuListener {
+    public static class ClientsViewHolder extends RecyclerView.ViewHolder implements View.OnCreateContextMenuListener, View.OnClickListener  {
         //CardView cardViewClient;
         TextView titleClient;
         ImageView popupMenuIconClient;
@@ -95,6 +99,7 @@ public class ClientsListAdapter extends RecyclerView.Adapter<ClientsListAdapter.
 
             popupMenuIconClient = (ImageView) itemView.findViewById(R.id.popupmenu_client_icon);
             popupMenuIconClient.setOnCreateContextMenuListener(this);
+            itemView.setOnClickListener(this);
             //popupMenuIconClient.setOnClickListener(this);
         }
 
@@ -130,6 +135,16 @@ public class ClientsListAdapter extends RecyclerView.Adapter<ClientsListAdapter.
             menu.add(3, 5, idClient, R.string.menu_call);
 
 
+        }
+
+        @Override
+        public void onClick(View v) {
+            Toast.makeText(v.getContext(),"Click item", Toast.LENGTH_LONG ).show();
+            Intent intent_viewclient = new Intent(v.getContext(), ViewClientActivity.class);
+            ClientDTO item = data.get(getPosition());
+            long selPosition = (long) Long.valueOf(item.id);
+            intent_viewclient.putExtra("idviewclient", selPosition);
+            v.getContext().startActivity(intent_viewclient);
         }
 
 

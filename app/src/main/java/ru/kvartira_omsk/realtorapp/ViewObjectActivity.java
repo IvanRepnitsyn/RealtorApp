@@ -3,6 +3,7 @@ package ru.kvartira_omsk.realtorapp;
 import android.database.Cursor;
 import android.graphics.Color;
 import android.graphics.Paint;
+import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
 import android.support.v7.app.AppCompatActivity;
@@ -114,10 +115,16 @@ public class ViewObjectActivity extends AppCompatActivity implements BaseSliderV
         List<String> namePhotoObject = mDbHelper.getObjectPhotobyIdObject(Long.toString(mRowId));
 
         HashMap<String,String> sliderImages = new HashMap<String, String>();
-        for (int i=0; i< namePhotoObject.size(); i++ ) {
-            String nameImage = String.valueOf(i);
-            sliderImages.put(nameImage,"file://" + Environment.getExternalStorageDirectory().getPath() + "/RealtorAppPhotos/"+namePhotoObject.get(i));
-            //Toast.makeText(this, "/sdcard/RealtorAppPhotos/"+namePhotoObject.get(i), Toast.LENGTH_LONG).show();
+        if (namePhotoObject.size() != 0) {
+            for (int i = 0; i < namePhotoObject.size(); i++) {
+                String nameImage = String.valueOf(i);
+                sliderImages.put(nameImage, "file://" + Environment.getExternalStorageDirectory().getPath() + "/RealtorAppPhotos/" + namePhotoObject.get(i));
+                //Toast.makeText(this, "/sdcard/RealtorAppPhotos/"+namePhotoObject.get(i), Toast.LENGTH_LONG).show();
+            }
+        } else {
+            String puthImage = Uri.parse("android.resource://ru.kvartira_omsk.realtorapp/" + R.drawable.nophoto).toString();
+            sliderImages.put("Нет фотографий", puthImage);
+
         }
 
         for (String name : sliderImages.keySet()) {

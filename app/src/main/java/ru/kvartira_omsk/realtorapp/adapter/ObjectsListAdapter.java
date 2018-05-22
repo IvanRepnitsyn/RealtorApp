@@ -17,7 +17,6 @@ import ru.kvartira_omsk.realtorapp.AddObjectActivity;
 import ru.kvartira_omsk.realtorapp.DBWork;
 import ru.kvartira_omsk.realtorapp.R;
 import ru.kvartira_omsk.realtorapp.ViewObjectActivity;
-import ru.kvartira_omsk.realtorapp.dto.ClientDTO;
 import ru.kvartira_omsk.realtorapp.dto.ObjectDTO;
 
 
@@ -131,7 +130,7 @@ public class ObjectsListAdapter extends RecyclerView.Adapter<ObjectsListAdapter.
 
         @Override
         public void onClick(View v) {
-            //Toast.makeText(v.getContext(),"Click item", Toast.LENGTH_LONG ).show();
+            Toast.makeText(v.getContext(),"Click item", Toast.LENGTH_LONG ).show();
             Intent intent_viewobject = new Intent(v.getContext(), ViewObjectActivity.class);
             ObjectDTO item = data.get(getPosition());
             long selPosition = (long) Long.valueOf(item.id);

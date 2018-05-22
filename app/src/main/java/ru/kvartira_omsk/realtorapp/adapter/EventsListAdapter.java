@@ -1,6 +1,7 @@
 package ru.kvartira_omsk.realtorapp.adapter;
 
 import android.content.Context;
+import android.content.Intent;
 import android.support.v7.widget.RecyclerView;
 import android.view.ContextMenu;
 import android.view.LayoutInflater;
@@ -15,7 +16,7 @@ import java.util.List;
 import ru.kvartira_omsk.realtorapp.DBWork;
 import ru.kvartira_omsk.realtorapp.R;
 import ru.kvartira_omsk.realtorapp.dto.EventDTO;
-import ru.kvartira_omsk.realtorapp.dto.ObjectDTO;
+import ru.kvartira_omsk.realtorapp.ViewEventActivity;
 
 
 /**
@@ -75,7 +76,7 @@ public class EventsListAdapter extends RecyclerView.Adapter<EventsListAdapter.Ev
         return data.size();
     }
 
-    public static class EventsViewHolder extends RecyclerView.ViewHolder implements View.OnCreateContextMenuListener {
+    public static class EventsViewHolder extends RecyclerView.ViewHolder implements View.OnCreateContextMenuListener, View.OnClickListener {
         //CardView cardViewClient;
         TextView titleEvent;
         ImageView popupMenuIconEvent;
@@ -89,6 +90,7 @@ public class EventsListAdapter extends RecyclerView.Adapter<EventsListAdapter.Ev
 
             popupMenuIconEvent = (ImageView) itemView.findViewById(R.id.popupmenu_event_icon);
             popupMenuIconEvent.setOnCreateContextMenuListener(this);
+            itemView.setOnClickListener(this);
             //popupMenuIconEvent.setOnClickListener(this);
         }
 
@@ -121,6 +123,16 @@ public class EventsListAdapter extends RecyclerView.Adapter<EventsListAdapter.Ev
             menu.add(2, 2, idEvent, R.string.menu_delete);
 
 
+        }
+
+        @Override
+        public void onClick(View v) {
+            Toast.makeText(v.getContext(),"Click item", Toast.LENGTH_LONG ).show();
+            Intent intent_viewevent = new Intent(v.getContext(), ViewEventActivity.class);
+            EventDTO item = data.get(getPosition());
+            long selPosition = (long) Long.valueOf(item.id);
+            intent_viewevent.putExtra("idviewevent", selPosition);
+            v.getContext().startActivity(intent_viewevent);
         }
 
 
