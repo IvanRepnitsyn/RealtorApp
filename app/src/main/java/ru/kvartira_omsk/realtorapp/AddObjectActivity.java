@@ -755,6 +755,7 @@ public class AddObjectActivity extends AppCompatActivity {
             GridView imagegrid = (GridView) findViewById(R.id.objectGridView);
             imageAdapter = new ImageAdapter();
             imagegrid.setAdapter(imageAdapter);
+            imagegrid.requestFocus();
             //GridView
         }
 

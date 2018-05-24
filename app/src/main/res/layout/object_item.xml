@@ -13,7 +13,7 @@
 
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="48dp"
+            android:layout_height="36dp"
             android:orientation="horizontal">
 
             <TextView
@@ -21,7 +21,8 @@
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:id="@+id/titleObject"
-                android:textSize="13pt"
+                android:textSize="24sp"
+                android:layout_gravity="center_vertical"
                 android:textColor="@color/colorBlack"/>
 
             <ImageView
