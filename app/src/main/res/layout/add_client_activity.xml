@@ -35,18 +35,27 @@
             android:paddingTop="16dp"
             android:paddingBottom="16dp">
 
-            <android.support.design.widget.TextInputLayout
-                android:id="@+id/input_client_name"
+            <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content">
+                android:layout_height="wrap_content"
+                android:paddingLeft="8dp"
+                android:orientation="vertical">
 
-                <EditText
-                    android:id="@+id/client_name"
+                <android.support.design.widget.TextInputLayout
+                    android:id="@+id/input_client_name"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:singleLine="true"
-                    android:hint="@string/nameclient_hint_name" />
-            </android.support.design.widget.TextInputLayout>
+                    android:layout_height="wrap_content">
+
+                    <EditText
+                        android:id="@+id/client_name"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:singleLine="true"
+                        android:textSize="16dp"
+                        android:hint="@string/nameclient_hint_name" />
+                </android.support.design.widget.TextInputLayout>
+
+            </LinearLayout>
 
             <fr.ganfra.materialspinner.MaterialSpinner
                 android:id="@+id/spinner_addclient"
@@ -64,33 +73,43 @@
                 app:ms_floatingLabelText="Тип клиента"
                 />
 
-            <android.support.design.widget.TextInputLayout
-                android:id="@+id/input_client_phone"
+            <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content">
+                android:layout_height="wrap_content"
+                android:paddingLeft="8dp"
+                android:orientation="vertical">
 
-                <EditText
-                    android:id="@+id/client_phone"
+                <android.support.design.widget.TextInputLayout
+                    android:id="@+id/input_client_phone"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:singleLine="true"
-                    android:inputType="phone"
-                    android:hint="@string/nameclient_hint_phone" />
-            </android.support.design.widget.TextInputLayout>
+                    android:layout_height="wrap_content">
 
-            <android.support.design.widget.TextInputLayout
-                android:id="@+id/input_client_mail"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content">
+                    <EditText
+                        android:id="@+id/client_phone"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:singleLine="true"
+                        android:inputType="phone"
+                        android:textSize="16dp"
+                        android:hint="@string/nameclient_hint_phone" />
+                </android.support.design.widget.TextInputLayout>
 
-                <EditText
-                    android:id="@+id/client_mail"
+                <android.support.design.widget.TextInputLayout
+                    android:id="@+id/input_client_mail"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:singleLine="true"
-                    android:inputType="textEmailAddress"
-                    android:hint="@string/nameclient_hint_mail" />
-            </android.support.design.widget.TextInputLayout>
+                    android:layout_height="wrap_content">
+
+                    <EditText
+                        android:id="@+id/client_mail"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:singleLine="true"
+                        android:inputType="textEmailAddress"
+                        android:textSize="16dp"
+                        android:hint="@string/nameclient_hint_mail" />
+                </android.support.design.widget.TextInputLayout>
+
+            </LinearLayout>
 
             <LinearLayout
                 android:layout_width="match_parent"
