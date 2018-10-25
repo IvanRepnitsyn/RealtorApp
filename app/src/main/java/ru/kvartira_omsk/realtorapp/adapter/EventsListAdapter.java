@@ -51,6 +51,7 @@ public class EventsListAdapter extends RecyclerView.Adapter<EventsListAdapter.Ev
     public void onBindViewHolder(EventsViewHolder holder, int position) {
         EventDTO item = data.get(position);
         holder.titleEvent.setText(item.getTitle());
+        holder.whenEvent.setText(item.getDateEvent() + " " + item.getTimeEvent());
         holder.popupMenuIconEvent.setOnClickListener(clickListener);
         holder.popupMenuIconEvent.setTag(holder);
 
@@ -79,6 +80,7 @@ public class EventsListAdapter extends RecyclerView.Adapter<EventsListAdapter.Ev
     public static class EventsViewHolder extends RecyclerView.ViewHolder implements View.OnCreateContextMenuListener, View.OnClickListener {
         //CardView cardViewClient;
         TextView titleEvent;
+        TextView whenEvent;
         ImageView popupMenuIconEvent;
 
         public EventsViewHolder(View itemView) {
@@ -86,6 +88,7 @@ public class EventsListAdapter extends RecyclerView.Adapter<EventsListAdapter.Ev
 
             //cardViewClient = (CardView) itemView.findViewById(R.id.cardViewClient);
             titleEvent = (TextView) itemView.findViewById(R.id.titleEvent);
+            whenEvent = (TextView) itemView.findViewById(R.id.whenEvent);
             //itemView.setOnCreateContextMenuListener(this);
 
             popupMenuIconEvent = (ImageView) itemView.findViewById(R.id.popupmenu_event_icon);

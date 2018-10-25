@@ -52,6 +52,7 @@ public class ObjectsListAdapter extends RecyclerView.Adapter<ObjectsListAdapter.
     public void onBindViewHolder(ObjectsViewHolder holder, int position) {
         ObjectDTO item = data.get(position);
         holder.titleObject.setText(item.getTitle());
+        holder.strNumberRoom.setText(item.getNumberRoom() + "-комн.");
         holder.popupMenuIconObject.setOnClickListener(clickListener);
         holder.popupMenuIconObject.setTag(holder);
 
@@ -80,6 +81,7 @@ public class ObjectsListAdapter extends RecyclerView.Adapter<ObjectsListAdapter.
     public static class ObjectsViewHolder extends RecyclerView.ViewHolder implements View.OnCreateContextMenuListener, View.OnClickListener {
         //CardView cardViewClient;
         TextView titleObject;
+        TextView strNumberRoom;
         ImageView popupMenuIconObject;
         private static final int OBJECT_ACTIVITY_VIEW = 16;
 
@@ -88,6 +90,7 @@ public class ObjectsListAdapter extends RecyclerView.Adapter<ObjectsListAdapter.
 
             //cardViewClient = (CardView) itemView.findViewById(R.id.cardViewClient);
             titleObject = (TextView) itemView.findViewById(R.id.titleObject);
+            strNumberRoom = (TextView) itemView.findViewById(R.id.countRoomObject);
             //itemView.setOnCreateContextMenuListener(this);
 
             popupMenuIconObject = (ImageView) itemView.findViewById(R.id.popupmenu_object_icon);

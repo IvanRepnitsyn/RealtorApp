@@ -6,6 +6,8 @@ package ru.kvartira_omsk.realtorapp.dto;
 public class EventDTO {
     public long id;
     public String titleEvent;
+    public String dateEvent;
+    public String timeEvent;
     //private int iconID;
 
     public EventDTO() {
@@ -33,4 +35,14 @@ public class EventDTO {
     public void setTitle(String title) {
         this.titleEvent = title;
     }
+
+
+    public String getDateEvent()  { return  dateEvent; }
+
+    public void setDateEvent(String strDate) { this.dateEvent = strDate; }
+
+
+    public String getTimeEvent() { return timeEvent; }
+
+    public void setTimeEvent(String strTime) { this.timeEvent = strTime; }
 }

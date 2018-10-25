@@ -6,6 +6,7 @@ package ru.kvartira_omsk.realtorapp.dto;
 public class ObjectDTO {
     public long id;
     public String titleObject;
+    public String strNumberRoom;
     //private int iconID;
 
     public ObjectDTO() {
@@ -33,4 +34,14 @@ public class ObjectDTO {
     public void setTitle(String title) {
         this.titleObject = title;
     }
+
+
+    public String getNumberRoom() {
+        return strNumberRoom;
+    }
+
+    public void setNumberRoom(String nmbRoom) {
+        this.strNumberRoom = nmbRoom;
+    }
+
 }

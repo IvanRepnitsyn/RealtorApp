@@ -501,7 +501,7 @@ public class DBWork extends SQLiteOpenHelper {
         List<ClientDTO> clientnames = new ArrayList<>();
 
         // Select All Query
-        String selectQuery = "SELECT _id, nameclient FROM " + DATABASE_TABLE_CLIENTS;
+        String selectQuery = "SELECT _id, nameclient, typeclient FROM " + DATABASE_TABLE_CLIENTS;
 
         SQLiteDatabase db = this.getReadableDatabase();
         Cursor cursor = db.rawQuery(selectQuery, null);
@@ -512,6 +512,7 @@ public class DBWork extends SQLiteOpenHelper {
                 ClientDTO clientDTO = new ClientDTO();
                 clientDTO.id = Long.parseLong(cursor.getString(cursor.getColumnIndex(COLUMN_ID)));
                 clientDTO.titleClient = cursor.getString(cursor.getColumnIndex(COLUMN_NAMECLIENT));
+                clientDTO.typeClient = cursor.getString(cursor.getColumnIndex(COLUMN_TYPECLIENT));
                 clientnames.add(clientDTO);
                 //clientnames.add(new ClientDTO(cursor.getString(1)));
             } while (cursor.moveToNext());
@@ -529,7 +530,7 @@ public class DBWork extends SQLiteOpenHelper {
         List<ObjectDTO> objectnames = new ArrayList<>();
 
         // Select All Query
-        String selectQuery = "SELECT _id, nameobject FROM " + DATABASE_TABLE_OBJECTS;
+        String selectQuery = "SELECT _id, nameobject, numberroom FROM " + DATABASE_TABLE_OBJECTS;
 
         SQLiteDatabase db = this.getReadableDatabase();
         Cursor cursor = db.rawQuery(selectQuery, null);
@@ -540,6 +541,7 @@ public class DBWork extends SQLiteOpenHelper {
                 ObjectDTO objectDTO = new ObjectDTO();
                 objectDTO.id = Long.parseLong(cursor.getString(cursor.getColumnIndex(COLUMN_ID)));
                 objectDTO.titleObject = cursor.getString(cursor.getColumnIndex(COLUMN_NAMEOBJECT));
+                objectDTO.strNumberRoom = cursor.getString(cursor.getColumnIndex(COLUMN_NUMBERROOM));
                 objectnames.add(objectDTO);
                 //clientnames.add(new ClientDTO(cursor.getString(1)));
             } while (cursor.moveToNext());
@@ -557,7 +559,7 @@ public class DBWork extends SQLiteOpenHelper {
         List<EventDTO> eventnames = new ArrayList<>();
 
         // Select All Query
-        String selectQuery = "SELECT _id, nameeevent FROM " + DATABASE_TABLE_EVENTS;
+        String selectQuery = "SELECT _id, nameeevent, dateevent, timeevent FROM " + DATABASE_TABLE_EVENTS;
 
         SQLiteDatabase db = this.getReadableDatabase();
         Cursor cursor = db.rawQuery(selectQuery, null);
@@ -568,6 +570,8 @@ public class DBWork extends SQLiteOpenHelper {
                 EventDTO eventDTO = new EventDTO();
                 eventDTO.id = Long.parseLong(cursor.getString(cursor.getColumnIndex(COLUMN_ID)));
                 eventDTO.titleEvent = cursor.getString(cursor.getColumnIndex(COLUMN_NAMEEVENT));
+                eventDTO.dateEvent = cursor.getString(cursor.getColumnIndex(COLUMN_DATEEVENT));
+                eventDTO.timeEvent = cursor.getString(cursor.getColumnIndex(COLUMN_TIMEEVENT));
                 eventnames.add(eventDTO);
                 //clientnames.add(new ClientDTO(cursor.getString(1)));
             } while (cursor.moveToNext());

@@ -60,6 +60,13 @@ public class ClientsListAdapter extends RecyclerView.Adapter<ClientsListAdapter.
     public void onBindViewHolder(ClientsViewHolder holder, int position) {
         ClientDTO item = data.get(position);
         holder.titleClient.setText(item.getTitle());
+        int intTypeClient = Integer.parseInt(item.getTypeClient());
+        if (intTypeClient == 1) {
+            holder.typeClient.setText("Продавец");
+        } else if (intTypeClient == 2) {
+            holder.typeClient.setText("Покупатель");
+        }
+
         holder.popupMenuIconClient.setOnClickListener(clickListener);
         holder.popupMenuIconClient.setTag(holder);
 
@@ -88,6 +95,7 @@ public class ClientsListAdapter extends RecyclerView.Adapter<ClientsListAdapter.
     public static class ClientsViewHolder extends RecyclerView.ViewHolder implements View.OnCreateContextMenuListener, View.OnClickListener  {
         //CardView cardViewClient;
         TextView titleClient;
+        TextView typeClient;
         ImageView popupMenuIconClient;
 
         public ClientsViewHolder(View itemView) {
@@ -95,6 +103,7 @@ public class ClientsListAdapter extends RecyclerView.Adapter<ClientsListAdapter.
 
             //cardViewClient = (CardView) itemView.findViewById(R.id.cardViewClient);
             titleClient = (TextView) itemView.findViewById(R.id.titleClient);
+            typeClient = (TextView) itemView.findViewById(R.id.typeClient);
             //itemView.setOnCreateContextMenuListener(this);
 
             popupMenuIconClient = (ImageView) itemView.findViewById(R.id.popupmenu_client_icon);

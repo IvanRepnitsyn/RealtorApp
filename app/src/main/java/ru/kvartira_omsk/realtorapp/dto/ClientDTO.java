@@ -6,6 +6,7 @@ package ru.kvartira_omsk.realtorapp.dto;
 public class ClientDTO {
     public long id;
     public String titleClient;
+    public String typeClient;
     //private int iconID;
 
     public ClientDTO() {
@@ -33,4 +34,8 @@ public class ClientDTO {
     public void setTitle(String title) {
         this.titleClient = title;
     }
+
+    public String getTypeClient() { return typeClient; }
+
+    public void setTypeClient(String typeClient) { this.typeClient = typeClient; }
 }
