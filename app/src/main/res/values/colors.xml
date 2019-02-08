@@ -3,6 +3,7 @@
     <color name="colorPrimary">#00acc1</color>
     <color name="colorPrimaryDark">#008a9a</color>
     <color name="mainBackground">#e2e2e2</color>
+    <color name="splashBackground">#ffb478</color>
     <color name="colorWhite">#e2e2e2</color>
     <color name="colorBlack">#191919</color>
     <color name="colorLogoBackground">#ffb478</color>
