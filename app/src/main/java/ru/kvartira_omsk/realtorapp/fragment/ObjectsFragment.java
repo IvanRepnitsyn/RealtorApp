@@ -64,7 +64,7 @@ public class ObjectsFragment extends AbstractTabFragment {
         //rv.setLayoutManager(new LinearLayoutManager(context)); //Дописать
 
         dbHelper = new DBWork(this.getActivity());
-        Toast.makeText(this.getActivity(), "Create ObjectFragment", Toast.LENGTH_LONG).show();
+        //Toast.makeText(this.getActivity(), "Create ObjectFragment", Toast.LENGTH_LONG).show();
         fillData();
         return view;
     }
@@ -93,10 +93,10 @@ public class ObjectsFragment extends AbstractTabFragment {
         if (item.getGroupId() == 1){
             switch (item.getItemId()) {
                 case 1:
-                    Toast.makeText(this.getActivity(), "ID Object "+clickedItemPosition, Toast.LENGTH_LONG).show();
+                    //Toast.makeText(this.getActivity(), "ID Object "+clickedItemPosition, Toast.LENGTH_LONG).show();
                     Intent intent_object = new Intent(this.getActivity(), AddObjectActivity.class);
                     intent_object.putExtra("idobject", longID);
-                    Toast.makeText(this.getActivity(), "Вызов из ObjectFragment", Toast.LENGTH_LONG).show();
+                    //Toast.makeText(this.getActivity(), "Вызов из ObjectFragment", Toast.LENGTH_LONG).show();
                     startActivityForResult(intent_object, OBJECT_ACTIVITY_EDIT);
                     //MainActivity.editClient();
                     break;

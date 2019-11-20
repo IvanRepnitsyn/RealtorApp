@@ -103,14 +103,14 @@ public class ViewObjectActivity extends AppCompatActivity implements BaseSliderV
                 : (Long) savedInstanceState
                 .getSerializable(DBWork.COLUMN_ID);
         if (extras != null) {
-            Toast.makeText(this, "Get extras object1 OK", Toast.LENGTH_LONG).show();
+            //Toast.makeText(this, "Get extras object1 OK", Toast.LENGTH_LONG).show();
             mRowId = extras.getLong("idviewobject");
             //Toast.makeText(this, "ID Object "+mRowId, Toast.LENGTH_LONG).show();
             //PhoneNmb = extras.getString("callphone");
             //if (PhoneNmb != null) etPhoneClient.setText(PhoneNmb);
 
         }
-        Toast.makeText(this, "ID Object " + mRowId, Toast.LENGTH_LONG).show();
+        //Toast.makeText(this, "ID Object " + mRowId, Toast.LENGTH_LONG).show();
 
         List<String> namePhotoObject = mDbHelper.getObjectPhotobyIdObject(Long.toString(mRowId));
 
@@ -139,7 +139,7 @@ public class ViewObjectActivity extends AppCompatActivity implements BaseSliderV
             textSliderView.getBundle()
                     .putString("extra", name);
             sliderLayout.addSlider(textSliderView);
-            Toast.makeText(this, sliderImages.get(name), Toast.LENGTH_LONG).show();
+            //Toast.makeText(this, sliderImages.get(name), Toast.LENGTH_LONG).show();
         }
         sliderLayout.setPresetTransformer(SliderLayout.Transformer.Accordion);
         sliderLayout.setPresetIndicator(SliderLayout.PresetIndicators.Center_Bottom);
@@ -191,9 +191,9 @@ public class ViewObjectActivity extends AppCompatActivity implements BaseSliderV
                 .getColumnIndexOrThrow(DBWork.COLUMN_LIVESQUARE)));
         textViewKitchenSquare.setText(object.getString(object
                 .getColumnIndexOrThrow(DBWork.COLUMN_KITCHENSQUARE)));
-        Toast.makeText(this, object.getString(object
+        /*Toast.makeText(this, object.getString(object
                 .getColumnIndexOrThrow(DBWork.COLUMN_FLOOR)) + "/" + object.getString(object
-                .getColumnIndexOrThrow(DBWork.COLUMN_ALLFLOOR)), Toast.LENGTH_LONG).show();
+                .getColumnIndexOrThrow(DBWork.COLUMN_ALLFLOOR)), Toast.LENGTH_LONG).show();*/
 
         int intMaterial = object.getInt(object.getColumnIndexOrThrow(DBWork.COLUMN_MATERIAL));
         String strMaterial = null;

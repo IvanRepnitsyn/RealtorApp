@@ -103,7 +103,7 @@ public class AddEventActivity extends AppCompatActivity {
             //if (PhoneNmb != null) etPhoneClient.setText(PhoneNmb);
 
         }
-        Toast.makeText(this, "ID EditEvent "+mRowId, Toast.LENGTH_LONG).show();
+        //Toast.makeText(this, "ID EditEvent "+mRowId, Toast.LENGTH_LONG).show();
 
         initToolbar();
         //initNavigationView();
@@ -347,14 +347,14 @@ public class AddEventActivity extends AppCompatActivity {
         if ((mRowId != null) && (mRowId != 0)) {
             //Toast.makeText(this, "ID pF "+mRowId, Toast.LENGTH_LONG).show();
             Cursor event = mDbHelper.getEvent(mRowId);
-            if (event != null) Toast.makeText(this, "Получилось event", Toast.LENGTH_LONG).show();
-            else Toast.makeText(this, "Не получилось event", Toast.LENGTH_LONG).show();
+            /*if (event != null) Toast.makeText(this, "Получилось event", Toast.LENGTH_LONG).show();
+            else Toast.makeText(this, "Не получилось event", Toast.LENGTH_LONG).show();*/
 
             startManagingCursor(event);
 
             String nameEvent = event.getString(event
                     .getColumnIndexOrThrow(DBWork.COLUMN_NAMEEVENT));
-            Toast.makeText(this, nameEvent, Toast.LENGTH_LONG).show();
+            //Toast.makeText(this, nameEvent, Toast.LENGTH_LONG).show();
 
             Long idobject = event.getLong(event.getColumnIndexOrThrow(DBWork.COLUMN_IDOBJECT));
             Cursor objectcursor = mDbHelper.getObject(idobject);
@@ -396,7 +396,7 @@ public class AddEventActivity extends AppCompatActivity {
 
             int indexType = event.getInt(event.getColumnIndexOrThrow(DBWork.COLUMN_TYPEEVENT));
             //SpinnerAdapter adaptertype = (SpinnerAdapter) spinner_type.getAdapter();
-            Toast.makeText(this, "Type " + indexType, Toast.LENGTH_LONG).show();
+            //Toast.makeText(this, "Type " + indexType, Toast.LENGTH_LONG).show();
             spinner_type.setSelection(indexType);
 
             etNameEvent.setText(nameEvent);
@@ -431,7 +431,7 @@ public class AddEventActivity extends AppCompatActivity {
             int index = 0;
             for (int i=1;i<spinner_clients.getCount();i++){
                 if (spinner_clients.getItemAtPosition(i).toString().equals(clientstr)){
-                    Toast.makeText(this, Integer.toString(i+1), Toast.LENGTH_LONG).show();
+                    //Toast.makeText(this, Integer.toString(i+1), Toast.LENGTH_LONG).show();
                     index = i;
                     break;
                 }
@@ -477,7 +477,7 @@ public class AddEventActivity extends AppCompatActivity {
         Intent intent = new Intent(this, AddClientActivity.class);
         //intent.putExtra(DBWork.COLUMN_ID, id);
         // активити вернет результат если будет вызвано с помощью этого метода
-        Toast.makeText(this, "Вызов из AddEvent", Toast.LENGTH_LONG).show();
+        //Toast.makeText(this, "Вызов из AddEvent", Toast.LENGTH_LONG).show();
         startActivityForResult(intent, 23);
     }
 
@@ -499,7 +499,7 @@ public class AddEventActivity extends AppCompatActivity {
         Intent intent = new Intent(this, AddObjectActivity.class);
         //intent.putExtra(DBWork.COLUMN_ID, id);
         // активити вернет результат если будет вызвано с помощью этого метода
-        Toast.makeText(this, "Вызов из AddEvent", Toast.LENGTH_LONG).show();
+        //Toast.makeText(this, "Вызов из AddEvent", Toast.LENGTH_LONG).show();
         startActivityForResult(intent, 21);
     }
 
@@ -510,7 +510,7 @@ public class AddEventActivity extends AppCompatActivity {
         switch (requestCode) {
             case 23:
                 String nameclient = data.getStringExtra("nameclient");
-                Toast.makeText(this, "Get name " + nameclient, Toast.LENGTH_LONG).show();
+                //Toast.makeText(this, "Get name " + nameclient, Toast.LENGTH_LONG).show();
 
                 loadSpinnerClientsData();
 
@@ -527,7 +527,7 @@ public class AddEventActivity extends AppCompatActivity {
                 break;
             case 21:
                 String nameobject = data.getStringExtra("nameobject");
-                Toast.makeText(this, "Get object " + nameobject, Toast.LENGTH_LONG).show();
+                //Toast.makeText(this, "Get object " + nameobject, Toast.LENGTH_LONG).show();
 
                 loadSpinnerObjectsData();
 
@@ -563,7 +563,7 @@ public class AddEventActivity extends AppCompatActivity {
         startManagingCursor(cursorClient);
         String idclient = cursorClient.getString(cursorClient.getColumnIndexOrThrow(DBWork.COLUMN_ID));
         String typeevent = Integer.toString(spinner_type.getSelectedItemPosition());
-        Toast.makeText(this, "Save type:" + typeevent, Toast.LENGTH_LONG).show();
+        //Toast.makeText(this, "Save type:" + typeevent, Toast.LENGTH_LONG).show();
         String nameevent = etNameEvent.getText().toString();
         String dateevent = etDateEvent.getText().toString();
         String timeevent = etTimeEvent.getText().toString();
@@ -591,14 +591,14 @@ public class AddEventActivity extends AppCompatActivity {
         //if (((mRowId == null) & (idclnt == null)) || ((mRowId == 0) & (idclnt > 0))) {
         if (mRowId == null) {
             //Toast.makeText(this, idclnt.toString(), Toast.LENGTH_LONG).show();
-            Toast.makeText(this, "Create", Toast.LENGTH_LONG).show();
+            //Toast.makeText(this, "Create", Toast.LENGTH_LONG).show();
             long id = mDbHelper.createNewEvent(idobject, idclient, nameevent, typeevent, dateevent, timeevent, placeevent, infoevent, reminderevent);
             if (id > 0) {
                 mRowId = id;
             }
 
         } else {
-            Toast.makeText(this, "Update typeevent" + typeevent, Toast.LENGTH_LONG).show();
+            //Toast.makeText(this, "Update typeevent" + typeevent, Toast.LENGTH_LONG).show();
             mDbHelper.updateEvent(mRowId, idobject, idclient ,nameevent, typeevent, dateevent, timeevent, placeevent, infoevent, reminderevent);
         }
 
@@ -607,7 +607,7 @@ public class AddEventActivity extends AppCompatActivity {
             //SimpleDateFormat sdf = new SimpleDateFormat("dd.MM.yyyy hh:mm");
             SimpleDateFormat sdf  = new SimpleDateFormat("dd.MM.yyyy hh:mm:ss");
             String dateInString = dateevent + " " + timeevent + ":00";
-            Toast.makeText(this, dateInString, Toast.LENGTH_LONG).show();
+            //Toast.makeText(this, dateInString, Toast.LENGTH_LONG).show();
             //String dateInString = "01.04.2018 12:25";
             //Date setDate = sdf.parse(dateInString);
             try {
@@ -680,7 +680,7 @@ public class AddEventActivity extends AppCompatActivity {
         alarmIntent.putExtra(AlarmNotification.NOTIFICATION, notification);
         alarmPendingIntent = PendingIntent.getBroadcast(this, 0, alarmIntent, 0);
 
-        Toast.makeText(this,"Set notification " + dateEvent + " IDNotification: " + mRowId, Toast.LENGTH_LONG).show();
+        //Toast.makeText(this,"Set notification " + dateEvent + " IDNotification: " + mRowId, Toast.LENGTH_LONG).show();
 
         alarmManager.set(AlarmManager.RTC_WAKEUP, dateEvent.getTimeInMillis(), alarmPendingIntent);
         //alarmManager.set(AlarmManager.RTC_WAKEUP, SystemClock.elapsedRealtime() + 5000, alarmPendingIntent);
@@ -710,8 +710,8 @@ public class AddEventActivity extends AppCompatActivity {
             case R.id.action_ok:
                 String checkEventStr = '\'' + etNameEvent.getText().toString() + '\'';
                 Cursor cursorEvent = mDbHelper.getEventforName(checkEventStr);
-                Toast.makeText(AddEventActivity.this, "Нажали",
-                        Toast.LENGTH_LONG).show();
+                /*Toast.makeText(AddEventActivity.this, "Нажали",
+                        Toast.LENGTH_LONG).show();*/
                 if (TextUtils.isEmpty(etNameEvent.getText().toString())) {
                     Toast.makeText(AddEventActivity.this, "Данные не введены",
                             Toast.LENGTH_LONG).show();

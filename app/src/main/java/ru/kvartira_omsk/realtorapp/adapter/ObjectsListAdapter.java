@@ -65,7 +65,7 @@ public class ObjectsListAdapter extends RecyclerView.Adapter<ObjectsListAdapter.
             ObjectsViewHolder vholder = (ObjectsViewHolder) v.getTag();
             int position = vholder.getAdapterPosition();
             //Log.d(TAG, "onClick " + position);
-            Toast.makeText(v.getContext(),"This is position "+position, Toast.LENGTH_LONG ).show();
+            //Toast.makeText(v.getContext(),"This is position "+position, Toast.LENGTH_LONG ).show();
 
             //PopupMenu popup = new PopupMenu(v.getContext(), v);
 
@@ -133,13 +133,13 @@ public class ObjectsListAdapter extends RecyclerView.Adapter<ObjectsListAdapter.
 
         @Override
         public void onClick(View v) {
-            Toast.makeText(v.getContext(),"Click item", Toast.LENGTH_LONG ).show();
+            //Toast.makeText(v.getContext(),"Click item", Toast.LENGTH_LONG ).show();
             Intent intent_viewobject = new Intent(v.getContext(), ViewObjectActivity.class);
             ObjectDTO item = data.get(getPosition());
             long selPosition = (long) Long.valueOf(item.id);
             intent_viewobject.putExtra("idviewobject", selPosition);
             v.getContext().startActivity(intent_viewobject);
-            Toast.makeText(v.getContext(),"Clicked item " +selPosition, Toast.LENGTH_LONG ).show();
+            //Toast.makeText(v.getContext(),"Clicked item " +selPosition, Toast.LENGTH_LONG ).show();
         }
 
 

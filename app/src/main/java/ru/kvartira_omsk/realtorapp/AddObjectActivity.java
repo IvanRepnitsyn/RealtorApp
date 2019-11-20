@@ -411,7 +411,7 @@ public class AddObjectActivity extends AppCompatActivity {
 
             //Check table
             Cursor cursorObjectPhotos = mDbHelper.getAllObjectPhotos();
-            Toast.makeText(this, "SIZE OBJECTPHOTOS: " + cursorObjectPhotos.getCount(), Toast.LENGTH_LONG).show();
+            //Toast.makeText(this, "SIZE OBJECTPHOTOS: " + cursorObjectPhotos.getCount(), Toast.LENGTH_LONG).show();
             //Check Table
 
             f.clear();
@@ -422,7 +422,7 @@ public class AddObjectActivity extends AppCompatActivity {
                 f.add("/sdcard/RealtorAppPhotos/"+namePhotoObject.get(i));
                 filePathEdit.add("/sdcard/RealtorAppPhotos/"+namePhotoObject.get(i));
                 fileNameEdit.add(namePhotoObject.get(i));
-                Toast.makeText(this, "File from: /sdcard/RealtorAppPhotos/"+namePhotoObject.get(i), Toast.LENGTH_LONG).show();
+                //Toast.makeText(this, "File from: /sdcard/RealtorAppPhotos/"+namePhotoObject.get(i), Toast.LENGTH_LONG).show();
             }
 
             /*GridView imagegrid = (GridView) findViewById(R.id.objectGridView);
@@ -848,7 +848,7 @@ public class AddObjectActivity extends AppCompatActivity {
             mDbHelper.deleteObjectPhoto(mRowId);
             for (int i = 0; i < fileName.size(); i++) {
                 long idObjectPhoto = mDbHelper.createNewObjectPhoto(Long.toString(mRowId), fileName.get(i));
-                Toast.makeText(this, "Save: " + fileName.get(i), Toast.LENGTH_LONG).show();
+                //Toast.makeText(this, "Save: " + fileName.get(i), Toast.LENGTH_LONG).show();
             }
             File sourceDir = new File("/sdcard/RealtorAppPhotos/Temp/");
             File destDir = new File("/sdcard/RealtorAppPhotos/");
@@ -994,14 +994,14 @@ public class AddObjectActivity extends AppCompatActivity {
                         //Toast.makeText(AddObjectActivity.this, "Size: " +  f.size(), Toast.LENGTH_LONG).show();
                         for (int i=0; i< f.size(); i++ ) {
                             if (imageAdapter.checkItemStatus(i) == true){
-                                Toast.makeText(AddObjectActivity.this, "Prosto!!!", Toast.LENGTH_LONG).show();
-                                Toast.makeText(AddObjectActivity.this, "Item: " + i + " Status TRUE " + f.get(i) + " NameFile: " + fileNameEdit.get(i), Toast.LENGTH_LONG).show();
+                                //Toast.makeText(AddObjectActivity.this, "Prosto!!!", Toast.LENGTH_LONG).show();
+                                //Toast.makeText(AddObjectActivity.this, "Item: " + i + " Status TRUE " + f.get(i) + " NameFile: " + fileNameEdit.get(i), Toast.LENGTH_LONG).show();
                                 itemForDelete.add(f.get(i));
                                 itemForDeleteName.add(fileNameEdit.get(i));
                             } else {
-                                Toast.makeText(AddObjectActivity.this, "Item: " + i + "Status FALSE", Toast.LENGTH_LONG).show();
+                                //Toast.makeText(AddObjectActivity.this, "Item: " + i + "Status FALSE", Toast.LENGTH_LONG).show();
                             }
-                            Toast.makeText(AddObjectActivity.this, "Item for delete:  " + itemForDelete.size(), Toast.LENGTH_LONG).show();
+                            //Toast.makeText(AddObjectActivity.this, "Item for delete:  " + itemForDelete.size(), Toast.LENGTH_LONG).show();
 
                         }
 
@@ -1087,7 +1087,7 @@ public class AddObjectActivity extends AppCompatActivity {
         strFileName = Integer.toString(time.year) + Integer.toString(time.month+1) + Integer.toString(time.monthDay) + Integer.toString(time.hour) + Integer.toString(time.minute) + Integer.toString(time.second) +".jpg";
             /*File destination = new File(Environment.getExternalStorageDirectory(),
                     System.currentTimeMillis() + ".jpg");*/
-        Toast.makeText(this,"Folder: " + strFolder + " File: " + strFileName, Toast.LENGTH_LONG).show();
+        //Toast.makeText(this,"Folder: " + strFolder + " File: " + strFileName, Toast.LENGTH_LONG).show();
         File destination = new File(new File("/sdcard/RealtorAppPhotos/Temp/"), strFileName);
 
         FileOutputStream fo;
@@ -1133,7 +1133,7 @@ public class AddObjectActivity extends AppCompatActivity {
         strFileName = Integer.toString(time.year) + Integer.toString(time.month+1) + Integer.toString(time.monthDay) + Integer.toString(time.hour) + Integer.toString(time.minute) + Integer.toString(time.second) +".jpg";
             /*File destination = new File(Environment.getExternalStorageDirectory(),
                     System.currentTimeMillis() + ".jpg");*/
-        Toast.makeText(this,"Folder: " + strFolder + " File: " + strFileName, Toast.LENGTH_LONG).show();
+        //Toast.makeText(this,"Folder: " + strFolder + " File: " + strFileName, Toast.LENGTH_LONG).show();
         File destination = new File(new File("/sdcard/RealtorAppPhotos/Temp/"), strFileName);
 
         FileOutputStream fo;
@@ -1191,7 +1191,7 @@ public class AddObjectActivity extends AppCompatActivity {
                 f.add(filePathEdit.get(i));
                 fileName.add(fileNameEdit.get(i));
             }
-            Toast.makeText(AddObjectActivity.this, "f size: " + f.size(), Toast.LENGTH_LONG).show();
+            //Toast.makeText(AddObjectActivity.this, "f size: " + f.size(), Toast.LENGTH_LONG).show();
         }
 
 
@@ -1204,10 +1204,10 @@ public class AddObjectActivity extends AppCompatActivity {
                 f.add(listFile[i].getAbsolutePath());
                 fileName.add(listFile[i].getName());
                 fileNameEdit.add(listFile[i].getName());
-                Toast.makeText(AddObjectActivity.this, "Path:" + listFile[i].getAbsolutePath() + " Name:" + listFile[i].getName(), Toast.LENGTH_LONG).show();
+                //Toast.makeText(AddObjectActivity.this, "Path:" + listFile[i].getAbsolutePath() + " Name:" + listFile[i].getName(), Toast.LENGTH_LONG).show();
             }
         }
-        Toast.makeText(AddObjectActivity.this, "f size after: " + f.size(), Toast.LENGTH_LONG).show();
+        //Toast.makeText(AddObjectActivity.this, "f size after: " + f.size(), Toast.LENGTH_LONG).show();
     }
 
 

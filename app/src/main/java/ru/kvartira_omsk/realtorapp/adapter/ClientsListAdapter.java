@@ -79,7 +79,7 @@ public class ClientsListAdapter extends RecyclerView.Adapter<ClientsListAdapter.
             ClientsViewHolder vholder = (ClientsViewHolder) v.getTag();
             int position = vholder.getAdapterPosition();
             //Log.d(TAG, "onClick " + position);
-            Toast.makeText(v.getContext(),"This is position "+position, Toast.LENGTH_LONG ).show();
+            //Toast.makeText(v.getContext(),"This is position "+position, Toast.LENGTH_LONG ).show();
 
             //PopupMenu popup = new PopupMenu(v.getContext(), v);
 
@@ -148,7 +148,7 @@ public class ClientsListAdapter extends RecyclerView.Adapter<ClientsListAdapter.
 
         @Override
         public void onClick(View v) {
-            Toast.makeText(v.getContext(),"Click item", Toast.LENGTH_LONG ).show();
+            //Toast.makeText(v.getContext(),"Click item", Toast.LENGTH_LONG ).show();
             Intent intent_viewclient = new Intent(v.getContext(), ViewClientActivity.class);
             ClientDTO item = data.get(getPosition());
             long selPosition = (long) Long.valueOf(item.id);

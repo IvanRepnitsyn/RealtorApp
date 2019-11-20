@@ -45,6 +45,7 @@
             android:layout_width="wrap_content"
             android:src="@mipmap/ic_plus"
             android:layout_gravity="end|bottom"
+            android:backgroundTint="@color/floating_label"
             android:layout_marginBottom="@dimen/fab_margin"
             android:layout_marginRight="@dimen/fab_margin"
             android:clickable="true"/>

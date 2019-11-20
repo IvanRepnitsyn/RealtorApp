@@ -73,7 +73,7 @@ public class ClientsFragment extends AbstractTabFragment {
         registerForContextMenu(rvClients);*/
         //Toast.makeText(this.getActivity(), "List", Toast.LENGTH_LONG).show();
         dbHelper = new DBWork(this.getActivity());
-        Toast.makeText(this.getActivity(), "Create ClientFragment", Toast.LENGTH_LONG).show();
+        //Toast.makeText(this.getActivity(), "Create ClientFragment", Toast.LENGTH_LONG).show();
         fillData();
         return view;
     }
@@ -115,10 +115,10 @@ public class ClientsFragment extends AbstractTabFragment {
         if (item.getGroupId() == 3){
             switch (item.getItemId()) {
                 case 1:
-                    Toast.makeText(this.getActivity(), "ID Client "+clickedItemPosition, Toast.LENGTH_LONG).show();
+                    //Toast.makeText(this.getActivity(), "ID Client "+clickedItemPosition, Toast.LENGTH_LONG).show();
                     Intent intent_client = new Intent(this.getActivity(), AddClientActivity.class);
                     intent_client.putExtra("idclient", longID);
-                    Toast.makeText(this.getActivity(), "Вызов из ClientFragment", Toast.LENGTH_LONG).show();
+                    //Toast.makeText(this.getActivity(), "Вызов из ClientFragment", Toast.LENGTH_LONG).show();
                     startActivityForResult(intent_client, CLIENT_ACTIVITY_EDIT);
                     //MainActivity.editClient();
                     break;
@@ -140,12 +140,12 @@ public class ClientsFragment extends AbstractTabFragment {
                     startActivityForResult(intent_event, EVENT_ACTIVITY_CREATE);
                     break;
                 case 5:
-                    Toast.makeText(this.getActivity(), "Звоним ", Toast.LENGTH_LONG).show();
+                    //Toast.makeText(this.getActivity(), "Звоним ", Toast.LENGTH_LONG).show();
                     // Получить из базы номер телефона клиента и передать в интенет
                     Cursor cursorGetClient = dbHelper.getClient(clickedItemPosition);
                     String strPhone = "tel:" + cursorGetClient.getString(cursorGetClient
                             .getColumnIndexOrThrow(DBWork.COLUMN_PHONECLIENT));
-                    Toast.makeText(this.getActivity(), "Tel: " + strPhone.toString(), Toast.LENGTH_LONG).show();
+                    //Toast.makeText(this.getActivity(), "Tel: " + strPhone.toString(), Toast.LENGTH_LONG).show();
                     Intent intentcallclient = new Intent(Intent.ACTION_DIAL, Uri.parse(strPhone.toString()));
                     startActivity(intentcallclient);
                     break;

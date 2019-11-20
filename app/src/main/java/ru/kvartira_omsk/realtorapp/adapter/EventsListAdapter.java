@@ -64,7 +64,7 @@ public class EventsListAdapter extends RecyclerView.Adapter<EventsListAdapter.Ev
             EventsViewHolder vholder = (EventsViewHolder) v.getTag();
             int position = vholder.getAdapterPosition();
             //Log.d(TAG, "onClick " + position);
-            Toast.makeText(v.getContext(),"This is position "+position, Toast.LENGTH_LONG ).show();
+            //Toast.makeText(v.getContext(),"This is position "+position, Toast.LENGTH_LONG ).show();
 
             //PopupMenu popup = new PopupMenu(v.getContext(), v);
 
@@ -130,7 +130,7 @@ public class EventsListAdapter extends RecyclerView.Adapter<EventsListAdapter.Ev
 
         @Override
         public void onClick(View v) {
-            Toast.makeText(v.getContext(),"Click item", Toast.LENGTH_LONG ).show();
+            //Toast.makeText(v.getContext(),"Click item", Toast.LENGTH_LONG ).show();
             Intent intent_viewevent = new Intent(v.getContext(), ViewEventActivity.class);
             EventDTO item = data.get(getPosition());
             long selPosition = (long) Long.valueOf(item.id);

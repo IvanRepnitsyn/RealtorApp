@@ -72,9 +72,9 @@ public class AddClientActivity extends AppCompatActivity {
                 : (Long) savedInstanceState
                 .getSerializable(DBWork.COLUMN_ID);
         if (extras != null) {
-            Toast.makeText(this, "Get ID OK", Toast.LENGTH_LONG).show();
+            //Toast.makeText(this, "Get ID OK", Toast.LENGTH_LONG).show();
             mRowId = getIntent().getExtras().getLong("idclient");
-            Toast.makeText(this, "ID "+mRowId, Toast.LENGTH_LONG).show();
+            //Toast.makeText(this, "ID "+mRowId, Toast.LENGTH_LONG).show();
             //PhoneNmb = extras.getString("callphone");
             //if (PhoneNmb != null) etPhoneClient.setText(PhoneNmb);
 
@@ -136,14 +136,15 @@ public class AddClientActivity extends AppCompatActivity {
         if (mRowId != null) {
             //Toast.makeText(this, "ID pF "+mRowId, Toast.LENGTH_LONG).show();
             Cursor client = mDbHelper.getClient(mRowId);
-            if (client != null) Toast.makeText(this, "Получилось", Toast.LENGTH_LONG).show();
-            else Toast.makeText(this, "Не получилось", Toast.LENGTH_LONG).show();
+// Может сообщение о косяке?
+            /*if (client != null) Toast.makeText(this, "Получилось", Toast.LENGTH_LONG).show();
+            else Toast.makeText(this, "Не получилось", Toast.LENGTH_LONG).show();*/
             startManagingCursor(client);
 
             String nameCln = client.getString(client
                     .getColumnIndexOrThrow(DBWork.COLUMN_NAMECLIENT));
 
-            Toast.makeText(this, nameCln, Toast.LENGTH_LONG).show();
+            //Toast.makeText(this, nameCln, Toast.LENGTH_LONG).show();
             spinnerTypeClient.setSelection(Integer.parseInt(client.getString(client
                     .getColumnIndexOrThrow(DBWork.COLUMN_TYPECLIENT))));
             etNameClient.setText(client.getString(client
@@ -152,8 +153,8 @@ public class AddClientActivity extends AppCompatActivity {
                     .getColumnIndexOrThrow(DBWork.COLUMN_PHONECLIENT)));
             etMailClient.setText(client.getString(client
                     .getColumnIndexOrThrow(DBWork.COLUMN_MAILCLIENT)));
-            Toast.makeText(AddClientActivity.this, "Type " + client.getString(client
-                    .getColumnIndexOrThrow(DBWork.COLUMN_TYPECLIENT)), Toast.LENGTH_LONG).show();
+            /*Toast.makeText(AddClientActivity.this, "Type " + client.getString(client
+                    .getColumnIndexOrThrow(DBWork.COLUMN_TYPECLIENT)), Toast.LENGTH_LONG).show();*/
             /*if (Integer.parseInt(client.getString(client
                     .getColumnIndexOrThrow(DBWork.COLUMN_TYPECLIENT))) == 2) {
                 //etInfoFindObject = (EditText) findViewById(R.id.findclient_info);
@@ -181,7 +182,7 @@ public class AddClientActivity extends AppCompatActivity {
             startManagingCursor(cursorInfoObject);
             String stringInfoObject = cursorInfoObject.getString(cursorInfoObject
                     .getColumnIndexOrThrow(DBWork.COLUMN_INFOFINDOBJECT));
-            Toast.makeText(AddClientActivity.this, "Info1 " + stringInfoObject, Toast.LENGTH_LONG).show();
+            //Toast.makeText(AddClientActivity.this, "Info1 " + stringInfoObject, Toast.LENGTH_LONG).show();
             stopManagingCursor(cursorInfoObject);
             cursorInfoObject.close();
             etInfoFindObject = (EditText) findViewById(R.id.findclient_info);
@@ -230,16 +231,16 @@ public class AddClientActivity extends AppCompatActivity {
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        Toast.makeText(AddClientActivity.this, "Press", Toast.LENGTH_LONG).show();
+        //Toast.makeText(AddClientActivity.this, "Press", Toast.LENGTH_LONG).show();
         switch (item.getItemId()) {
             case android.R.id.home:
-                Toast.makeText(AddClientActivity.this, "Back", Toast.LENGTH_LONG).show();
+                //Toast.makeText(AddClientActivity.this, "Back", Toast.LENGTH_LONG).show();
                 finish();
                 return true;
             case R.id.action_ok:
                 String checkClientStr = '\'' + etNameClient.getText().toString() + '\'';
                 Cursor cursorClient = mDbHelper.getClientforName(checkClientStr);
-                Toast.makeText(AddClientActivity.this, "OK", Toast.LENGTH_LONG).show();
+                //Toast.makeText(AddClientActivity.this, "OK", Toast.LENGTH_LONG).show();
                 if (TextUtils.isEmpty(etNameClient.getText().toString())) {
                     Toast.makeText(AddClientActivity.this, "Данные не введены", Toast.LENGTH_LONG).show();
                 } else if ((cursorClient != null) && (cursorClient.getCount()>0) && ((mRowId == null) || (mRowId == 0)))  {
@@ -251,7 +252,7 @@ public class AddClientActivity extends AppCompatActivity {
                         saveState();
                         Intent intent = new Intent();
                         intent.putExtra("nameclient", etNameClient.getText().toString());
-                        Toast.makeText(AddClientActivity.this, "Клиент: "+etNameClient.getText().toString(), Toast.LENGTH_LONG).show();
+                        //Toast.makeText(AddClientActivity.this, "Клиент: "+etNameClient.getText().toString(), Toast.LENGTH_LONG).show();
                         setResult(RESULT_OK, intent);
                         finish();
                     } else if (isEmailValid(etMailClient.getText()) == false){
@@ -295,7 +296,7 @@ public class AddClientActivity extends AppCompatActivity {
                 mRowId = id;
             }
         } else {
-            Toast.makeText(AddClientActivity.this, "Update", Toast.LENGTH_LONG).show();
+            //Toast.makeText(AddClientActivity.this, "Update", Toast.LENGTH_LONG).show();
             mDbHelper.updateClient(mRowId, nameclient, typeclient, phoneclient, mailclient);
             if (infoobject != "") {
                 String idclient = Long.toString(mRowId);
