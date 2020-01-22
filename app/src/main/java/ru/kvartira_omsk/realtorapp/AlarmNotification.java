@@ -7,7 +7,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SyncAdapterType;
 import android.provider.Settings;
-import android.support.v7.app.NotificationCompat;
+import androidx.core.app.NotificationCompat;
 import android.view.ViewDebug;
 import android.widget.Toast;
 

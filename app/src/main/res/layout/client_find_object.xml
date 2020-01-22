@@ -10,7 +10,7 @@
         android:layout_height="48dp"
         android:orientation="horizontal">
 
-        <android.support.design.widget.TextInputLayout
+        <com.google.android.material.textfield.TextInputLayout
             android:id="@+id/client_infofindobject"
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
@@ -21,11 +21,11 @@
                 android:layout_height="wrap_content"
                 android:singleLine="true"
                 android:hint="@string/findclient_hint_info" />
-        </android.support.design.widget.TextInputLayout>
+        </com.google.android.material.textfield.TextInputLayout>
 
 
 
 
-    </LinearLayout>>
+    </LinearLayout>
 
 </LinearLayout>

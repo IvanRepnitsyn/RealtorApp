@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.v4.widget.DrawerLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.drawerlayout.widget.DrawerLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/drawer_layout_addevent"
     android:layout_width="match_parent"
@@ -7,24 +7,24 @@
     android:background="@color/mainBackground"
     android:fitsSystemWindows="true">
 
-    <android.support.design.widget.CoordinatorLayout
+    <androidx.coordinatorlayout.widget.CoordinatorLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
-        <android.support.design.widget.AppBarLayout
+        <com.google.android.material.appbar.AppBarLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
 
-            <android.support.v7.widget.Toolbar
+            <androidx.appcompat.widget.Toolbar
                 android:id="@+id/toolbar_addevent"
                 android:layout_width="match_parent"
                 android:src="@mipmap/ic_plus"
                 android:layout_height="?attr/actionBarSize"
                 android:theme="@style/ThemeOverlay.AppCompat.Dark"
                 android:background="?attr/colorPrimary" />
-        </android.support.design.widget.AppBarLayout>
+        </com.google.android.material.appbar.AppBarLayout>
 
-        <android.support.v4.widget.NestedScrollView
+        <androidx.core.widget.NestedScrollView
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             app:layout_behavior="@string/appbar_scrolling_view_behavior"
@@ -93,7 +93,7 @@
                 android:paddingLeft="8dp"
                 android:orientation="vertical">
 
-                <android.support.design.widget.TextInputLayout
+                <com.google.android.material.textfield.TextInputLayout
                     android:id="@+id/input_event_name"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content">
@@ -105,9 +105,9 @@
                         android:singleLine="true"
                         android:textSize="16dp"
                         android:hint="@string/nameevent_hint_name" />
-                </android.support.design.widget.TextInputLayout>
+                </com.google.android.material.textfield.TextInputLayout>
 
-                <android.support.design.widget.TextInputLayout
+                <com.google.android.material.textfield.TextInputLayout
                     android:id="@+id/input_event_date"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content">
@@ -119,9 +119,9 @@
                         android:singleLine="true"
                         android:textSize="16dp"
                         android:hint="@string/nameevent_hint_date" />
-                </android.support.design.widget.TextInputLayout>
+                </com.google.android.material.textfield.TextInputLayout>
 
-                <android.support.design.widget.TextInputLayout
+                <com.google.android.material.textfield.TextInputLayout
                     android:id="@+id/input_event_time"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content">
@@ -133,9 +133,9 @@
                         android:singleLine="true"
                         android:textSize="16dp"
                         android:hint="@string/nameevent_hint_time" />
-                </android.support.design.widget.TextInputLayout>
+                </com.google.android.material.textfield.TextInputLayout>
 
-                <android.support.design.widget.TextInputLayout
+                <com.google.android.material.textfield.TextInputLayout
                     android:id="@+id/input_event_place"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content">
@@ -147,9 +147,9 @@
                         android:singleLine="true"
                         android:textSize="16dp"
                         android:hint="@string/nameevent_hint_place" />
-                </android.support.design.widget.TextInputLayout>
+                </com.google.android.material.textfield.TextInputLayout>
 
-                <android.support.design.widget.TextInputLayout
+                <com.google.android.material.textfield.TextInputLayout
                     android:id="@+id/input_event_info"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content">
@@ -161,7 +161,7 @@
                         android:singleLine="true"
                         android:textSize="16dp"
                         android:hint="@string/nameevent_hint_info" />
-                </android.support.design.widget.TextInputLayout>
+                </com.google.android.material.textfield.TextInputLayout>
 
             </LinearLayout>
 
@@ -185,10 +185,10 @@
 
         </LinearLayout>
 
-        </android.support.v4.widget.NestedScrollView>
+        </androidx.core.widget.NestedScrollView>
 
-    </android.support.design.widget.CoordinatorLayout>
+    </androidx.coordinatorlayout.widget.CoordinatorLayout>
 
 
 
-</android.support.v4.widget.DrawerLayout>
+</androidx.drawerlayout.widget.DrawerLayout>
