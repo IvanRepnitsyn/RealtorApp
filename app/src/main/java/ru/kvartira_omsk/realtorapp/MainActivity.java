@@ -2,6 +2,10 @@ package ru.kvartira_omsk.realtorapp;
 
 import android.content.Intent;
 import android.os.Bundle;
+
+import com.google.android.gms.ads.MobileAds;
+import com.google.android.gms.ads.initialization.InitializationStatus;
+import com.google.android.gms.ads.initialization.OnInitializationCompleteListener;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.navigation.NavigationView;
 import com.google.android.material.tabs.TabLayout;
@@ -13,13 +17,15 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import android.view.MenuItem;
 import android.view.View;
-
+import com.google.android.gms.ads.AdRequest;
+import com.google.android.gms.ads.AdView;
 import ru.kvartira_omsk.realtorapp.adapter.TabsFragmentAdapter;
 
 
 public class MainActivity extends AppCompatActivity  {
 
     //private DBWork dbHelper;
+    private AdView mAdView;
     private static final int LAYOUT = R.layout.activity_main;
     private static final int OBJECT_ACTIVITY_CREATE = 11;
     private static final int OBJECT_ACTIVITY_EDIT = 15;
@@ -38,6 +44,15 @@ public class MainActivity extends AppCompatActivity  {
         setTheme(R.style.AppDefault);
         super.onCreate(savedInstanceState);
         setContentView(LAYOUT);
+
+        MobileAds.initialize(this, new OnInitializationCompleteListener() {
+            @Override
+            public void onInitializationComplete(InitializationStatus initializationStatus) {
+            }
+        });
+        mAdView = findViewById(R.id.adView);
+        AdRequest adRequest = new AdRequest.Builder().build();
+        mAdView.loadAd(adRequest);
 
         initToolbar();
         initNavigationView();
